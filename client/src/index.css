@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 42 52% 97%;
+    --foreground: 185 22% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 185 22% 15%;
+    --primary: 16 63% 41%;
+    --primary-foreground: 42 52% 97%;
+    --secondary: 40 36% 92%;
+    --secondary-foreground: 185 22% 18%;
+    --muted: 38 27% 92%;
+    --muted-foreground: 186 12% 36%;
+    --accent: 173 28% 31%;
+    --accent-foreground: 42 52% 97%;
+    --destructive: 0 70% 48%;
+    --destructive-foreground: 42 52% 97%;
+    --border: 32 25% 83%;
+    --input: 32 25% 83%;
+    --ring: 16 63% 41%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-background font-sans text-foreground antialiased;
+    background-image: radial-gradient(circle at top left, rgba(197, 123, 92, 0.18), transparent 26%),
+      radial-gradient(circle at right center, rgba(71, 121, 109, 0.12), transparent 24%),
+      linear-gradient(180deg, rgba(255, 252, 244, 0.98), rgba(247, 240, 228, 0.92));
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+    letter-spacing: -0.03em;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.18);
+  }
+}
+
+@layer utilities {
+  .surface-glow {
+    box-shadow: 0 24px 80px rgba(30, 49, 45, 0.12);
+  }
+
+  .paper-stripe {
+    background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.55),
+      rgba(255, 255, 255, 0.15) 1px,
+      transparent 1px
+    );
+    background-size: 100% 12px;
+  }
+}
+
