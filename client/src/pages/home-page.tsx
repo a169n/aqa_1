@@ -48,7 +48,7 @@ export const HomePage = () => {
 
   return (
     <div className="space-y-8">
-      <Card className="surface-glow overflow-hidden bg-hero">
+      <Card className="surface-glow page-reveal overflow-hidden bg-hero">
         <CardContent className="grid gap-8 md:grid-cols-[1.3fr_0.7fr] md:items-end">
           <div className="space-y-6">
             <Badge variant="accent" className="w-fit">
@@ -78,11 +78,11 @@ export const HomePage = () => {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-1">
-            <Card className="bg-white/80 p-5">
+            <Card className="float-card border-border/60 bg-card/70 p-5">
               <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Posts</p>
               <p className="mt-3 font-display text-5xl">{allPosts.length}</p>
             </Card>
-            <Card className="bg-white/80 p-5">
+            <Card className="float-card border-border/60 bg-card/70 p-5">
               <div className="flex items-center gap-3">
                 <BookHeart className="h-5 w-5 text-primary" />
                 <div>
@@ -100,7 +100,7 @@ export const HomePage = () => {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="page-reveal [animation-delay:100ms]">
         <CardContent className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h2 className="text-3xl">Latest posts</h2>
@@ -133,11 +133,7 @@ export const HomePage = () => {
             <p className="mt-2 text-sm text-muted-foreground">
               Try a different keyword or publish a fresh article.
             </p>
-            <Button
-              variant="secondary"
-              className="mt-5"
-              onClick={() => setSearchValue('')}
-            >
+            <Button variant="secondary" className="mt-5" onClick={() => setSearchValue('')}>
               Reset search
             </Button>
           </CardContent>

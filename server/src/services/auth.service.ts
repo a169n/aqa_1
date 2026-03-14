@@ -8,11 +8,7 @@ import type { AuthenticatedUser } from '../types/auth';
 import { comparePassword, hashPassword } from '../utils/password';
 import { serializeUser } from '../utils/serializers';
 import { HttpError } from '../utils/http-error';
-import {
-  signAccessToken,
-  signRefreshToken,
-  verifyRefreshToken,
-} from '../utils/tokens';
+import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../utils/tokens';
 
 const userRepository = () => AppDataSource.getRepository(User);
 const refreshTokenRepository = () => AppDataSource.getRepository(RefreshToken);
@@ -110,11 +106,7 @@ export const authService = {
       },
     });
 
-    if (
-      !tokenRecord ||
-      tokenRecord.revokedAt ||
-      tokenRecord.expiresAt.getTime() < Date.now()
-    ) {
+    if (!tokenRecord || tokenRecord.revokedAt || tokenRecord.expiresAt.getTime() < Date.now()) {
       throw new HttpError(401, 'Refresh token is invalid or expired.');
     }
 

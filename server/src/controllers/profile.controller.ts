@@ -19,4 +19,3 @@ export const uploadAvatar = asyncHandler(async (request: Request, response: Resp
   const avatarUrl = `/uploads/avatars/${request.file.filename}`;
   response.json(await userService.updateAvatar(request.user!, avatarUrl));
 });
-

@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type PropsWithChildren,
-} from 'react';
+import { createContext, useContext, useEffect, useState, type PropsWithChildren } from 'react';
 import { authApi, requestTokenRefresh } from '@/lib/api';
 import { clearStoredSession, getStoredSession, setStoredSession } from '@/lib/storage';
 import type { AuthFormValues, Session, User } from '@/types/api';
@@ -131,4 +125,3 @@ export const useAuth = () => {
 
   return context;
 };
-

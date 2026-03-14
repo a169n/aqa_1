@@ -11,4 +11,3 @@ export const formatDate = (value: string | Date) =>
 
 export const truncate = (value: string, maxLength: number) =>
   value.length > maxLength ? `${value.slice(0, maxLength)}...` : value;
-

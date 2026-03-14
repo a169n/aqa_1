@@ -82,11 +82,17 @@ export const AdminPage = () => {
     onSuccess: refreshAdminData,
   });
 
-  if (usersQuery.isLoading || postsQuery.isLoading || commentsQuery.isLoading || likesQuery.isLoading) {
+  if (
+    usersQuery.isLoading ||
+    postsQuery.isLoading ||
+    commentsQuery.isLoading ||
+    likesQuery.isLoading
+  ) {
     return <LoadingState label="Loading moderation data..." />;
   }
 
-  const firstError = usersQuery.error ?? postsQuery.error ?? commentsQuery.error ?? likesQuery.error;
+  const firstError =
+    usersQuery.error ?? postsQuery.error ?? commentsQuery.error ?? likesQuery.error;
 
   if (firstError) {
     return <ErrorState message={getErrorMessage(firstError)} />;
@@ -140,7 +146,10 @@ export const AdminPage = () => {
               type="button"
               onClick={() => startTransition(() => setActiveTab(tab))}
               className={cn(
-                buttonVariants({ variant: activeTab === tab ? 'default' : 'secondary', size: 'sm' }),
+                buttonVariants({
+                  variant: activeTab === tab ? 'default' : 'secondary',
+                  size: 'sm',
+                }),
                 'capitalize',
               )}
             >
@@ -297,10 +306,15 @@ export const AdminPage = () => {
               <TableBody>
                 {comments.map((comment) => (
                   <TableRow key={comment.id}>
-                    <TableCell className="max-w-md whitespace-pre-wrap">{comment.content}</TableCell>
+                    <TableCell className="max-w-md whitespace-pre-wrap">
+                      {comment.content}
+                    </TableCell>
                     <TableCell>{comment.author.name}</TableCell>
                     <TableCell>
-                      <Link to={`/posts/${comment.post.id}`} className="font-semibold hover:text-primary">
+                      <Link
+                        to={`/posts/${comment.post.id}`}
+                        className="font-semibold hover:text-primary"
+                      >
                         {comment.post.title}
                       </Link>
                     </TableCell>
@@ -343,7 +357,10 @@ export const AdminPage = () => {
                   <TableRow key={like.id}>
                     <TableCell>{like.user.name}</TableCell>
                     <TableCell>
-                      <Link to={`/posts/${like.post.id}`} className="font-semibold hover:text-primary">
+                      <Link
+                        to={`/posts/${like.post.id}`}
+                        className="font-semibold hover:text-primary"
+                      >
                         {like.post.title}
                       </Link>
                     </TableCell>

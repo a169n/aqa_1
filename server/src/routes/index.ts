@@ -13,4 +13,3 @@ apiRouter.use('/auth', authRouter);
 apiRouter.use('/posts', postRouter);
 apiRouter.use('/user', profileRouter);
 apiRouter.use('/admin', adminRouter);
-

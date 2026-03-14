@@ -46,7 +46,9 @@ export const userService = {
       ...serializeUser(user),
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
-      posts: user.posts.map((post) => serializePost(post, serializeUser(user), { includeComments: true })),
+      posts: user.posts.map((post) =>
+        serializePost(post, serializeUser(user), { includeComments: true }),
+      ),
       comments: user.comments.map((comment) => ({
         ...serializeComment(comment),
         post: {
@@ -161,4 +163,3 @@ export const userService = {
     await userRepository().remove(user);
   },
 };
-

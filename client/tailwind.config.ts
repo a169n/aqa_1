@@ -34,11 +34,9 @@ export default {
         sans: ['Avenir Next', 'Segoe UI', 'Helvetica Neue', 'sans-serif'],
       },
       backgroundImage: {
-        hero:
-          'radial-gradient(circle at top left, rgba(176, 73, 38, 0.18), transparent 28%), radial-gradient(circle at top right, rgba(41, 86, 78, 0.14), transparent 30%)',
+        hero: 'radial-gradient(circle at top left, rgba(176, 73, 38, 0.18), transparent 28%), radial-gradient(circle at top right, rgba(41, 86, 78, 0.14), transparent 30%)',
       },
     },
   },
   plugins: [],
 } satisfies Config;
-

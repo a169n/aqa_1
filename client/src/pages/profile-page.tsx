@@ -98,17 +98,17 @@ export const ProfilePage = () => {
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3">
-              <Card className="bg-white/80 p-4">
+              <Card className="border-border/60 bg-card/75 p-4">
                 <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Posts</p>
                 <p className="mt-2 text-3xl font-display">{profile.posts.length}</p>
               </Card>
-              <Card className="bg-white/80 p-4">
+              <Card className="border-border/60 bg-card/75 p-4">
                 <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
                   Comments
                 </p>
                 <p className="mt-2 text-3xl font-display">{profile.comments.length}</p>
               </Card>
-              <Card className="bg-white/80 p-4">
+              <Card className="border-border/60 bg-card/75 p-4">
                 <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Role</p>
                 <p className="mt-2 text-2xl font-display capitalize">{profile.role}</p>
               </Card>
@@ -148,10 +148,7 @@ export const ProfilePage = () => {
               >
                 Save profile
               </Button>
-              <Label
-                htmlFor="profile-avatar"
-                className={buttonVariants({ variant: 'secondary' })}
-              >
+              <Label htmlFor="profile-avatar" className={buttonVariants({ variant: 'secondary' })}>
                 <UploadCloud className="mr-2 h-4 w-4" />
                 Upload avatar
               </Label>
@@ -184,10 +181,13 @@ export const ProfilePage = () => {
           <CardContent className="space-y-4">
             {profile.posts.length > 0 ? (
               profile.posts.map((post) => (
-                <Card key={post.id} className="rounded-[24px] bg-white/80 p-5">
+                <Card key={post.id} className="rounded-[24px] border-border/60 bg-card/75 p-5">
                   <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                     <div className="space-y-2">
-                      <Link to={`/posts/${post.id}`} className="text-xl font-semibold hover:text-primary">
+                      <Link
+                        to={`/posts/${post.id}`}
+                        className="text-xl font-semibold hover:text-primary"
+                      >
                         {post.title}
                       </Link>
                       <p className="text-sm text-muted-foreground">{formatDate(post.createdAt)}</p>
@@ -230,7 +230,7 @@ export const ProfilePage = () => {
           <CardContent className="space-y-4">
             {profile.comments.length > 0 ? (
               profile.comments.map((comment) => (
-                <Card key={comment.id} className="rounded-[24px] bg-white/80 p-5">
+                <Card key={comment.id} className="rounded-[24px] border-border/60 bg-card/75 p-5">
                   <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex items-center gap-3">

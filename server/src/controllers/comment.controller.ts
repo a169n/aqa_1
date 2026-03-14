@@ -12,4 +12,3 @@ export const deleteComment = asyncHandler(async (request: Request, response: Res
   await blogService.deleteComment(Number(request.params.id), request.user!);
   response.status(204).send();
 });
-

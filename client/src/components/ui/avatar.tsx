@@ -26,4 +26,3 @@ export const Avatar = ({ src, alt, className }: AvatarProps) => {
     </div>
   );
 };
-

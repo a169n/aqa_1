@@ -60,28 +60,28 @@ cp client/.env.example client/.env
 
 These live in [`server/.env.example`](/Users/a1byn/Documents/Playground/server/.env.example).
 
-| Variable | Description | Example |
-|---|---|---|
-| `PORT` | Express API port | `4000` |
-| `CLIENT_URL` | Frontend origin allowed by CORS | `http://localhost:5173` |
-| `DATABASE_HOST` | PostgreSQL host | `localhost` |
-| `DATABASE_PORT` | PostgreSQL port | `5432` |
-| `DATABASE_NAME` | PostgreSQL database name | `inkwell` |
-| `DATABASE_USER` | PostgreSQL username | `postgres` |
-| `DATABASE_PASSWORD` | PostgreSQL password | `postgres` |
-| `JWT_ACCESS_SECRET` | Secret used for access tokens | `change-me-access` |
-| `JWT_REFRESH_SECRET` | Secret used for refresh tokens | `change-me-refresh` |
-| `ACCESS_TOKEN_TTL` | Access token lifetime | `15m` |
-| `REFRESH_TOKEN_TTL_DAYS` | Refresh token lifetime in days | `7` |
-| `AUTO_RUN_MIGRATIONS` | Runs TypeORM migrations on server start | `true` |
-| `UPLOAD_DIR` | Local upload folder for avatars | `uploads` |
+| Variable                 | Description                             | Example                 |
+| ------------------------ | --------------------------------------- | ----------------------- |
+| `PORT`                   | Express API port                        | `4000`                  |
+| `CLIENT_URL`             | Frontend origin allowed by CORS         | `http://localhost:5173` |
+| `DATABASE_HOST`          | PostgreSQL host                         | `localhost`             |
+| `DATABASE_PORT`          | PostgreSQL port                         | `5432`                  |
+| `DATABASE_NAME`          | PostgreSQL database name                | `inkwell`               |
+| `DATABASE_USER`          | PostgreSQL username                     | `postgres`              |
+| `DATABASE_PASSWORD`      | PostgreSQL password                     | `postgres`              |
+| `JWT_ACCESS_SECRET`      | Secret used for access tokens           | `change-me-access`      |
+| `JWT_REFRESH_SECRET`     | Secret used for refresh tokens          | `change-me-refresh`     |
+| `ACCESS_TOKEN_TTL`       | Access token lifetime                   | `15m`                   |
+| `REFRESH_TOKEN_TTL_DAYS` | Refresh token lifetime in days          | `7`                     |
+| `AUTO_RUN_MIGRATIONS`    | Runs TypeORM migrations on server start | `true`                  |
+| `UPLOAD_DIR`             | Local upload folder for avatars         | `uploads`               |
 
 ### Frontend environment variables
 
 These live in [`client/.env.example`](/Users/a1byn/Documents/Playground/client/.env.example).
 
-| Variable | Description | Example |
-|---|---|---|
+| Variable       | Description                       | Example                     |
+| -------------- | --------------------------------- | --------------------------- |
 | `VITE_API_URL` | Base API URL used by the frontend | `http://localhost:4000/api` |
 
 ## Database setup

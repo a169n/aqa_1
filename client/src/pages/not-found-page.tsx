@@ -18,4 +18,3 @@ export const NotFoundPage = () => (
     </Card>
   </div>
 );
-

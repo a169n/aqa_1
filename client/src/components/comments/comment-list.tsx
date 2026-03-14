@@ -46,4 +46,3 @@ export const CommentList = ({ comments, user, isDeleting, onDelete }: CommentLis
     })}
   </div>
 );
-

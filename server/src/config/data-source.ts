@@ -20,4 +20,3 @@ export const AppDataSource = new DataSource({
   entities: [User, Post, Comment, Like, RefreshToken],
   migrations: [InitialSchema1700000000000],
 });
-

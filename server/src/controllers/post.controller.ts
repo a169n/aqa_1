@@ -15,11 +15,12 @@ export const createPost = asyncHandler(async (request: Request, response: Respon
 });
 
 export const updatePost = asyncHandler(async (request: Request, response: Response) => {
-  response.json(await blogService.updatePost(Number(request.params.id), request.user!, request.body));
+  response.json(
+    await blogService.updatePost(Number(request.params.id), request.user!, request.body),
+  );
 });
 
 export const deletePost = asyncHandler(async (request: Request, response: Response) => {
   await blogService.deletePost(Number(request.params.id), request.user!);
   response.status(204).send();
 });
-

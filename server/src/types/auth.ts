@@ -7,4 +7,3 @@ export interface AuthenticatedUser {
   role: UserRole;
   avatarUrl: string | null;
 }
-

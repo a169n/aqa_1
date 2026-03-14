@@ -21,4 +21,3 @@ postRouter.post('/:postId/comments', authenticate, createComment);
 postRouter.delete('/comments/:id', authenticate, deleteComment);
 postRouter.post('/:postId/likes', authenticate, likePost);
 postRouter.delete('/:postId/likes', authenticate, unlikePost);
-

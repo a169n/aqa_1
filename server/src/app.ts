@@ -19,4 +19,3 @@ app.use('/uploads', express.static(path.resolve(process.cwd(), env.UPLOAD_DIR)))
 app.use('/api', apiRouter);
 app.use(notFoundHandler);
 app.use(errorHandler);
-

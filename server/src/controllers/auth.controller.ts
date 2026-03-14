@@ -25,4 +25,3 @@ export const logout = asyncHandler(async (request: Request, response: Response) 
 export const me = asyncHandler(async (request: Request, response: Response) => {
   response.json(await authService.me(request.user!));
 });
-

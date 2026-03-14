@@ -75,4 +75,3 @@ export interface AuthFormValues {
   password: string;
   name?: string;
 }
-

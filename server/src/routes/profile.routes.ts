@@ -9,4 +9,3 @@ profileRouter.use(authenticate);
 profileRouter.get('/profile', getProfile);
 profileRouter.put('/profile', updateProfile);
 profileRouter.post('/profile/avatar', avatarUpload.single('avatar'), uploadAvatar);
-

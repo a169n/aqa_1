@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Heart, MessageSquare, PencilLine, Trash2 } from 'lucide-react';
+import { MessageSquare, PencilLine, Sparkles, Trash2 } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { CommentList } from '@/components/comments/comment-list';
 import { ErrorState } from '@/components/common/error-state';
 import { LoadingState } from '@/components/common/loading-state';
+import { LikeButton } from '@/components/posts/like-button';
 import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonVariants } from '@/components/ui/button';
@@ -46,24 +47,6 @@ export const PostDetailPage = () => {
     },
   });
 
-  const likeMutation = useMutation({
-    mutationFn: async () => {
-      const post = postQuery.data;
-
-      if (!post) {
-        return;
-      }
-
-      if (post.viewerHasLiked) {
-        await postsApi.unlike(postId);
-        return;
-      }
-
-      await postsApi.like(postId);
-    },
-    onSuccess: syncAfterMutation,
-  });
-
   const deletePostMutation = useMutation({
     mutationFn: () => postsApi.delete(postId),
     onSuccess: async () => {
@@ -95,8 +78,8 @@ export const PostDetailPage = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-8">
-      <Card className="surface-glow">
-        <CardHeader className="space-y-6">
+      <Card className="surface-glow story-shell overflow-hidden">
+        <CardHeader className="space-y-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <Avatar src={post.author.avatarUrl} alt={post.author.name} className="h-12 w-12" />
@@ -109,16 +92,25 @@ export const PostDetailPage = () => {
           </div>
 
           <div className="space-y-4">
-            <h1 className="text-5xl leading-tight">{post.title}</h1>
+            <div className="flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-muted-foreground">
+              <Sparkles className="h-3.5 w-3.5" />
+              Reader reactions are instant
+            </div>
+            <h1 className="text-5xl leading-tight sm:text-6xl">{post.title}</h1>
             <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="outline" className="gap-2">
-                <Heart className="h-3.5 w-3.5" />
-                {post.likesCount}
-              </Badge>
+              <LikeButton post={post} className="shadow-[0_18px_40px_hsl(var(--primary)/0.18)]" />
               <Badge variant="outline" className="gap-2">
                 <MessageSquare className="h-3.5 w-3.5" />
                 {post.commentsCount}
               </Badge>
+              {!isAuthenticated ? (
+                <Link
+                  to="/login"
+                  className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'gap-2')}
+                >
+                  Sign in to react
+                </Link>
+              ) : null}
             </div>
           </div>
         </CardHeader>
@@ -128,18 +120,9 @@ export const PostDetailPage = () => {
           </div>
         </CardContent>
         <CardFooter className="justify-between">
-          <div className="flex flex-wrap items-center gap-3">
-            {isAuthenticated ? (
-              <Button disabled={likeMutation.isPending} onClick={() => likeMutation.mutate()}>
-                <Heart className="mr-2 h-4 w-4" />
-                {post.viewerHasLiked ? 'Unlike post' : 'Like post'}
-              </Button>
-            ) : (
-              <Link to="/login" className={buttonVariants()}>
-                Login to like
-              </Link>
-            )}
-          </div>
+          <p className="text-sm text-muted-foreground">
+            Tap the heart to react instantly. Comments stay below for the full conversation.
+          </p>
           {canManage ? (
             <div className="flex flex-wrap items-center gap-3">
               <Link
@@ -162,7 +145,7 @@ export const PostDetailPage = () => {
         </CardFooter>
       </Card>
 
-      <Card>
+      <Card className="page-reveal [animation-delay:180ms]">
         <CardHeader>
           <h2 className="text-3xl">Discussion</h2>
           <p className="text-sm text-muted-foreground">
@@ -170,7 +153,9 @@ export const PostDetailPage = () => {
           </p>
         </CardHeader>
         <CardContent className="space-y-6">
-          {commentMutation.isError ? <ErrorState message={getErrorMessage(commentMutation.error)} /> : null}
+          {commentMutation.isError ? (
+            <ErrorState message={getErrorMessage(commentMutation.error)} />
+          ) : null}
           {isAuthenticated ? (
             <div className="space-y-3">
               <Textarea

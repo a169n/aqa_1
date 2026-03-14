@@ -34,4 +34,3 @@ export const clearStoredSession = () => {
 export const getAccessToken = () => getStoredSession()?.accessToken ?? null;
 
 export const getRefreshToken = () => getStoredSession()?.refreshToken ?? null;
-

@@ -11,7 +11,13 @@ import type {
   User,
   UserRole,
 } from '@/types/api';
-import { clearStoredSession, getAccessToken, getRefreshToken, getStoredSession, setStoredSession } from './storage';
+import {
+  clearStoredSession,
+  getAccessToken,
+  getRefreshToken,
+  getStoredSession,
+  setStoredSession,
+} from './storage';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api';
 const API_ORIGIN = new URL(API_BASE_URL).origin;
@@ -219,4 +225,3 @@ export const adminApi = {
     await api.delete(`/admin/likes/${likeId}`);
   },
 };
-

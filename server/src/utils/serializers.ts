@@ -55,4 +55,3 @@ export const serializePost = (
     comments: options?.includeComments ? sortedComments.map(serializeComment) : undefined,
   };
 };
-

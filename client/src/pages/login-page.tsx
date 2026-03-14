@@ -18,7 +18,8 @@ export const LoginPage = () => {
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: () => {
-      const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? '/';
+      const from =
+        (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? '/';
       navigate(from, { replace: true });
     },
   });
@@ -28,10 +29,14 @@ export const LoginPage = () => {
       <Card className="surface-glow">
         <CardHeader>
           <CardTitle>Welcome back</CardTitle>
-          <CardDescription>Log in with your email and password to continue writing.</CardDescription>
+          <CardDescription>
+            Log in with your email and password to continue writing.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {loginMutation.isError ? <ErrorState message={getErrorMessage(loginMutation.error)} /> : null}
+          {loginMutation.isError ? (
+            <ErrorState message={getErrorMessage(loginMutation.error)} />
+          ) : null}
           <div className="space-y-2">
             <Label htmlFor="login-email">Email</Label>
             <Input
@@ -72,4 +77,3 @@ export const LoginPage = () => {
     </div>
   );
 };
-

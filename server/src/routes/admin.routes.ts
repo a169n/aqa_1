@@ -26,4 +26,3 @@ adminRouter.get('/comments', listAdminComments);
 adminRouter.delete('/comments/:id', deleteAdminComment);
 adminRouter.get('/likes', listAdminLikes);
 adminRouter.delete('/likes/:id', deleteAdminLike);
-

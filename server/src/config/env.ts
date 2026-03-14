@@ -38,4 +38,3 @@ export const env = {
   AUTO_RUN_MIGRATIONS: getEnv('AUTO_RUN_MIGRATIONS', 'true') === 'true',
   UPLOAD_DIR: getEnv('UPLOAD_DIR', 'uploads'),
 };
-

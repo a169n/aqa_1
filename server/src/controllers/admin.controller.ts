@@ -8,7 +8,9 @@ export const listAdminPosts = asyncHandler(async (request: Request, response: Re
 });
 
 export const updateAdminPost = asyncHandler(async (request: Request, response: Response) => {
-  response.json(await blogService.updatePost(Number(request.params.id), request.user!, request.body));
+  response.json(
+    await blogService.updatePost(Number(request.params.id), request.user!, request.body),
+  );
 });
 
 export const deleteAdminPost = asyncHandler(async (request: Request, response: Response) => {
@@ -46,4 +48,3 @@ export const deleteAdminLike = asyncHandler(async (request: Request, response: R
   await blogService.deleteLike(Number(request.params.id));
   response.status(204).send();
 });
-

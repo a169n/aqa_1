@@ -9,4 +9,3 @@ authRouter.post('/login', login);
 authRouter.post('/refresh', refresh);
 authRouter.post('/logout', logout);
 authRouter.get('/me', authenticate, me);
-

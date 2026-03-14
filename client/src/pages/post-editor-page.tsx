@@ -51,12 +51,7 @@ export const PostEditorPage = () => {
     return <ErrorState message={getErrorMessage(postQuery.error)} />;
   }
 
-  if (
-    postQuery.data &&
-    user &&
-    user.role !== 'admin' &&
-    user.id !== postQuery.data.authorId
-  ) {
+  if (postQuery.data && user && user.role !== 'admin' && user.id !== postQuery.data.authorId) {
     return <ErrorState message="You do not have permission to edit this post." />;
   }
 
@@ -75,4 +70,3 @@ export const PostEditorPage = () => {
     </div>
   );
 };
-

@@ -79,7 +79,11 @@ export const blogService = {
     return serializePost(completePost, actor, { includeComments: true });
   },
 
-  async updatePost(postId: number, actor: AuthenticatedUser, input: { title: string; content: string }) {
+  async updatePost(
+    postId: number,
+    actor: AuthenticatedUser,
+    input: { title: string; content: string },
+  ) {
     const post = await findPost(postId);
 
     if (!post) {
@@ -270,4 +274,3 @@ export const blogService = {
     await likeRepository().remove(like);
   },
 };
-
