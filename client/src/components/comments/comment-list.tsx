@@ -9,7 +9,7 @@ interface CommentListProps {
   comments: Comment[];
   user: User | null;
   isDeleting: boolean;
-  onDelete: (commentId: number) => void;
+  onDelete: (comment: Comment) => void;
 }
 
 export const CommentList = ({ comments, user, isDeleting, onDelete }: CommentListProps) => (
@@ -18,7 +18,10 @@ export const CommentList = ({ comments, user, isDeleting, onDelete }: CommentLis
       const canDelete = user?.role === 'admin' || user?.id === comment.author.id;
 
       return (
-        <Card key={comment.id} className="rounded-[24px] bg-white/80 p-5">
+        <Card
+          key={comment.id}
+          className="rounded-[24px] border-border/60 bg-card/90 p-5 text-card-foreground"
+        >
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-start gap-3">
               <Avatar src={comment.author.avatarUrl} alt={comment.author.name} />
@@ -27,7 +30,7 @@ export const CommentList = ({ comments, user, isDeleting, onDelete }: CommentLis
                   <p className="text-sm font-semibold">{comment.author.name}</p>
                   <p className="text-xs text-muted-foreground">{formatDate(comment.createdAt)}</p>
                 </div>
-                <p className="text-sm leading-7 text-foreground/85">{comment.content}</p>
+                <p className="text-sm leading-7 text-card-foreground/85">{comment.content}</p>
               </div>
             </div>
             {canDelete ? (
@@ -35,7 +38,7 @@ export const CommentList = ({ comments, user, isDeleting, onDelete }: CommentLis
                 variant="ghost"
                 size="sm"
                 disabled={isDeleting}
-                onClick={() => onDelete(comment.id)}
+                onClick={() => onDelete(comment)}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>

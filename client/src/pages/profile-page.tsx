@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { MessageSquareText, PenSquare, Trash2, UploadCloud } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ConfirmationModal } from '@/components/common/confirmation-modal';
 import { ErrorState } from '@/components/common/error-state';
 import { LoadingState } from '@/components/common/loading-state';
 import { Avatar } from '@/components/ui/avatar';
@@ -11,15 +12,29 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/features/auth/auth-context';
+import { useNotifications } from '@/features/notifications/notification-provider';
 import { postsApi, profileApi } from '@/lib/api';
 import { getErrorMessage } from '@/lib/errors';
-import { formatDate } from '@/lib/utils';
+import { cn, formatDate } from '@/lib/utils';
+import type { Comment, Post } from '@/types/api';
 
 export const ProfilePage = () => {
   const { updateUser } = useAuth();
+  const { notify } = useNotifications();
   const queryClient = useQueryClient();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [pendingDeleteAction, setPendingDeleteAction] = useState<
+    | {
+        type: 'post';
+        post: Post;
+      }
+    | {
+        type: 'comment';
+        comment: Comment;
+      }
+    | null
+  >(null);
   const profileQuery = useQuery({
     queryKey: ['profile'],
     queryFn: profileApi.get,
@@ -45,7 +60,19 @@ export const ProfilePage = () => {
     mutationFn: () => profileApi.update({ name, email }),
     onSuccess: async (user) => {
       updateUser(user);
+      notify({
+        tone: 'success',
+        title: 'Profile saved',
+        description: 'Your account details were updated.',
+      });
       await syncProfileData();
+    },
+    onError: (error) => {
+      notify({
+        tone: 'error',
+        title: 'Profile update failed',
+        description: getErrorMessage(error),
+      });
     },
   });
 
@@ -53,18 +80,58 @@ export const ProfilePage = () => {
     mutationFn: (file: File) => profileApi.uploadAvatar(file),
     onSuccess: async (user) => {
       updateUser(user);
+      notify({
+        tone: 'success',
+        title: 'Avatar updated',
+        description: 'Your new profile image is now visible.',
+      });
       await syncProfileData();
+    },
+    onError: (error) => {
+      notify({
+        tone: 'error',
+        title: 'Avatar upload failed',
+        description: getErrorMessage(error),
+      });
     },
   });
 
   const deletePostMutation = useMutation({
     mutationFn: (postId: number) => postsApi.delete(postId),
-    onSuccess: syncProfileData,
+    onSuccess: async () => {
+      notify({
+        tone: 'success',
+        title: 'Post deleted',
+        description: 'The post was removed from your profile.',
+      });
+      await syncProfileData();
+    },
+    onError: (error) => {
+      notify({
+        tone: 'error',
+        title: 'Could not delete post',
+        description: getErrorMessage(error),
+      });
+    },
   });
 
   const deleteCommentMutation = useMutation({
     mutationFn: (commentId: number) => postsApi.deleteComment(commentId),
-    onSuccess: syncProfileData,
+    onSuccess: async () => {
+      notify({
+        tone: 'success',
+        title: 'Comment deleted',
+        description: 'The comment was removed from your activity.',
+      });
+      await syncProfileData();
+    },
+    onError: (error) => {
+      notify({
+        tone: 'error',
+        title: 'Could not delete comment',
+        description: getErrorMessage(error),
+      });
+    },
   });
 
   if (profileQuery.isLoading) {
@@ -81,8 +148,39 @@ export const ProfilePage = () => {
     return <ErrorState message="Profile not found." />;
   }
 
+  const isDeletePending = deletePostMutation.isPending || deleteCommentMutation.isPending;
+  const confirmDelete = () => {
+    if (!pendingDeleteAction) {
+      return;
+    }
+
+    if (pendingDeleteAction.type === 'post') {
+      deletePostMutation.mutate(pendingDeleteAction.post.id, {
+        onSettled: () => setPendingDeleteAction(null),
+      });
+      return;
+    }
+
+    deleteCommentMutation.mutate(pendingDeleteAction.comment.id, {
+      onSettled: () => setPendingDeleteAction(null),
+    });
+  };
+
   return (
     <div className="space-y-8">
+      <ConfirmationModal
+        open={pendingDeleteAction !== null}
+        title={pendingDeleteAction?.type === 'post' ? 'Delete this post?' : 'Delete this comment?'}
+        description={
+          pendingDeleteAction?.type === 'post'
+            ? 'This action permanently removes the post from your profile and the public feed.'
+            : 'This action permanently removes the comment from your activity and the discussion.'
+        }
+        confirmLabel={pendingDeleteAction?.type === 'post' ? 'Delete post' : 'Delete comment'}
+        isPending={isDeletePending}
+        onCancel={() => setPendingDeleteAction(null)}
+        onConfirm={confirmDelete}
+      />
       <Card className="surface-glow">
         <CardContent className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
           <div className="space-y-5">
@@ -148,7 +246,10 @@ export const ProfilePage = () => {
               >
                 Save profile
               </Button>
-              <Label htmlFor="profile-avatar" className={buttonVariants({ variant: 'secondary' })}>
+              <Label
+                htmlFor="profile-avatar"
+                className={cn(buttonVariants({ variant: 'secondary' }), 'cursor-pointer')}
+              >
                 <UploadCloud className="mr-2 h-4 w-4" />
                 Upload avatar
               </Label>
@@ -208,7 +309,7 @@ export const ProfilePage = () => {
                         variant="destructive"
                         size="sm"
                         disabled={deletePostMutation.isPending}
-                        onClick={() => deletePostMutation.mutate(post.id)}
+                        onClick={() => setPendingDeleteAction({ type: 'post', post })}
                       >
                         <Trash2 className="mr-2 h-4 w-4" />
                         Delete
@@ -246,7 +347,7 @@ export const ProfilePage = () => {
                         variant="ghost"
                         size="sm"
                         disabled={deleteCommentMutation.isPending}
-                        onClick={() => deleteCommentMutation.mutate(comment.id)}
+                        onClick={() => setPendingDeleteAction({ type: 'comment', comment })}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

@@ -1,6 +1,7 @@
 import { useState, useTransition } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
+import { ConfirmationModal } from '@/components/common/confirmation-modal';
 import { ErrorState } from '@/components/common/error-state';
 import { LoadingState } from '@/components/common/loading-state';
 import { Badge } from '@/components/ui/badge';
@@ -18,7 +19,7 @@ import {
 import { adminApi } from '@/lib/api';
 import { getErrorMessage } from '@/lib/errors';
 import { cn, formatDate } from '@/lib/utils';
-import type { UserRole } from '@/types/api';
+import type { Comment, Post, User, UserRole } from '@/types/api';
 
 type AdminTab = 'users' | 'posts' | 'comments' | 'likes';
 
@@ -28,6 +29,27 @@ export const AdminPage = () => {
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState<AdminTab>('users');
   const [isPendingTabChange, startTransition] = useTransition();
+  const [pendingDeleteAction, setPendingDeleteAction] = useState<
+    | {
+        type: 'user';
+        user: User;
+      }
+    | {
+        type: 'post';
+        post: Post;
+      }
+    | {
+        type: 'comment';
+        comment: Comment;
+      }
+    | {
+        type: 'like';
+        likeId: number;
+        postTitle: string;
+        userName: string;
+      }
+    | null
+  >(null);
   const usersQuery = useQuery({
     queryKey: ['admin', 'users'],
     queryFn: adminApi.users,
@@ -102,12 +124,77 @@ export const AdminPage = () => {
   const posts = postsQuery.data ?? [];
   const comments = commentsQuery.data ?? [];
   const likes = likesQuery.data ?? [];
+  const isDeletePending =
+    deleteUserMutation.isPending ||
+    deletePostMutation.isPending ||
+    deleteCommentMutation.isPending ||
+    deleteLikeMutation.isPending;
+  const confirmDelete = () => {
+    if (!pendingDeleteAction) {
+      return;
+    }
+
+    if (pendingDeleteAction.type === 'user') {
+      deleteUserMutation.mutate(pendingDeleteAction.user.id, {
+        onSettled: () => setPendingDeleteAction(null),
+      });
+      return;
+    }
+
+    if (pendingDeleteAction.type === 'post') {
+      deletePostMutation.mutate(pendingDeleteAction.post.id, {
+        onSettled: () => setPendingDeleteAction(null),
+      });
+      return;
+    }
+
+    if (pendingDeleteAction.type === 'comment') {
+      deleteCommentMutation.mutate(pendingDeleteAction.comment.id, {
+        onSettled: () => setPendingDeleteAction(null),
+      });
+      return;
+    }
+
+    deleteLikeMutation.mutate(pendingDeleteAction.likeId, {
+      onSettled: () => setPendingDeleteAction(null),
+    });
+  };
+  const modalTitle =
+    pendingDeleteAction?.type === 'user'
+      ? 'Delete this user?'
+      : pendingDeleteAction?.type === 'post'
+        ? 'Delete this post?'
+        : pendingDeleteAction?.type === 'comment'
+          ? 'Delete this comment?'
+          : pendingDeleteAction?.type === 'like'
+            ? 'Remove this like?'
+            : '';
+  const modalDescription =
+    pendingDeleteAction?.type === 'user'
+      ? `This permanently removes ${pendingDeleteAction.user.name}'s account and related activity.`
+      : pendingDeleteAction?.type === 'post'
+        ? `This permanently removes "${pendingDeleteAction.post.title}" from the platform.`
+        : pendingDeleteAction?.type === 'comment'
+          ? 'This permanently removes the selected comment from the discussion.'
+          : pendingDeleteAction?.type === 'like'
+            ? `This removes ${pendingDeleteAction.userName}'s like from "${pendingDeleteAction.postTitle}".`
+            : '';
+  const modalConfirmLabel = pendingDeleteAction?.type === 'like' ? 'Remove like' : 'Delete';
 
   return (
     <div className="space-y-8">
+      <ConfirmationModal
+        open={pendingDeleteAction !== null}
+        title={modalTitle}
+        description={modalDescription}
+        confirmLabel={modalConfirmLabel}
+        isPending={isDeletePending}
+        onCancel={() => setPendingDeleteAction(null)}
+        onConfirm={confirmDelete}
+      />
       <Card className="surface-glow">
-        <CardContent className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-          <div className="space-y-3">
+        <CardContent className="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(30rem,0.95fr)] xl:items-end">
+          <div className="max-w-4xl space-y-3">
             <Badge variant="accent" className="w-fit">
               Admin Dashboard
             </Badge>
@@ -117,21 +204,23 @@ export const AdminPage = () => {
               without leaving the dashboard.
             </p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <Card className="bg-white/80 p-4">
-              <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Users</p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 xl:justify-self-end">
+            <Card className="min-h-[6.25rem] min-w-0 border-border/60 bg-card/90 p-4 text-card-foreground">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Users</p>
               <p className="mt-2 text-3xl font-display">{users.length}</p>
             </Card>
-            <Card className="bg-white/80 p-4">
-              <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Posts</p>
+            <Card className="min-h-[6.25rem] min-w-0 border-border/60 bg-card/90 p-4 text-card-foreground">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Posts</p>
               <p className="mt-2 text-3xl font-display">{posts.length}</p>
             </Card>
-            <Card className="bg-white/80 p-4">
-              <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Comments</p>
+            <Card className="min-h-[6.25rem] min-w-0 border-border/60 bg-card/90 p-4 text-card-foreground">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
+                Comments
+              </p>
               <p className="mt-2 text-3xl font-display">{comments.length}</p>
             </Card>
-            <Card className="bg-white/80 p-4">
-              <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Likes</p>
+            <Card className="min-h-[6.25rem] min-w-0 border-border/60 bg-card/90 p-4 text-card-foreground">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground">Likes</p>
               <p className="mt-2 text-3xl font-display">{likes.length}</p>
             </Card>
           </div>
@@ -216,7 +305,7 @@ export const AdminPage = () => {
                         variant="destructive"
                         size="sm"
                         disabled={deleteUserMutation.isPending}
-                        onClick={() => deleteUserMutation.mutate(user.id)}
+                        onClick={() => setPendingDeleteAction({ type: 'user', user })}
                       >
                         Delete
                       </Button>
@@ -273,7 +362,7 @@ export const AdminPage = () => {
                           variant="destructive"
                           size="sm"
                           disabled={deletePostMutation.isPending}
-                          onClick={() => deletePostMutation.mutate(post.id)}
+                          onClick={() => setPendingDeleteAction({ type: 'post', post })}
                         >
                           Delete
                         </Button>
@@ -324,7 +413,7 @@ export const AdminPage = () => {
                         variant="destructive"
                         size="sm"
                         disabled={deleteCommentMutation.isPending}
-                        onClick={() => deleteCommentMutation.mutate(comment.id)}
+                        onClick={() => setPendingDeleteAction({ type: 'comment', comment })}
                       >
                         Delete
                       </Button>
@@ -370,7 +459,14 @@ export const AdminPage = () => {
                         variant="destructive"
                         size="sm"
                         disabled={deleteLikeMutation.isPending}
-                        onClick={() => deleteLikeMutation.mutate(like.id)}
+                        onClick={() =>
+                          setPendingDeleteAction({
+                            type: 'like',
+                            likeId: like.id,
+                            postTitle: like.post.title,
+                            userName: like.user.name,
+                          })
+                        }
                       >
                         Remove
                       </Button>

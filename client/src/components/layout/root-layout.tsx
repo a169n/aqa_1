@@ -1,8 +1,10 @@
+import { NotificationCenter } from '@/components/common/notification-center';
 import { MoonStar, PenSquare, ShieldCheck, SunMedium, UserCircle2 } from 'lucide-react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Avatar } from '@/components/ui/avatar';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { useAuth } from '@/features/auth/auth-context';
+import { useNotifications } from '@/features/notifications/notification-provider';
 import { useTheme } from '@/features/theme/theme-provider';
 import { cn } from '@/lib/utils';
 
@@ -17,10 +19,12 @@ const navClassName = ({ isActive }: { isActive: boolean }) =>
 export const RootLayout = () => {
   const navigate = useNavigate();
   const { isAuthenticated, logout, user } = useAuth();
+  const { notify } = useNotifications();
   const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="app-shell min-h-screen">
+      <NotificationCenter />
       <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 pb-16 pt-6 sm:px-6 lg:px-8">
         <header className="surface-glow page-reveal rounded-[32px] border border-border/70 bg-card/75 px-5 py-4 backdrop-blur-xl sm:px-7">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
@@ -95,7 +99,14 @@ export const RootLayout = () => {
                     <Button
                       variant="ghost"
                       onClick={() => {
-                        void logout().then(() => navigate('/'));
+                        void logout().then(() => {
+                          notify({
+                            tone: 'info',
+                            title: 'Signed out',
+                            description: 'Your session has been closed successfully.',
+                          });
+                          navigate('/');
+                        });
                       }}
                     >
                       Sign out

@@ -5,6 +5,7 @@ import { ErrorState } from '@/components/common/error-state';
 import { LoadingState } from '@/components/common/loading-state';
 import { PostEditorForm } from '@/components/posts/post-editor-form';
 import { useAuth } from '@/features/auth/auth-context';
+import { useNotifications } from '@/features/notifications/notification-provider';
 import { postsApi } from '@/lib/api';
 import { getErrorMessage } from '@/lib/errors';
 
@@ -12,6 +13,7 @@ export const PostEditorPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { notify } = useNotifications();
   const isEditing = Boolean(id);
   const postId = Number(id);
   const [title, setTitle] = useState('');
@@ -39,7 +41,19 @@ export const PostEditorPage = () => {
       return postsApi.create({ title, content });
     },
     onSuccess: (post) => {
+      notify({
+        tone: 'success',
+        title: isEditing ? 'Post updated' : 'Post published',
+        description: `"${post.title}" is live now.`,
+      });
       navigate(`/posts/${post.id}`, { replace: true });
+    },
+    onError: (error) => {
+      notify({
+        tone: 'error',
+        title: isEditing ? 'Update failed' : 'Publish failed',
+        description: getErrorMessage(error),
+      });
     },
   });
 

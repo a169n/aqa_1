@@ -7,20 +7,34 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/features/auth/auth-context';
+import { useNotifications } from '@/features/notifications/notification-provider';
 import { getErrorMessage } from '@/lib/errors';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
+  const { notify } = useNotifications();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: () => {
+      notify({
+        tone: 'success',
+        title: 'Welcome back',
+        description: 'You are now signed in.',
+      });
       const from =
         (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? '/';
       navigate(from, { replace: true });
+    },
+    onError: (error) => {
+      notify({
+        tone: 'error',
+        title: 'Login failed',
+        description: getErrorMessage(error),
+      });
     },
   });
 

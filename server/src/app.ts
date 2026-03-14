@@ -2,6 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import path from 'node:path';
 import { env } from './config/env';
+import { swaggerRouter } from './docs/swagger';
 import { errorHandler, notFoundHandler } from './middleware/error-handler';
 import { apiRouter } from './routes';
 
@@ -16,6 +17,7 @@ app.use(
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.resolve(process.cwd(), env.UPLOAD_DIR)));
+app.use(swaggerRouter);
 app.use('/api', apiRouter);
 app.use(notFoundHandler);
 app.use(errorHandler);

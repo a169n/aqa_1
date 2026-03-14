@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { MessageSquare, PencilLine, Sparkles, Trash2 } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { CommentList } from '@/components/comments/comment-list';
+import { ConfirmationModal } from '@/components/common/confirmation-modal';
 import { ErrorState } from '@/components/common/error-state';
 import { LoadingState } from '@/components/common/loading-state';
 import { LikeButton } from '@/components/posts/like-button';
@@ -12,16 +13,29 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/features/auth/auth-context';
+import { useNotifications } from '@/features/notifications/notification-provider';
 import { getErrorMessage } from '@/lib/errors';
 import { postsApi } from '@/lib/api';
 import { cn, formatDate } from '@/lib/utils';
+import type { Comment } from '@/types/api';
 
 export const PostDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { isAuthenticated, user } = useAuth();
+  const { notify } = useNotifications();
   const [commentValue, setCommentValue] = useState('');
+  const [pendingDeleteAction, setPendingDeleteAction] = useState<
+    | {
+        type: 'post';
+      }
+    | {
+        type: 'comment';
+        comment: Comment;
+      }
+    | null
+  >(null);
   const postId = Number(id);
   const postQuery = useQuery({
     queryKey: ['post', postId],
@@ -43,21 +57,59 @@ export const PostDetailPage = () => {
     mutationFn: (content: string) => postsApi.comment(postId, { content }),
     onSuccess: async () => {
       setCommentValue('');
+      notify({
+        tone: 'success',
+        title: 'Comment posted',
+        description: 'Your reply was added to the discussion.',
+      });
       await syncAfterMutation();
+    },
+    onError: (error) => {
+      notify({
+        tone: 'error',
+        title: 'Comment failed',
+        description: getErrorMessage(error),
+      });
     },
   });
 
   const deletePostMutation = useMutation({
     mutationFn: () => postsApi.delete(postId),
     onSuccess: async () => {
+      notify({
+        tone: 'success',
+        title: 'Post deleted',
+        description: 'The post was removed successfully.',
+      });
       await queryClient.invalidateQueries({ queryKey: ['posts'] });
       navigate('/', { replace: true });
+    },
+    onError: (error) => {
+      notify({
+        tone: 'error',
+        title: 'Delete failed',
+        description: getErrorMessage(error),
+      });
     },
   });
 
   const deleteCommentMutation = useMutation({
     mutationFn: (commentId: number) => postsApi.deleteComment(commentId),
-    onSuccess: syncAfterMutation,
+    onSuccess: async () => {
+      notify({
+        tone: 'success',
+        title: 'Comment removed',
+        description: 'The discussion item was deleted.',
+      });
+      await syncAfterMutation();
+    },
+    onError: (error) => {
+      notify({
+        tone: 'error',
+        title: 'Could not remove comment',
+        description: getErrorMessage(error),
+      });
+    },
   });
 
   if (postQuery.isLoading) {
@@ -75,9 +127,39 @@ export const PostDetailPage = () => {
   }
 
   const canManage = user?.role === 'admin' || user?.id === post.authorId;
+  const isDeletePending = deletePostMutation.isPending || deleteCommentMutation.isPending;
+  const confirmDelete = () => {
+    if (!pendingDeleteAction) {
+      return;
+    }
+
+    if (pendingDeleteAction.type === 'post') {
+      deletePostMutation.mutate(undefined, {
+        onSettled: () => setPendingDeleteAction(null),
+      });
+      return;
+    }
+
+    deleteCommentMutation.mutate(pendingDeleteAction.comment.id, {
+      onSettled: () => setPendingDeleteAction(null),
+    });
+  };
 
   return (
     <div className="mx-auto max-w-4xl space-y-8">
+      <ConfirmationModal
+        open={pendingDeleteAction !== null}
+        title={pendingDeleteAction?.type === 'post' ? 'Delete this post?' : 'Delete this comment?'}
+        description={
+          pendingDeleteAction?.type === 'post'
+            ? 'This action permanently removes the post and its discussion from the platform.'
+            : 'This action permanently removes the comment from the discussion.'
+        }
+        confirmLabel={pendingDeleteAction?.type === 'post' ? 'Delete post' : 'Delete comment'}
+        isPending={isDeletePending}
+        onCancel={() => setPendingDeleteAction(null)}
+        onConfirm={confirmDelete}
+      />
       <Card className="surface-glow story-shell overflow-hidden">
         <CardHeader className="space-y-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -135,7 +217,7 @@ export const PostDetailPage = () => {
               <Button
                 variant="destructive"
                 disabled={deletePostMutation.isPending}
-                onClick={() => deletePostMutation.mutate()}
+                onClick={() => setPendingDeleteAction({ type: 'post' })}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete
@@ -182,7 +264,7 @@ export const PostDetailPage = () => {
               comments={post.comments}
               user={user}
               isDeleting={deleteCommentMutation.isPending}
-              onDelete={(commentId) => deleteCommentMutation.mutate(commentId)}
+              onDelete={(comment) => setPendingDeleteAction({ type: 'comment', comment })}
             />
           ) : (
             <p className="text-sm text-muted-foreground">No comments yet. Start the discussion.</p>
