@@ -129,6 +129,86 @@ npm run dev:server
 npm run dev:client
 ```
 
+## Running The Backend In Docker
+
+1. Create the backend env file if you do not already have one:
+
+```bash
+cp server/.env.example server/.env
+```
+
+2. Start PostgreSQL and the backend together:
+
+```bash
+docker compose -f docker-compose.backend.yml up --build
+```
+
+This starts:
+
+- PostgreSQL on `localhost:5432`
+- Backend API on `http://localhost:4000`
+- Swagger UI on `http://localhost:4000/docs`
+
+The compose setup automatically points the backend container at the `db` service, so you can keep the default database values from `server/.env`.
+
+To stop the containers:
+
+```bash
+docker compose -f docker-compose.backend.yml down
+```
+
+To stop them and remove the database volume too:
+
+```bash
+docker compose -f docker-compose.backend.yml down -v
+```
+
+## QA Automation
+
+Install dependencies from the repository root:
+
+```bash
+npm ci
+```
+
+Create the dedicated PostgreSQL test database once:
+
+```bash
+docker compose -f docker-compose.backend.yml up -d db
+docker compose -f docker-compose.backend.yml exec db psql -U postgres -d postgres -c "CREATE DATABASE inkwell_test;"
+```
+
+Run the automated QA checks:
+
+```bash
+npm run test:coverage
+npx playwright install chromium
+npm run test:e2e
+```
+
+Helpful scripts:
+
+```bash
+npm run test:api
+npm run test:coverage
+npm run test:e2e
+npm run ci
+npm run docker:build:backend
+```
+
+The browser smoke tests automatically start the backend and frontend with CI-friendly settings, reset the dedicated test database, and save reports to `playwright-report/` and `test-results/`.
+
+## Assignment 1 QA Deliverables
+
+The assignment documentation and evidence scaffolding live under `docs/qa/`:
+
+- `docs/qa/risk-assessment.md`
+- `docs/qa/test-strategy.md`
+- `docs/qa/environment-setup-report.md`
+- `docs/qa/baseline-metrics.md`
+- `docs/qa/postman/inkwell-assignment-1.postman_collection.json`
+- `docs/qa/screenshots/`
+
 ## Available Scripts
 
 From the repository root:
@@ -140,6 +220,11 @@ npm run dev:client
 npm run build
 npm run lint
 npm run lint:fix
+npm run test:api
+npm run test:coverage
+npm run test:e2e
+npm run ci
+npm run docker:build:backend
 npm run format
 npm run format:check
 ```
@@ -207,7 +292,7 @@ npm run format:check
 - The backend uses TypeORM migrations instead of schema synchronization.
 - Deleting users or posts cascades related records through the database relations.
 - Likes are unique per user and post.
-- This repository currently does not include automated tests or CI/CD setup.
+- The repository now includes API integration tests, Playwright smoke tests, and a GitHub Actions QA pipeline.
 
 ## Troubleshooting
 

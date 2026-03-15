@@ -9,6 +9,9 @@ build
 !.env.example
 coverage
 *.log
+playwright-report
+test-results
+.tmp
 
 server/uploads/*
 !server/uploads/.gitkeep

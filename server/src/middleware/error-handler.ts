@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
+import multer from 'multer';
 import { HttpError } from '../utils/http-error';
 
 export const notFoundHandler = (_request: Request, _response: Response, next: NextFunction) => {
@@ -15,6 +16,16 @@ export const errorHandler = (
 
   if (error instanceof HttpError) {
     response.status(error.statusCode).json({ message: error.message });
+    return;
+  }
+
+  if (error instanceof multer.MulterError) {
+    if (error.code === 'LIMIT_FILE_SIZE') {
+      response.status(413).json({ message: 'Avatar image must be 5MB or smaller.' });
+      return;
+    }
+
+    response.status(400).json({ message: error.message });
     return;
   }
 

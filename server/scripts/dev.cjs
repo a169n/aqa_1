@@ -13,6 +13,7 @@ const child = spawn(process.execPath, [tsxCliPath, 'watch', 'src/index.ts'], {
 });
 
 let hasOpenedDocs = false;
+const shouldOpenDocs = process.env.OPEN_API_DOCS !== 'false' && process.env.CI !== 'true';
 
 const openUrl = (url) => {
   if (process.platform === 'win32') {
@@ -42,7 +43,7 @@ const forwardOutput = (stream, writer) => {
     const text = chunk.toString();
     writer.write(text);
 
-    if (hasOpenedDocs) {
+    if (hasOpenedDocs || !shouldOpenDocs) {
       return;
     }
 
