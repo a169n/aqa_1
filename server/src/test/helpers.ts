@@ -20,7 +20,14 @@ export interface TestPost {
   id: number;
   title: string;
   content: string;
+  status: 'draft' | 'published' | 'archived';
+  excerpt: string | null;
   authorId: number;
+  category: { id: number; name: string; slug: string } | null;
+  tags: Array<{ id: number; name: string; slug: string }>;
+  isBookmarked: boolean;
+  publishedAt: string | null;
+  archivedAt: string | null;
   commentsCount: number;
   likesCount: number;
 }
@@ -64,16 +71,38 @@ export const loginUser = async (payload: { email: string; password: string }) =>
 
 export const createPost = async (
   accessToken: string,
-  overrides: Partial<{ title: string; content: string }> = {},
+  overrides: Partial<{
+    title: string;
+    content: string;
+    excerpt: string;
+    categoryId: number | null;
+    tagIds: number[];
+    publish: boolean;
+  }> = {},
 ) => {
   const payload = {
     title: overrides.title ?? 'Integration Test Post',
     content: overrides.content ?? 'This is a post created by the integration suite.',
+    excerpt: overrides.excerpt,
+    categoryId: overrides.categoryId,
+    tagIds: overrides.tagIds,
   };
 
   const response = await api().post('/api/posts').set(authHeader(accessToken)).send(payload);
 
   expect(response.status).toBe(201);
 
-  return response.body as TestPost;
+  const createdPost = response.body as TestPost;
+
+  if (overrides.publish === false) {
+    return createdPost;
+  }
+
+  const publishResponse = await api()
+    .post(`/api/posts/${createdPost.id}/publish`)
+    .set(authHeader(accessToken));
+
+  expect(publishResponse.status).toBe(200);
+
+  return publishResponse.body as TestPost;
 };

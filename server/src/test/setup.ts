@@ -50,6 +50,11 @@ beforeAll(async () => {
 beforeEach(async () => {
   await dataSource.query(`
     TRUNCATE TABLE
+      "reports",
+      "bookmarks",
+      "post_tags",
+      "tags",
+      "categories",
       "likes",
       "comments",
       "refresh_tokens",
