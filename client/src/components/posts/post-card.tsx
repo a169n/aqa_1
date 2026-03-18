@@ -22,9 +22,20 @@ export const PostCard = ({ post }: { post: Post }) => (
         {post.author.role === 'admin' ? <Badge variant="accent">Admin</Badge> : null}
       </div>
       <CardTitle className="pt-4 text-3xl leading-tight">{post.title}</CardTitle>
+      <div className="flex flex-wrap items-center gap-2 pt-2">
+        <Badge variant={post.status === 'published' ? 'accent' : 'outline'}>{post.status}</Badge>
+        {post.category ? <Badge variant="outline">{post.category.name}</Badge> : null}
+        {post.tags.slice(0, 2).map((tag) => (
+          <Badge key={tag.id} variant="outline">
+            #{tag.name}
+          </Badge>
+        ))}
+      </div>
     </CardHeader>
     <CardContent>
-      <p className="text-sm leading-7 text-muted-foreground">{truncate(post.content, 210)}</p>
+      <p className="text-sm leading-7 text-muted-foreground">
+        {truncate(post.excerpt ?? post.content, 210)}
+      </p>
     </CardContent>
     <CardFooter className="justify-between">
       <div className="flex flex-wrap items-center gap-2">

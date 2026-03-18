@@ -1,4 +1,6 @@
 export type UserRole = 'user' | 'admin';
+export type PostStatus = 'draft' | 'published' | 'archived';
+export type ReportStatus = 'open' | 'resolved' | 'dismissed';
 
 export interface User {
   id: number;
@@ -34,15 +36,68 @@ export interface Post {
   id: number;
   title: string;
   content: string;
+  status: PostStatus;
+  excerpt: string | null;
   authorId: number;
+  publishedAt: string | null;
+  archivedAt: string | null;
   createdAt: string;
   updatedAt: string;
   author: User;
+  category: Category | null;
+  tags: Tag[];
+  isBookmarked: boolean;
   commentsCount: number;
   likesCount: number;
   viewerHasLiked: boolean;
   viewerLikeId: number | null;
   comments?: Comment[];
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Tag {
+  id: number;
+  name: string;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Bookmark {
+  id: number;
+  createdAt: string;
+  post: Post;
+}
+
+export interface Report {
+  id: number;
+  reason: string;
+  status: ReportStatus;
+  reporterId: number;
+  postId: number | null;
+  commentId: number | null;
+  resolutionNote: string | null;
+  resolvedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  reporter: User;
+  resolvedBy: User | null;
+  post: {
+    id: number;
+    title: string;
+    status: PostStatus;
+  } | null;
+  comment: {
+    id: number;
+    content: string;
+  } | null;
 }
 
 export interface Profile extends User {

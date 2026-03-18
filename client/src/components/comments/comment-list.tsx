@@ -1,4 +1,4 @@
-import { Trash2 } from 'lucide-react';
+import { Flag, Trash2 } from 'lucide-react';
 import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -10,9 +10,18 @@ interface CommentListProps {
   user: User | null;
   isDeleting: boolean;
   onDelete: (comment: Comment) => void;
+  onReport?: (comment: Comment) => void;
+  isReporting?: boolean;
 }
 
-export const CommentList = ({ comments, user, isDeleting, onDelete }: CommentListProps) => (
+export const CommentList = ({
+  comments,
+  user,
+  isDeleting,
+  onDelete,
+  onReport,
+  isReporting,
+}: CommentListProps) => (
   <div className="space-y-4">
     {comments.map((comment) => {
       const canDelete = user?.role === 'admin' || user?.id === comment.author.id;
@@ -33,16 +42,28 @@ export const CommentList = ({ comments, user, isDeleting, onDelete }: CommentLis
                 <p className="text-sm leading-7 text-card-foreground/85">{comment.content}</p>
               </div>
             </div>
-            {canDelete ? (
-              <Button
-                variant="ghost"
-                size="sm"
-                disabled={isDeleting}
-                onClick={() => onDelete(comment)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            ) : null}
+            <div className="flex items-center gap-1">
+              {onReport ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  disabled={Boolean(isReporting)}
+                  onClick={() => onReport(comment)}
+                >
+                  <Flag className="h-4 w-4" />
+                </Button>
+              ) : null}
+              {canDelete ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  disabled={isDeleting}
+                  onClick={() => onDelete(comment)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              ) : null}
+            </div>
           </div>
         </Card>
       );

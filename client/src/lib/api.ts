@@ -3,11 +3,16 @@ import type {
   AdminLike,
   AdminUser,
   AuthFormValues,
+  Bookmark,
+  Category,
   Comment,
   CommentWithPost,
   Post,
   Profile,
+  Report,
+  ReportStatus,
   Session,
+  Tag,
   User,
   UserRole,
 } from '@/types/api';
@@ -132,19 +137,42 @@ export const authApi = {
 };
 
 export const postsApi = {
-  list: async () => {
-    const response = await api.get<Post[]>('/posts');
+  list: async (filters?: {
+    status?: string;
+    categoryId?: number;
+    tag?: string;
+    search?: string;
+    authorId?: number;
+  }) => {
+    const response = await api.get<Post[]>('/posts', {
+      params: filters,
+    });
     return response.data;
   },
   get: async (postId: number) => {
     const response = await api.get<Post>(`/posts/${postId}`);
     return response.data;
   },
-  create: async (payload: { title: string; content: string }) => {
+  create: async (payload: {
+    title: string;
+    content: string;
+    excerpt?: string;
+    categoryId?: number | null;
+    tagIds?: number[];
+  }) => {
     const response = await api.post<Post>('/posts', payload);
     return response.data;
   },
-  update: async (postId: number, payload: { title: string; content: string }) => {
+  update: async (
+    postId: number,
+    payload: {
+      title?: string;
+      content?: string;
+      excerpt?: string;
+      categoryId?: number | null;
+      tagIds?: number[];
+    },
+  ) => {
     const response = await api.put<Post>(`/posts/${postId}`, payload);
     return response.data;
   },
@@ -163,6 +191,59 @@ export const postsApi = {
   },
   unlike: async (postId: number) => {
     await api.delete(`/posts/${postId}/likes`);
+  },
+  publish: async (postId: number) => {
+    const response = await api.post<Post>(`/posts/${postId}/publish`);
+    return response.data;
+  },
+  archive: async (postId: number) => {
+    const response = await api.post<Post>(`/posts/${postId}/archive`);
+    return response.data;
+  },
+  restore: async (postId: number) => {
+    const response = await api.post<Post>(`/posts/${postId}/restore`);
+    return response.data;
+  },
+  addBookmark: async (postId: number) => {
+    const response = await api.post<Bookmark>(`/posts/${postId}/bookmarks`);
+    return response.data;
+  },
+  removeBookmark: async (postId: number) => {
+    await api.delete(`/posts/${postId}/bookmarks`);
+  },
+};
+
+export const workspaceApi = {
+  posts: async (status?: string) => {
+    const response = await api.get<Post[]>('/workspace/posts', {
+      params: status ? { status } : undefined,
+    });
+    return response.data;
+  },
+};
+
+export const taxonomyApi = {
+  categories: async () => {
+    const response = await api.get<Category[]>('/categories');
+    return response.data;
+  },
+  tags: async () => {
+    const response = await api.get<Tag[]>('/tags');
+    return response.data;
+  },
+};
+
+export const bookmarksApi = {
+  list: async () => {
+    const response = await api.get<Bookmark[]>('/bookmarks');
+    return response.data;
+  },
+};
+
+export const reportsApi = {
+  create: async (payload: { postId?: number; commentId?: number; reason: string }) => {
+    const response = await api.post<Report>('/reports', payload);
+    return response.data;
   },
 };
 
@@ -223,5 +304,48 @@ export const adminApi = {
   },
   deleteLike: async (likeId: number) => {
     await api.delete(`/admin/likes/${likeId}`);
+  },
+  categories: async () => {
+    const response = await api.get<Category[]>('/admin/categories');
+    return response.data;
+  },
+  createCategory: async (payload: { name: string }) => {
+    const response = await api.post<Category>('/admin/categories', payload);
+    return response.data;
+  },
+  updateCategory: async (categoryId: number, payload: { name: string }) => {
+    const response = await api.put<Category>(`/admin/categories/${categoryId}`, payload);
+    return response.data;
+  },
+  deleteCategory: async (categoryId: number) => {
+    await api.delete(`/admin/categories/${categoryId}`);
+  },
+  tags: async () => {
+    const response = await api.get<Tag[]>('/admin/tags');
+    return response.data;
+  },
+  createTag: async (payload: { name: string }) => {
+    const response = await api.post<Tag>('/admin/tags', payload);
+    return response.data;
+  },
+  updateTag: async (tagId: number, payload: { name: string }) => {
+    const response = await api.put<Tag>(`/admin/tags/${tagId}`, payload);
+    return response.data;
+  },
+  deleteTag: async (tagId: number) => {
+    await api.delete(`/admin/tags/${tagId}`);
+  },
+  reports: async (status?: ReportStatus) => {
+    const response = await api.get<Report[]>('/admin/reports', {
+      params: status ? { status } : undefined,
+    });
+    return response.data;
+  },
+  updateReport: async (
+    reportId: number,
+    payload: { status: ReportStatus; resolutionNote?: string },
+  ) => {
+    const response = await api.patch<Report>(`/admin/reports/${reportId}`, payload);
+    return response.data;
   },
 };

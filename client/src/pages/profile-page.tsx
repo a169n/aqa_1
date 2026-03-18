@@ -293,6 +293,12 @@ export const ProfilePage = () => {
                       </Link>
                       <p className="text-sm text-muted-foreground">{formatDate(post.createdAt)}</p>
                       <div className="flex flex-wrap gap-2">
+                        <Badge variant={post.status === 'published' ? 'accent' : 'outline'}>
+                          {post.status}
+                        </Badge>
+                        {post.category ? (
+                          <Badge variant="outline">{post.category.name}</Badge>
+                        ) : null}
                         <Badge variant="outline">{post.likesCount} likes</Badge>
                         <Badge variant="outline">{post.commentsCount} comments</Badge>
                       </div>

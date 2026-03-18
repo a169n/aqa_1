@@ -47,8 +47,17 @@ export const RootLayout = () => {
                 <NavLink to="/" className={navClassName}>
                   Feed
                 </NavLink>
+                <NavLink to="/categories" className={navClassName}>
+                  Categories
+                </NavLink>
                 {isAuthenticated && (
                   <>
+                    <NavLink to="/workspace" className={navClassName}>
+                      Workspace
+                    </NavLink>
+                    <NavLink to="/bookmarks" className={navClassName}>
+                      Bookmarks
+                    </NavLink>
                     <NavLink to="/posts/new" className={navClassName}>
                       Write
                     </NavLink>
@@ -58,7 +67,7 @@ export const RootLayout = () => {
                   </>
                 )}
                 {user?.role === 'admin' && (
-                  <NavLink to="/admin" className={navClassName}>
+                  <NavLink to="/admin/users" className={navClassName}>
                     Admin
                   </NavLink>
                 )}

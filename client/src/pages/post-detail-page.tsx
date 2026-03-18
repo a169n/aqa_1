@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { MessageSquare, PencilLine, Sparkles, Trash2 } from 'lucide-react';
+import { Bookmark, Flag, MessageSquare, PencilLine, Sparkles, Trash2 } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { CommentList } from '@/components/comments/comment-list';
 import { ConfirmationModal } from '@/components/common/confirmation-modal';
@@ -15,7 +15,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/features/auth/auth-context';
 import { useNotifications } from '@/features/notifications/notification-provider';
 import { getErrorMessage } from '@/lib/errors';
-import { postsApi } from '@/lib/api';
+import { postsApi, reportsApi } from '@/lib/api';
 import { cn, formatDate } from '@/lib/utils';
 import type { Comment } from '@/types/api';
 
@@ -112,6 +112,43 @@ export const PostDetailPage = () => {
     },
   });
 
+  const bookmarkMutation = useMutation({
+    mutationFn: async (shouldBookmark: boolean) => {
+      if (shouldBookmark) {
+        await postsApi.addBookmark(postId);
+        return;
+      }
+
+      await postsApi.removeBookmark(postId);
+    },
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['posts'] }),
+        queryClient.invalidateQueries({ queryKey: ['post', postId] }),
+        queryClient.invalidateQueries({ queryKey: ['bookmarks'] }),
+      ]);
+    },
+  });
+
+  const reportMutation = useMutation({
+    mutationFn: (payload: { postId?: number; commentId?: number; reason: string }) =>
+      reportsApi.create(payload),
+    onSuccess: () => {
+      notify({
+        tone: 'success',
+        title: 'Report submitted',
+        description: 'Moderators will review this report shortly.',
+      });
+    },
+    onError: (error) => {
+      notify({
+        tone: 'error',
+        title: 'Report failed',
+        description: getErrorMessage(error),
+      });
+    },
+  });
+
   if (postQuery.isLoading) {
     return <LoadingState label="Loading story..." />;
   }
@@ -185,6 +222,15 @@ export const PostDetailPage = () => {
                 <MessageSquare className="h-3.5 w-3.5" />
                 {post.commentsCount}
               </Badge>
+              <Badge variant={post.status === 'published' ? 'accent' : 'outline'}>
+                {post.status}
+              </Badge>
+              {post.category ? <Badge variant="outline">{post.category.name}</Badge> : null}
+              {post.tags.map((tag) => (
+                <Badge key={tag.id} variant="outline">
+                  #{tag.name}
+                </Badge>
+              ))}
               {!isAuthenticated ? (
                 <Link
                   to="/login"
@@ -192,6 +238,35 @@ export const PostDetailPage = () => {
                 >
                   Sign in to react
                 </Link>
+              ) : null}
+              {isAuthenticated ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-2"
+                  disabled={bookmarkMutation.isPending}
+                  onClick={() => bookmarkMutation.mutate(!post.isBookmarked)}
+                >
+                  <Bookmark className="h-4 w-4" />
+                  {post.isBookmarked ? 'Unbookmark' : 'Bookmark'}
+                </Button>
+              ) : null}
+              {isAuthenticated && post.status === 'published' ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="gap-2"
+                  disabled={reportMutation.isPending}
+                  onClick={() =>
+                    reportMutation.mutate({
+                      postId,
+                      reason: `Reported from post detail page at ${new Date().toISOString()}`,
+                    })
+                  }
+                >
+                  <Flag className="h-4 w-4" />
+                  Report
+                </Button>
               ) : null}
             </div>
           </div>
@@ -265,6 +340,13 @@ export const PostDetailPage = () => {
               user={user}
               isDeleting={deleteCommentMutation.isPending}
               onDelete={(comment) => setPendingDeleteAction({ type: 'comment', comment })}
+              isReporting={reportMutation.isPending}
+              onReport={(comment) =>
+                reportMutation.mutate({
+                  commentId: comment.id,
+                  reason: `Comment #${comment.id} reported from post detail page at ${new Date().toISOString()}`,
+                })
+              }
             />
           ) : (
             <p className="text-sm text-muted-foreground">No comments yet. Start the discussion.</p>

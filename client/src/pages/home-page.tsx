@@ -20,7 +20,7 @@ export const HomePage = () => {
   const { isAuthenticated } = useAuth();
   const postsQuery = useQuery({
     queryKey: ['posts'],
-    queryFn: postsApi.list,
+    queryFn: () => postsApi.list(),
   });
 
   if (postsQuery.isLoading) {
@@ -42,7 +42,12 @@ export const HomePage = () => {
     return (
       post.title.toLowerCase().includes(query) ||
       post.content.toLowerCase().includes(query) ||
-      post.author.name.toLowerCase().includes(query)
+      post.author.name.toLowerCase().includes(query) ||
+      (post.excerpt ?? '').toLowerCase().includes(query) ||
+      (post.category?.name ?? '').toLowerCase().includes(query) ||
+      post.tags.some(
+        (tag) => tag.name.toLowerCase().includes(query) || tag.slug.toLowerCase().includes(query),
+      )
     );
   });
 
