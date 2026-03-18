@@ -14,6 +14,11 @@ export const userService = {
       relations: {
         posts: {
           author: true,
+          category: true,
+          postTags: {
+            tag: true,
+          },
+          bookmarks: true,
           comments: {
             author: true,
           },

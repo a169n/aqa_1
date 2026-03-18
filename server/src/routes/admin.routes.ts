@@ -11,6 +11,7 @@ import {
   updateAdminPost,
   updateAdminUserRole,
 } from '../controllers/admin.controller';
+import { listAdminReports, updateAdminReport } from '../controllers/report.controller';
 import { authenticate, requireAdmin } from '../middleware/authenticate';
 
 export const adminRouter = Router();
@@ -26,3 +27,5 @@ adminRouter.get('/comments', listAdminComments);
 adminRouter.delete('/comments/:id', deleteAdminComment);
 adminRouter.get('/likes', listAdminLikes);
 adminRouter.delete('/likes/:id', deleteAdminLike);
+adminRouter.get('/reports', listAdminReports);
+adminRouter.patch('/reports/:id', updateAdminReport);

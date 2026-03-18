@@ -4,10 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Post } from './post.entity';
+import { Report } from './report.entity';
 import { User } from './user.entity';
 
 @Entity({ name: 'comments' })
@@ -31,6 +33,9 @@ export class Comment {
   @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'author_id' })
   author!: User;
+
+  @OneToMany(() => Report, (report) => report.comment)
+  reports!: Report[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt!: Date;

@@ -7,10 +7,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { USER_ROLES, type UserRole } from '../constants/roles';
+import { Bookmark } from './bookmark.entity';
 import { Comment } from './comment.entity';
 import { Like } from './like.entity';
 import { Post } from './post.entity';
 import { RefreshToken } from './refresh-token.entity';
+import { Report } from './report.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -47,6 +49,12 @@ export class User {
 
   @OneToMany(() => RefreshToken, (refreshToken) => refreshToken.user)
   refreshTokens!: RefreshToken[];
+
+  @OneToMany(() => Bookmark, (bookmark) => bookmark.user)
+  bookmarks!: Bookmark[];
+
+  @OneToMany(() => Report, (report) => report.reporter)
+  reports!: Report[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt!: Date;

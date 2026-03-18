@@ -4,7 +4,7 @@ import { userService } from '../services/user.service';
 import { asyncHandler } from '../utils/async-handler';
 
 export const listAdminPosts = asyncHandler(async (request: Request, response: Response) => {
-  response.json(await blogService.listPosts(request.user));
+  response.json(await blogService.listPostsForAdmin(request.user!));
 });
 
 export const updateAdminPost = asyncHandler(async (request: Request, response: Response) => {
