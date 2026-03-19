@@ -217,13 +217,15 @@ const main = async () => {
   );
 };
 
-void main()
-  .catch((error) => {
-    console.error('Failed to seed the database.', error);
-    process.exitCode = 1;
-  })
-  .finally(async () => {
-    if (AppDataSource.isInitialized) {
-      await AppDataSource.destroy();
-    }
-  });
+if (require.main === module) {
+  void main()
+    .catch((error) => {
+      console.error('Failed to seed the database.', error);
+      process.exitCode = 1;
+    })
+    .finally(async () => {
+      if (AppDataSource.isInitialized) {
+        await AppDataSource.destroy();
+      }
+    });
+}
