@@ -21,25 +21,25 @@ The highest failure impact is in access control and content integrity paths beca
 
 ## Critical components ranked by failure impact
 
-| Failure Impact Rank | Component ID | Component                               | Probability | Impact | Score | Priority | Reasoning |
-| ------------------- | ------------ | --------------------------------------- | ----------- | ------ | ----- | -------- | --------- |
-| 1 (highest)         | `C1`         | Authentication and session lifecycle    | 4           | 5      | 20    | `P1`     | Registration/login/refresh/logout and `/api/auth/me` control account access and token validity. |
-| 1 (highest)         | `C2`         | Authorization and admin moderation      | 4           | 5      | 20    | `P1`     | Admin-only endpoints and role updates can expose all moderation and user management if broken. |
-| 2                   | `C3`         | Post, comment, and like integrity       | 4           | 4      | 16    | `P1`     | Core content workflows require ownership checks, lifecycle transitions, and uniqueness constraints. |
-| 2                   | `C4`         | Profile management and avatar uploads   | 3           | 4      | 12    | `P2`     | Profile updates and upload validation impact account data quality and platform stability. |
-| 3                   | `C5`         | Public feed and navigation              | 3           | 3      | 9     | `P2`     | Public discovery is important for usability, but failures are usually less severe than auth/moderation failures. |
+| Failure Impact Rank | Component ID | Component                             | Probability | Impact | Score | Priority | Reasoning                                                                                                        |
+| ------------------- | ------------ | ------------------------------------- | ----------- | ------ | ----- | -------- | ---------------------------------------------------------------------------------------------------------------- |
+| 1 (highest)         | `C1`         | Authentication and session lifecycle  | 4           | 5      | 20    | `P1`     | Registration/login/refresh/logout and `/api/auth/me` control account access and token validity.                  |
+| 1 (highest)         | `C2`         | Authorization and admin moderation    | 4           | 5      | 20    | `P1`     | Admin-only endpoints and role updates can expose all moderation and user management if broken.                   |
+| 2                   | `C3`         | Post, comment, and like integrity     | 4           | 4      | 16    | `P1`     | Core content workflows require ownership checks, lifecycle transitions, and uniqueness constraints.              |
+| 2                   | `C4`         | Profile management and avatar uploads | 3           | 4      | 12    | `P2`     | Profile updates and upload validation impact account data quality and platform stability.                        |
+| 3                   | `C5`         | Public feed and navigation            | 3           | 3      | 9     | `P2`     | Public discovery is important for usability, but failures are usually less severe than auth/moderation failures. |
 
 ## Probability vs impact matrix
 
 Legend: each cell contains `C#` component IDs.
 
-| Impact \ Probability | 1 | 2 | 3 | 4 | 5 |
-| -------------------- | - | - | - | - | - |
-| 5                    | - | - | - | `C1, C2` | - |
-| 4                    | - | - | `C4` | `C3` | - |
-| 3                    | - | - | `C5` | - | - |
-| 2                    | - | - | - | - | - |
-| 1                    | - | - | - | - | - |
+| Impact \ Probability | 1   | 2   | 3    | 4        | 5   |
+| -------------------- | --- | --- | ---- | -------- | --- |
+| 5                    | -   | -   | -    | `C1, C2` | -   |
+| 4                    | -   | -   | `C4` | `C3`     | -   |
+| 3                    | -   | -   | `C5` | -        | -   |
+| 2                    | -   | -   | -    | -        | -   |
+| 1                    | -   | -   | -    | -        | -   |
 
 ## Assumptions and reasoning
 

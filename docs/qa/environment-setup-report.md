@@ -15,15 +15,15 @@
 
 ## Installed and configured QA tools
 
-| Tool | Installed via | Configuration/evidence |
-| ---- | ------------- | ---------------------- |
-| `Vitest` | `server/package.json` | `server/vitest.config.ts` (node env, setup file, coverage scope/reporters) |
-| `Supertest` | `server/package.json` | Used in `server/src/test/helpers.ts` and integration suites |
-| `@vitest/coverage-v8` | `server/package.json` | Coverage enabled in `server/vitest.config.ts` |
-| `Playwright` | root `package.json` | `playwright.config.ts` and `tests/e2e/smoke.spec.ts` |
-| `Swagger UI` | `server/package.json` | `server/src/docs/swagger.ts`, `server/src/docs/openapi.ts` |
-| `Postman` collection | repository asset | `docs/qa/postman/inkwell-assignment-1.postman_collection.json` |
-| `Docker` | project runtime tooling | `docker-compose.backend.yml`, `server/Dockerfile` |
+| Tool                  | Installed via           | Configuration/evidence                                                     |
+| --------------------- | ----------------------- | -------------------------------------------------------------------------- |
+| `Vitest`              | `server/package.json`   | `server/vitest.config.ts` (node env, setup file, coverage scope/reporters) |
+| `Supertest`           | `server/package.json`   | Used in `server/src/test/helpers.ts` and integration suites                |
+| `@vitest/coverage-v8` | `server/package.json`   | Coverage enabled in `server/vitest.config.ts`                              |
+| `Playwright`          | root `package.json`     | `playwright.config.ts` and `tests/e2e/smoke.spec.ts`                       |
+| `Swagger UI`          | `server/package.json`   | `server/src/docs/swagger.ts`, `server/src/docs/openapi.ts`                 |
+| `Postman` collection  | repository asset        | `docs/qa/postman/inkwell-assignment-1.postman_collection.json`             |
+| `Docker`              | project runtime tooling | `docker-compose.backend.yml`, `server/Dockerfile`                          |
 
 ## Local QA setup procedure
 
