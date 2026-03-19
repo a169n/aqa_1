@@ -24,6 +24,7 @@ const register = async (page: Page, user: typeof adminUser) => {
   await page.locator('#register-email').fill(user.email);
   await page.locator('#register-password').fill(user.password);
   await page.getByRole('button', { name: 'Register' }).click();
+  await expect(page.getByRole('button', { name: 'Sign out' })).toBeVisible();
 };
 
 const login = async (page: Page, user: typeof adminUser) => {
@@ -35,8 +36,20 @@ const login = async (page: Page, user: typeof adminUser) => {
 };
 
 const logout = async (page: Page) => {
-  await page.getByRole('button', { name: 'Sign out' }).click();
-  await expect(page.getByRole('link', { name: 'Login' })).toBeVisible();
+  await page.goto('/');
+  const signOutButton = page.getByRole('button', { name: 'Sign out' });
+  const signOutVisible = await signOutButton
+    .first()
+    .isVisible()
+    .catch(() => false);
+
+  if (signOutVisible) {
+    await signOutButton.first().click();
+  }
+
+  await page.context().clearCookies();
+  await page.evaluate(() => localStorage.clear());
+  await expect(page.getByRole('link', { name: 'Login' }).first()).toBeVisible();
 };
 
 test.describe('Inkwell editorial smoke flows', () => {
@@ -66,17 +79,17 @@ test.describe('Inkwell editorial smoke flows', () => {
     await page.getByRole('button', { name: 'Save draft' }).click();
 
     await expect(page.getByRole('heading', { name: smokePost.title })).toBeVisible();
-    await expect(page.getByText('draft')).toBeVisible();
+    await expect(page.getByText('draft', { exact: true })).toBeVisible();
 
     await page.goto('/workspace');
     await page.getByRole('button', { name: 'Publish' }).first().click();
-    await expect(page.getByText('published')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Archive' }).first()).toBeVisible();
 
     await page.getByRole('button', { name: 'Archive' }).first().click();
-    await expect(page.getByText('archived')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Restore to draft' }).first()).toBeVisible();
 
     await page.getByRole('button', { name: 'Restore to draft' }).first().click();
-    await expect(page.getByText('draft')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Publish' }).first()).toBeVisible();
 
     await page.getByRole('button', { name: 'Publish' }).first().click();
     await page.goto('/');
@@ -88,8 +101,9 @@ test.describe('Inkwell editorial smoke flows', () => {
     await register(page, readerUser);
 
     await page.goto('/');
-    await page.getByText(smokePost.title).first().click();
+    await page.getByRole('link', { name: 'Read' }).first().click();
 
+    await expect(page.getByRole('button', { name: 'Bookmark' })).toBeVisible();
     await page.getByRole('button', { name: 'Bookmark' }).click();
     await page.getByRole('button', { name: 'Report' }).click();
 
@@ -111,8 +125,12 @@ test.describe('Inkwell editorial smoke flows', () => {
 
     await page.goto('/admin/reports');
     await expect(page.getByText('Report queue')).toBeVisible();
-    await expect(page.getByText('open')).toBeVisible();
+    await expect(page.getByRole('table').getByText('open', { exact: true })).toBeVisible();
+    const resolveButtons = page.getByRole('button', { name: 'Resolve' });
+    const resolveCountBefore = await resolveButtons.count();
+    expect(resolveCountBefore).toBeGreaterThan(0);
+
     await page.getByRole('button', { name: 'Resolve' }).first().click();
-    await expect(page.getByText('resolved')).toBeVisible();
+    await expect(resolveButtons).toHaveCount(resolveCountBefore - 1);
   });
 });

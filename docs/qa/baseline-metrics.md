@@ -1,48 +1,54 @@
-# Baseline Metrics and Evidence Plan
+# Baseline Metrics (Assignment 1)
 
-## Baseline metrics
+## Required baseline metrics
 
-| Metric                              | Baseline                                                   |
-| ----------------------------------- | ---------------------------------------------------------- |
-| High-risk modules                   | `5`                                                        |
-| `P1` modules automated              | `3 / 3`                                                    |
-| API automated scenarios             | `19`                                                       |
-| UI smoke scenarios                  | `3`                                                        |
-| Observed backend statement coverage | `85.75%`                                                   |
-| Observed backend line coverage      | `85.30%`                                                   |
-| Planned backend coverage target     | `>= 80%` for included business-critical server files       |
-| Pipeline stages                     | `5` (`lint`, `build`, `api-tests`, `e2e`, `docker-build`)  |
-| Lint gate commands                  | `format:check`, `lint`, `lint:fix`, `git diff --exit-code` |
+| Required metric | Baseline |
+| --------------- | -------- |
+| High-risk modules count | `5` |
+| Initial automated inventory (API) | `23` scenarios in `server/src/test/*.integration.test.ts` |
+| Initial automated inventory (UI smoke) | `4` scenarios in `tests/e2e/smoke.spec.ts` |
+| Current observed API result | `23/23` passed |
+| Current observed UI smoke result | `4/4` passed |
+| Current observed backend statement coverage | `75.87%` |
+| Current observed backend line coverage | `75.35%` |
+| Pipeline stages | `5` (`lint`, `build`, `api-tests`, `e2e`, `docker-build`) |
 
-## Estimated effort
+## High-risk module count detail
 
-| Work item                         | Estimate   |
-| --------------------------------- | ---------- |
-| QA environment and docs           | `2 days`   |
-| API integration suite             | `2-3 days` |
-| Playwright smoke suite            | `1 day`    |
-| CI hardening and artifact uploads | `0.5 day`  |
-| Final evidence packaging          | `0.5 day`  |
+- `C1` Authentication and session lifecycle
+- `C2` Authorization and admin moderation
+- `C3` Post/comment/like integrity
+- `C4` Profile management and avatar uploads
+- `C5` Public feed and navigation
 
-## Baseline evidence to capture
+## Initial coverage plan
 
-- `Swagger` page showing the API documentation
-- successful API test run with coverage output
-- successful Playwright run and report
-- successful GitHub Actions workflow
-- successful backend Docker image build
-- repository screenshot showing the QA folder and test structure
+| Priority | Module | Planned coverage type | Existing baseline assets |
+| -------- | ------ | --------------------- | ------------------------ |
+| `P1` | `C1` Authentication/session | API integration first, smoke auth path | `server/src/test/auth.integration.test.ts`, `tests/e2e/smoke.spec.ts` |
+| `P1` | `C2` Authorization/moderation | API integration first, admin smoke path | `server/src/test/profile-admin.integration.test.ts`, `server/src/test/editorial.integration.test.ts`, `tests/e2e/smoke.spec.ts` |
+| `P1` | `C3` Content integrity | API integration first, editorial smoke path | `server/src/test/blog.integration.test.ts`, `server/src/test/editorial.integration.test.ts`, `tests/e2e/smoke.spec.ts` |
+| `P2` | `C4` Profile/avatar | API integration + targeted manual checks | `server/src/test/profile-admin.integration.test.ts`, Swagger/Postman checks |
+| `P2` | `C5` Public browsing | Smoke + exploratory manual checks | `tests/e2e/smoke.spec.ts`, Swagger/Postman checks |
 
-## Manual follow-up coverage
+Coverage percentage measurement plan:
 
-- invalid route handling
-- logout behavior from the UI
-- session refresh behavior after token expiry
-- avatar upload UX and feedback
-- search and feed behavior under different data sets
+- Command: `npm run test:coverage`
+- Source of truth: generated `server/coverage` report
+- Target: `>= 80%` statements/lines for configured backend coverage scope
 
-## Notes for the research paper
+## Estimated testing effort
 
-- These metrics form the initial methodology baseline for later comparison.
-- The risk matrix and pipeline outputs can be reused in the Introduction and Methodology sections.
-- Screenshots should be saved under `docs/qa/screenshots/` when the final evidence is collected.
+| Work item | Estimate |
+| --------- | -------- |
+| QA environment verification and docs alignment | `1.5 days` |
+| API integration baseline maintenance/extension | `2-3 days` |
+| Playwright smoke maintenance/extension | `1 day` |
+| CI hardening and artifact validation | `0.5 day` |
+| Final evidence packaging for submission | `0.5 day` |
+
+## Measurement status recorded during this audit
+
+- Date: `2026-03-19`
+- Coverage and smoke suites were executed successfully in the normalized local environment.
+- Known improvement target: raise backend statements/lines from current `~75%` baseline to `>= 80%`.

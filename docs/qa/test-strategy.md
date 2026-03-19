@@ -3,64 +3,74 @@
 ## Scope and objectives
 
 - System type: `Web Application`
-- Goal: establish a risk-based QA baseline for Inkwell and prove that critical flows are reproducible in local runs and CI.
-- Primary objectives:
-  - protect account/session security
-  - protect authorization boundaries
-  - protect blog content integrity
-  - prove the app can be validated automatically through CI and Docker build checks
+- Scope: Inkwell frontend (`client/`), backend API (`server/`), and QA pipeline (`.github/workflows/qa.yml`)
+- Objectives:
+  - protect authentication/session security
+  - protect authorization and moderation boundaries
+  - protect content lifecycle and integrity
+  - ensure repeatable automated validation in CI
+
+## Risk assessment results and module prioritization
+
+| Priority | Component ID | Module                             | Test emphasis |
+| -------- | ------------ | ---------------------------------- | ------------- |
+| `P1`     | `C1`         | Authentication and session flows   | API integration first, plus auth UI smoke |
+| `P1`     | `C2`         | Authorization and admin moderation | API integration first, plus admin smoke |
+| `P1`     | `C3`         | Content integrity                  | API integration first, plus editorial smoke |
+| `P2`     | `C4`         | Profile and avatar uploads         | API integration + targeted manual checks |
+| `P2`     | `C5`         | Public feed and navigation         | Browser smoke + manual exploratory checks |
 
 ## Test approach
 
-- Automated first:
-  - `Vitest + Supertest` for backend API/integration coverage
-  - `Playwright` for 3 browser smoke journeys
+- High-risk-first automation:
+  - `Vitest + Supertest` for backend integration scenarios
+  - `Playwright` for critical end-to-end smoke journeys
 - Manual support:
-  - Swagger inspection for endpoint behavior
-  - Postman collection for reproducible request evidence
-  - exploratory checklist for medium-risk UX paths
+  - Swagger UI for endpoint inspection and schema checks
+  - Postman collection for reproducible API request evidence
+  - exploratory checks for medium-risk UX behavior
 
-## Risk-to-test mapping
+## Tool selection and configuration rationale
 
-| Risk area                        | Planned coverage                                                                              |
-| -------------------------------- | --------------------------------------------------------------------------------------------- |
-| Authentication and sessions      | API automation for register, login, refresh rotation, logout, `/auth/me`, invalid-token paths |
-| Authorization and admin controls | API automation for `401/403`, role management, and last-admin protection                      |
-| Content integrity                | API automation for post CRUD, ownership rules, comments, likes, and duplicate-like prevention |
-| Profile and avatar management    | API automation for duplicate email rejection and avatar upload size handling                  |
-| Public browsing                  | Playwright smoke tests for auth entry, post creation, and admin page access                   |
-
-## Tools and configuration
-
-- Backend automation: `Vitest`, `Supertest`, `@vitest/coverage-v8`
-- Browser smoke tests: `Playwright`
-- API documentation and manual validation: `Swagger UI`, `Postman`
-- CI/CD: `GitHub Actions`
-- Reproducible runtime validation: backend `Dockerfile`
+| Tool | Why selected | Configuration source |
+| ---- | ------------ | -------------------- |
+| `Vitest` + `Supertest` | Already used in repo, fast backend integration coverage without introducing extra frameworks. | `server/package.json`, `server/vitest.config.ts`, `server/src/test/` |
+| `@vitest/coverage-v8` | Native coverage output integrated with existing Vitest workflow. | `server/package.json`, `server/vitest.config.ts` |
+| `Playwright` | Existing smoke harness with deterministic web server startup and CI artifact support. | `package.json`, `playwright.config.ts`, `tests/e2e/smoke.spec.ts` |
+| `Swagger UI` | Existing API contract visibility for manual verification and endpoint discovery. | `server/src/docs/swagger.ts`, `server/src/docs/openapi.ts` |
+| `Postman` | Existing portable request collection for assignment evidence and manual checks. | `docs/qa/postman/inkwell-assignment-1.postman_collection.json` |
+| `GitHub Actions` | Existing CI pipeline enforcing lint/build/test/docker gates on push/PR. | `.github/workflows/qa.yml` |
 
 ## Entry and exit criteria
 
 - Entry:
-  - dependencies install with `npm ci`
-  - PostgreSQL test database is available
-  - server migrations can run successfully
+  - `npm ci` succeeds
+  - PostgreSQL test database is reachable with valid credentials
+  - migrations run successfully for test environment
 - Exit:
-  - lint and build complete successfully
-  - API coverage suite passes
-  - Playwright smoke suite passes
-  - backend Docker image builds successfully
-  - QA documents and baseline metrics are committed
+  - `lint`, `build`, `api-tests`, `e2e`, and `docker-build` gates pass in CI
+  - QA docs are consistent with repository state
+  - no fabricated runtime metrics are reported
 
 ## Planned metrics
 
 - High-risk modules identified: `5`
-- Current automated scope:
-  - `19` API test scenarios
-  - `3` UI smoke scenarios
-- Current backend coverage baseline:
-  - `85.75%` statements
-  - `85.30%` lines
-- Coverage target:
-  - maintain `>= 80%` statements/lines across controllers, middleware, and services included in the backend coverage scope
-- Risk coverage target:
+- Automated scenario inventory from code:
+  - `23` API integration scenarios (`server/src/test/*.integration.test.ts`)
+  - `4` UI smoke scenarios (`tests/e2e/smoke.spec.ts`)
+- Coverage plan:
+  - target `>= 80%` statements/lines for backend files included in `server/vitest.config.ts` coverage scope
+  - collect measured percentages only from a successful `npm run test:coverage` run
+- Risk coverage objective:
   - `100%` of `P1` modules mapped to at least one automated test
+
+## Current measurement status (2026-03-19)
+
+- Verified commands:
+  - `npm run test:coverage` -> `23/23` tests passed
+  - `npm run test:e2e` -> `4/4` smoke tests passed
+- Measured backend coverage from current local run:
+  - `75.87%` statements
+  - `75.35%` lines
+- Gap against coverage target:
+  - current baseline is below `>= 80%` target and requires additional coverage expansion in lower-covered service modules.
