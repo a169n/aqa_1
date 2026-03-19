@@ -2,6 +2,7 @@ import { mkdirSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import { afterAll, beforeAll, beforeEach } from 'vitest';
 import type { DataSource } from 'typeorm';
+import { cleanDatabase } from '../scripts/db-utils';
 
 const defaultTestEnv = {
   NODE_ENV: 'test',
@@ -48,20 +49,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  await dataSource.query(`
-    TRUNCATE TABLE
-      "reports",
-      "bookmarks",
-      "post_tags",
-      "tags",
-      "categories",
-      "likes",
-      "comments",
-      "refresh_tokens",
-      "posts",
-      "users"
-    RESTART IDENTITY CASCADE
-  `);
+  await cleanDatabase(dataSource);
   resetUploadsDirectory();
 });
 

@@ -106,6 +106,22 @@ If you prefer to run migrations manually:
 npm run migration:run --workspace server
 ```
 
+For local/demo data management:
+
+```bash
+npm run db:clean
+npm run db:seed
+```
+
+- `npm run db:clean` truncates the application tables and resets identity sequences without dropping the database.
+- `npm run db:seed` runs pending migrations, cleans existing application data, and inserts deterministic demo users, categories, tags, posts, post-tag links, comments, likes, bookmarks, refresh tokens, and a sample report.
+- Both commands refuse to run unless `DATABASE_NAME` looks like a local/dev/test database. The default `inkwell` database is allowed.
+
+Seeded demo credentials:
+
+- `admin@example.com` / `Password123!`
+- `user@example.com` / `Password123!`
+
 ## Running The App
 
 Start both workspaces from the repository root:
@@ -150,6 +166,7 @@ This starts:
 - Swagger UI on `http://localhost:4000/docs`
 
 The compose setup automatically points the backend container at the `db` service, so you can keep the default database values from `server/.env`.
+The Postgres container also creates both `inkwell` and `inkwell_test` automatically on first startup.
 
 To stop the containers:
 
@@ -171,11 +188,10 @@ Install dependencies from the repository root:
 npm ci
 ```
 
-Create the dedicated PostgreSQL test database once:
+Start the dedicated PostgreSQL service for tests:
 
 ```bash
 docker compose -f docker-compose.backend.yml up -d db
-docker compose -f docker-compose.backend.yml exec db psql -U postgres -d postgres -c "CREATE DATABASE inkwell_test;"
 ```
 
 Run the automated QA checks:
@@ -189,6 +205,8 @@ npm run test:e2e
 Helpful scripts:
 
 ```bash
+npm run db:clean
+npm run db:seed
 npm run test:api
 npm run test:coverage
 npm run test:e2e
@@ -217,6 +235,8 @@ From the repository root:
 npm run dev
 npm run dev:server
 npm run dev:client
+npm run db:clean
+npm run db:seed
 npm run build
 npm run lint
 npm run lint:fix
@@ -234,6 +254,8 @@ Server-only:
 ```bash
 npm run dev --workspace server
 npm run build --workspace server
+npm run db:clean --workspace server
+npm run db:seed --workspace server
 npm run migration:run --workspace server
 npm run migration:revert --workspace server
 ```
