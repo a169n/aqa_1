@@ -3,3 +3,4 @@
 **/build
 **/*.tsbuildinfo
 server/uploads
+**/*.md
