@@ -3,31 +3,17 @@ import path from 'node:path';
 import { afterAll, beforeAll, beforeEach } from 'vitest';
 import type { DataSource } from 'typeorm';
 import { cleanDatabase } from '../scripts/db-utils';
-
-const defaultTestEnv = {
-  NODE_ENV: 'test',
-  PORT: '4000',
-  CLIENT_URL: 'http://localhost:5173',
-  DATABASE_HOST: '127.0.0.1',
-  DATABASE_PORT: '5432',
-  DATABASE_NAME: 'inkwell_test',
-  DATABASE_USER: 'postgres',
-  DATABASE_PASSWORD: 'postgres',
-  JWT_ACCESS_SECRET: 'test-access-secret',
-  JWT_REFRESH_SECRET: 'test-refresh-secret',
-  ACCESS_TOKEN_TTL: '15m',
-  REFRESH_TOKEN_TTL_DAYS: '7',
-  AUTO_RUN_MIGRATIONS: 'false',
-  UPLOAD_DIR: '.tmp/uploads-test',
-};
-
-for (const [key, value] of Object.entries(defaultTestEnv)) {
-  process.env[key] ??= value;
-}
+import { applyTestEnvironment, ensureTestDatabaseExists } from './test-env';
 
 let dataSource: DataSource;
+const testEnvironment = applyTestEnvironment({
+  clientUrl: 'http://localhost:5173',
+  uploadDir: '.tmp/uploads-test',
+  jwtAccessSecret: 'test-access-secret',
+  jwtRefreshSecret: 'test-refresh-secret',
+});
 
-const uploadsRoot = path.resolve(process.cwd(), process.env.UPLOAD_DIR!);
+const uploadsRoot = path.resolve(process.cwd(), testEnvironment.UPLOAD_DIR);
 
 const resetUploadsDirectory = () => {
   rmSync(uploadsRoot, { recursive: true, force: true });
@@ -35,6 +21,8 @@ const resetUploadsDirectory = () => {
 };
 
 beforeAll(async () => {
+  await ensureTestDatabaseExists(testEnvironment);
+
   const { AppDataSource } = await import('../config/data-source');
 
   dataSource = AppDataSource;

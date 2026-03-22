@@ -202,6 +202,8 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
+The automated test flow reuses the PostgreSQL host, port, username, and password from `server/.env`, but it always targets a separate test database. By default that database is `inkwell_test`; set `TEST_DATABASE_NAME` if your machine uses a different test database name.
+
 Helpful scripts:
 
 ```bash

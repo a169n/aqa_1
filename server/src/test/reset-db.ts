@@ -1,29 +1,16 @@
 import { mkdirSync, rmSync } from 'node:fs';
 import path from 'node:path';
+import { applyTestEnvironment, ensureTestDatabaseExists } from './test-env';
 
-const defaultTestEnv = {
-  NODE_ENV: 'test',
-  PORT: '4000',
-  CLIENT_URL: 'http://127.0.0.1:5173',
-  DATABASE_HOST: '127.0.0.1',
-  DATABASE_PORT: '5432',
-  DATABASE_NAME: 'inkwell_test',
-  DATABASE_USER: 'postgres',
-  DATABASE_PASSWORD: 'postgres',
-  JWT_ACCESS_SECRET: 'test-access-secret',
-  JWT_REFRESH_SECRET: 'test-refresh-secret',
-  ACCESS_TOKEN_TTL: '15m',
-  REFRESH_TOKEN_TTL_DAYS: '7',
-  AUTO_RUN_MIGRATIONS: 'false',
-  UPLOAD_DIR: '.tmp/uploads-e2e',
-};
-
-for (const [key, value] of Object.entries(defaultTestEnv)) {
-  process.env[key] ??= value;
-}
+const testEnvironment = applyTestEnvironment({
+  clientUrl: 'http://127.0.0.1:4173',
+  uploadDir: '.tmp/uploads-e2e',
+  jwtAccessSecret: 'playwright-access-secret',
+  jwtRefreshSecret: 'playwright-refresh-secret',
+});
 
 const ensureSafeDatabaseName = () => {
-  const databaseName = process.env.DATABASE_NAME ?? '';
+  const databaseName = testEnvironment.DATABASE_NAME;
 
   if (!databaseName.toLowerCase().includes('test')) {
     throw new Error(
@@ -33,7 +20,7 @@ const ensureSafeDatabaseName = () => {
 };
 
 const resetUploadsDirectory = () => {
-  const uploadsRoot = path.resolve(process.cwd(), process.env.UPLOAD_DIR!);
+  const uploadsRoot = path.resolve(process.cwd(), testEnvironment.UPLOAD_DIR);
 
   rmSync(uploadsRoot, { recursive: true, force: true });
   mkdirSync(path.join(uploadsRoot, 'avatars'), { recursive: true });
@@ -41,6 +28,7 @@ const resetUploadsDirectory = () => {
 
 const main = async () => {
   ensureSafeDatabaseName();
+  await ensureTestDatabaseExists(testEnvironment);
   resetUploadsDirectory();
 
   const { AppDataSource } = await import('../config/data-source');
@@ -53,7 +41,7 @@ const main = async () => {
   await AppDataSource.runMigrations();
   await AppDataSource.destroy();
 
-  console.log(`Reset test database: ${process.env.DATABASE_NAME}`);
+  console.log(`Reset test database: ${testEnvironment.DATABASE_NAME}`);
 };
 
 void main().catch((error) => {
