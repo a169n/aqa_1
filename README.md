@@ -62,7 +62,7 @@ cp client/.env.example client/.env
 
 ### Backend Environment Variables
 
-Defined in [server/.env.example](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/server/.env.example).
+Defined in [server/.env.example](server/.env.example).
 
 | Variable                 | Description                             | Example                 |
 | ------------------------ | --------------------------------------- | ----------------------- |
@@ -82,7 +82,7 @@ Defined in [server/.env.example](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/ser
 
 ### Frontend Environment Variables
 
-Defined in [client/.env.example](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/client/.env.example).
+Defined in [client/.env.example](client/.env.example).
 
 | Variable       | Description                       | Example                     |
 | -------------- | --------------------------------- | --------------------------- |
@@ -218,6 +218,14 @@ npm run docker:build:backend
 
 The browser smoke tests automatically start the backend and frontend with CI-friendly settings, reset the dedicated test database, and save reports to `playwright-report/` and `test-results/`.
 
+Current verified QA snapshot (`2026-03-26`):
+
+- `npm run lint` -> passed
+- `npm run build` -> passed
+- `npm run test:coverage` -> `27/27` backend integration tests passed
+- `npm run test:e2e` -> `4/4` Playwright smoke tests passed
+- Backend coverage -> `75.87%` statements, `75.35%` lines
+
 ## Assignment 1 QA Deliverables
 
 The assignment documentation and evidence scaffolding live under `docs/qa/`:
@@ -278,15 +286,19 @@ The raw OpenAPI document is available at `http://localhost:4000/docs.json`.
 Main API areas:
 
 - Auth: `/api/auth/register`, `/api/auth/login`, `/api/auth/refresh`, `/api/auth/logout`, `/api/auth/me`
-- Posts: `/api/posts`
+- Posts: `/api/posts`, `/api/posts/:id`, `/api/posts/:id/publish`, `/api/posts/:id/archive`, `/api/posts/:id/restore`
 - Comments: `/api/posts/:postId/comments`
 - Likes: `/api/posts/:postId/likes`
+- Taxonomy: `/api/categories`, `/api/tags`
+- Workspace: `/api/workspace/posts`
+- Bookmarks: `/api/bookmarks`, `/api/posts/:id/bookmarks`
+- Reports: `/api/reports`, `/api/admin/reports`
 - Profile: `/api/user/profile`, `/api/user/profile/avatar`
-- Admin: `/api/admin/posts`, `/api/admin/users`, `/api/admin/comments`, `/api/admin/likes`
+- Admin: `/api/admin/posts`, `/api/admin/users`, `/api/admin/comments`, `/api/admin/likes`, `/api/admin/categories`, `/api/admin/tags`
 
 ## Formatting And Linting
 
-Prettier is configured at the repo root in [`.prettierrc`](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/.prettierrc), with generated output ignored through [`.prettierignore`](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/.prettierignore).
+Prettier is configured at the repo root in [`.prettierrc`](.prettierrc), with generated output ignored through [`.prettierignore`](.prettierignore).
 
 Useful commands:
 
@@ -354,13 +366,13 @@ Check:
 
 ## Key Files
 
-- Root scripts: [package.json](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/package.json)
-- Root formatter config: [.prettierrc](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/.prettierrc)
-- Root formatter ignore: [.prettierignore](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/.prettierignore)
-- Backend entry: [server/src/index.ts](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/server/src/index.ts)
-- Backend app setup: [server/src/app.ts](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/server/src/app.ts)
-- Swagger setup: [server/src/docs/swagger.ts](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/server/src/docs/swagger.ts)
-- OpenAPI document: [server/src/docs/openapi.ts](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/server/src/docs/openapi.ts)
-- Backend routes: [server/src/routes/index.ts](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/server/src/routes/index.ts)
-- Frontend router: [client/src/router.tsx](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/client/src/router.tsx)
-- Profile page: [client/src/pages/profile-page.tsx](/c:/Users/a1byn/OneDrive/Desktop/code/aqa_1/client/src/pages/profile-page.tsx)
+- Root scripts: [package.json](package.json)
+- Root formatter config: [.prettierrc](.prettierrc)
+- Root formatter ignore: [.prettierignore](.prettierignore)
+- Backend entry: [server/src/index.ts](server/src/index.ts)
+- Backend app setup: [server/src/app.ts](server/src/app.ts)
+- Swagger setup: [server/src/docs/swagger.ts](server/src/docs/swagger.ts)
+- OpenAPI document: [server/src/docs/openapi.ts](server/src/docs/openapi.ts)
+- Backend routes: [server/src/routes/index.ts](server/src/routes/index.ts)
+- Frontend router: [client/src/router.tsx](client/src/router.tsx)
+- Profile page: [client/src/pages/profile-page.tsx](client/src/pages/profile-page.tsx)

@@ -56,7 +56,7 @@
 
 - High-risk modules identified: `5`
 - Automated scenario inventory from code:
-  - `23` API integration scenarios (`server/src/test/*.integration.test.ts`)
+  - `27` API integration scenarios (`server/src/test/*.integration.test.ts`)
   - `4` UI smoke scenarios (`tests/e2e/smoke.spec.ts`)
 - Coverage plan:
   - target `>= 80%` statements/lines for backend files included in `server/vitest.config.ts` coverage scope
@@ -64,10 +64,12 @@
 - Risk coverage objective:
   - `100%` of `P1` modules mapped to at least one automated test
 
-## Current measurement status (2026-03-19)
+## Current measurement status (2026-03-26)
 
 - Verified commands:
-  - `npm run test:coverage` -> `23/23` tests passed
+  - `npm run lint` -> passed
+  - `npm run build` -> passed
+  - `npm run test:coverage` -> `27/27` tests passed
   - `npm run test:e2e` -> `4/4` smoke tests passed
 - Measured backend coverage from current local run:
   - `75.87%` statements

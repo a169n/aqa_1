@@ -78,7 +78,7 @@ Notes:
   - `playwright-report`
   - `test-results`
 
-## Verification status during this audit (2026-03-19)
+## Verification status during this audit (2026-03-26)
 
 - Local commands executed successfully:
   - `npm run lint`
@@ -86,7 +86,7 @@ Notes:
   - `npm run test:coverage`
   - `npm run test:e2e`
 - Current local results:
-  - API integration: `23/23` passed
+  - API integration: `27/27` passed
   - Playwright smoke: `4/4` passed
   - Backend coverage: `75.87%` statements, `75.35%` lines
 - Configuration note:

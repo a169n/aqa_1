@@ -5,9 +5,9 @@
 | Required metric                             | Baseline                                                  |
 | ------------------------------------------- | --------------------------------------------------------- |
 | High-risk modules count                     | `5`                                                       |
-| Initial automated inventory (API)           | `23` scenarios in `server/src/test/*.integration.test.ts` |
+| Initial automated inventory (API)           | `27` scenarios in `server/src/test/*.integration.test.ts` |
 | Initial automated inventory (UI smoke)      | `4` scenarios in `tests/e2e/smoke.spec.ts`                |
-| Current observed API result                 | `23/23` passed                                            |
+| Current observed API result                 | `27/27` passed                                            |
 | Current observed UI smoke result            | `4/4` passed                                              |
 | Current observed backend statement coverage | `75.87%`                                                  |
 | Current observed backend line coverage      | `75.35%`                                                  |
@@ -49,6 +49,6 @@ Coverage percentage measurement plan:
 
 ## Measurement status recorded during this audit
 
-- Date: `2026-03-19`
+- Date: `2026-03-26`
 - Coverage and smoke suites were executed successfully in the normalized local environment.
 - Known improvement target: raise backend statements/lines from current `~75%` baseline to `>= 80%`.

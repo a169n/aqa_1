@@ -299,9 +299,9 @@ These elements demonstrate that the environment is not theoretical; it is alread
 | Metric | Baseline |
 | --- | --- |
 | High-risk modules count | `5` |
-| API automated scenarios | `23` |
+| API automated scenarios | `27` |
 | UI smoke scenarios | `4` |
-| Observed API result | `23/23` passed |
+| Observed API result | `27/27` passed |
 | Observed UI smoke result | `4/4` passed |
 | Backend statement coverage | `75.87%` |
 | Backend line coverage | `75.35%` |
