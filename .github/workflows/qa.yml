@@ -195,9 +195,9 @@ jobs:
       - name: Restore QA artifact layout
         run: |
           mkdir -p .tmp/qa server/coverage
-          cp .tmp/qa-import/api/.tmp/qa/vitest-report.json .tmp/qa/vitest-report.json
-          cp .tmp/qa-import/api/server/coverage/coverage-summary.json server/coverage/coverage-summary.json
-          cp .tmp/qa-import/e2e/.tmp/qa/playwright-report.json .tmp/qa/playwright-report.json
+          cp "$(find .tmp/qa-import/api -path '*/vitest-report.json' -print -quit)" .tmp/qa/vitest-report.json
+          cp "$(find .tmp/qa-import/api -path '*/coverage-summary.json' -print -quit)" server/coverage/coverage-summary.json
+          cp "$(find .tmp/qa-import/e2e -path '*/playwright-report.json' -print -quit)" .tmp/qa/playwright-report.json
 
       - name: Evaluate QA quality gates
         run: npm run qa:gates
