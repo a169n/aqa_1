@@ -100,6 +100,15 @@ jobs:
           name: backend-coverage
           path: server/coverage
 
+      - name: Upload API QA artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-api-artifacts
+          path: |
+            .tmp/qa/vitest-report.json
+            server/coverage/coverage-summary.json
+
   e2e:
     runs-on: ubuntu-latest
     needs: api-tests
@@ -149,9 +158,60 @@ jobs:
           name: playwright-test-results
           path: test-results
 
-  docker-build:
+      - name: Upload E2E QA artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-e2e-artifacts
+          path: .tmp/qa/playwright-report.json
+
+  qa-gates:
     runs-on: ubuntu-latest
     needs: e2e
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download API QA artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: qa-api-artifacts
+          path: .tmp/qa-import/api
+
+      - name: Download E2E QA artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: qa-e2e-artifacts
+          path: .tmp/qa-import/e2e
+
+      - name: Restore QA artifact layout
+        run: |
+          mkdir -p .tmp/qa server/coverage
+          cp .tmp/qa-import/api/.tmp/qa/vitest-report.json .tmp/qa/vitest-report.json
+          cp .tmp/qa-import/api/server/coverage/coverage-summary.json server/coverage/coverage-summary.json
+          cp .tmp/qa-import/e2e/.tmp/qa/playwright-report.json .tmp/qa/playwright-report.json
+
+      - name: Evaluate QA quality gates
+        run: npm run qa:gates
+
+      - name: Upload QA summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-summary
+          path: .tmp/qa/qa-summary.json
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: qa-gates
 
     steps:
       - uses: actions/checkout@v4

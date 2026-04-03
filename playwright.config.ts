@@ -18,7 +18,11 @@ export default defineConfig({
   expect: {
     timeout: 10000,
   },
-  reporter: [['list'], ['html', { open: 'never', outputFolder: 'playwright-report' }]],
+  reporter: [
+    ['list'],
+    ['json', { outputFile: '.tmp/qa/playwright-report.json' }],
+    ['html', { open: 'never', outputFolder: 'playwright-report' }],
+  ],
   outputDir: 'test-results',
   use: {
     baseURL: 'http://127.0.0.1:4173',
@@ -30,14 +34,14 @@ export default defineConfig({
     {
       command: 'npm run start:test:server',
       url: 'http://127.0.0.1:4000/api/health',
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: false,
       timeout: 120000,
       env: databaseEnv,
     },
     {
       command: 'npm run start:test:client',
       url: 'http://127.0.0.1:4173',
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: false,
       timeout: 120000,
       env: {
         ...databaseEnv,

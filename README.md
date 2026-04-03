@@ -197,9 +197,7 @@ docker compose -f docker-compose.backend.yml up -d db
 Run the automated QA checks:
 
 ```bash
-npm run test:coverage
-npx playwright install chromium
-npm run test:e2e
+npm run ci
 ```
 
 The automated test flow reuses the PostgreSQL host, port, username, and password from `server/.env`, but it always targets a separate test database. By default that database is `inkwell_test`; set `TEST_DATABASE_NAME` if your machine uses a different test database name.
@@ -212,29 +210,34 @@ npm run db:seed
 npm run test:api
 npm run test:coverage
 npm run test:e2e
+npm run qa:gates
+npm audit
 npm run ci
 npm run docker:build:backend
 ```
 
-The browser smoke tests automatically start the backend and frontend with CI-friendly settings, reset the dedicated test database, and save reports to `playwright-report/` and `test-results/`.
+The browser smoke tests automatically start the backend and frontend with CI-friendly settings, reset the dedicated test database, and save reports to `playwright-report/`, `test-results/`, and `.tmp/qa/`.
 
-Current verified QA snapshot (`2026-03-26`):
+Current verified QA snapshot (`2026-04-02`):
 
 - `npm run lint` -> passed
 - `npm run build` -> passed
-- `npm run test:coverage` -> `27/27` backend integration tests passed
+- `npm run test:coverage` -> `38/38` backend integration tests passed
 - `npm run test:e2e` -> `4/4` Playwright smoke tests passed
-- Backend coverage -> `75.87%` statements, `75.35%` lines
+- `npm run qa:gates` -> all quality gates passed
+- `npm audit` -> `0` vulnerabilities
+- Backend coverage -> `83.73%` statements, `83.33%` lines
 
-## Assignment 1 QA Deliverables
+## QA Deliverables
 
-The assignment documentation and evidence scaffolding live under `docs/qa/`:
+The QA documentation and evidence scaffolding live under `docs/qa/`:
 
 - `docs/qa/risk-assessment.md`
 - `docs/qa/test-strategy.md`
 - `docs/qa/environment-setup-report.md`
 - `docs/qa/baseline-metrics.md`
-- `docs/qa/postman/inkwell-assignment-1.postman_collection.json`
+- `docs/qa/qa-methodology-report.md`
+- `docs/qa/postman/inkwell-qa.postman_collection.json`
 - `docs/qa/screenshots/`
 
 ## Available Scripts

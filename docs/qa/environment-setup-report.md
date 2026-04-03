@@ -6,24 +6,25 @@
   - frontend: `client/`
   - backend: `server/`
   - e2e tests: `tests/e2e/`
-  - QA assignment docs and artifacts: `docs/qa/`
-- Version control: Git repository with CI on `push` and `pull_request` (`.github/workflows/qa.yml`)
-- QA-related tracked assets:
-  - API integration tests in `server/src/test/`
-  - Playwright smoke suite in `tests/e2e/smoke.spec.ts`
+  - QA docs and artifacts: `docs/qa/`
+- Version control: Git repository with CI on `push` and `pull_request` in `.github/workflows/qa.yml`
+- QA-relevant tracked assets:
+  - API integration suites in `server/src/test/`
+  - Browser smoke suite in `tests/e2e/smoke.spec.ts`
+  - QA aggregation scripts in `server/src/qa/`
   - Postman collection in `docs/qa/postman/`
 
 ## Installed and configured QA tools
 
-| Tool                  | Installed via           | Configuration/evidence                                                     |
-| --------------------- | ----------------------- | -------------------------------------------------------------------------- |
-| `Vitest`              | `server/package.json`   | `server/vitest.config.ts` (node env, setup file, coverage scope/reporters) |
-| `Supertest`           | `server/package.json`   | Used in `server/src/test/helpers.ts` and integration suites                |
-| `@vitest/coverage-v8` | `server/package.json`   | Coverage enabled in `server/vitest.config.ts`                              |
-| `Playwright`          | root `package.json`     | `playwright.config.ts` and `tests/e2e/smoke.spec.ts`                       |
-| `Swagger UI`          | `server/package.json`   | `server/src/docs/swagger.ts`, `server/src/docs/openapi.ts`                 |
-| `Postman` collection  | repository asset        | `docs/qa/postman/inkwell-assignment-1.postman_collection.json`             |
-| `Docker`              | project runtime tooling | `docker-compose.backend.yml`, `server/Dockerfile`                          |
+| Tool | Installed via | Configuration/evidence |
+| ---- | ------------- | ---------------------- |
+| `Vitest` | `server/package.json` | `server/vitest.config.ts` |
+| `Supertest` | `server/package.json` | `server/src/test/helpers.ts` and integration suites |
+| `@vitest/coverage-v8` | `server/package.json` | coverage reporting and thresholds in `server/vitest.config.ts` |
+| `Playwright` | root `package.json` | `playwright.config.ts` and `tests/e2e/smoke.spec.ts` |
+| `Swagger UI` | `server/package.json` | `server/src/docs/swagger.ts`, `server/src/docs/openapi.ts` |
+| `Postman` collection | repository asset | `docs/qa/postman/inkwell-qa.postman_collection.json` |
+| `Docker` | project runtime tooling | `docker-compose.backend.yml`, `server/Dockerfile` |
 
 ## Local QA setup procedure
 
@@ -33,35 +34,25 @@
 npm ci
 ```
 
-2. Start PostgreSQL (local service or Docker):
+2. Start PostgreSQL:
 
 ```bash
 docker compose -f docker-compose.backend.yml up -d db
 ```
 
-3. Create test database once:
+3. Run the complete QA flow:
 
 ```bash
-docker compose -f docker-compose.backend.yml exec db psql -U postgres -d postgres -c "CREATE DATABASE inkwell_test;"
+npm run ci
 ```
 
-4. Execute API coverage suite:
+4. Optional supporting commands:
 
 ```bash
-npm run test:coverage
+npm run qa:gates
+npm audit
+npm audit --omit=dev
 ```
-
-5. Execute browser smoke suite:
-
-```bash
-npx playwright install chromium
-npm run test:e2e
-```
-
-Notes:
-
-- The Playwright config starts backend and frontend test servers automatically.
-- If local PostgreSQL credentials differ from defaults, align test environment variables before running API or e2e suites.
 
 ## CI/CD pipeline configuration
 
@@ -72,30 +63,45 @@ Notes:
   2. `build`
   3. `api-tests`
   4. `e2e`
-  5. `docker-build`
+  5. `qa-gates`
+  6. `docker-build`
 - Pipeline artifacts:
   - `server/coverage`
+  - `.tmp/qa/vitest-report.json`
+  - `.tmp/qa/playwright-report.json`
+  - `.tmp/qa/qa-summary.json`
   - `playwright-report`
   - `test-results`
 
-## Verification status during this audit (2026-03-26)
+## Environment hardening notes
+
+- Refresh tokens are now transported in an `HttpOnly` cookie rather than in client storage.
+- Auth endpoints are marked `no-store` to avoid caching session material.
+- Security headers are applied centrally in the Express app.
+- Avatar uploads are constrained by MIME allowlist and size limits.
+- Test database resets use schema recreation rather than full database drop, which reduces reset noise and keeps the flow deterministic.
+
+## Verification status during this audit (2026-04-02)
 
 - Local commands executed successfully:
   - `npm run lint`
   - `npm run build`
   - `npm run test:coverage`
   - `npm run test:e2e`
+  - `npm run qa:gates`
+  - `npm audit`
 - Current local results:
-  - API integration: `27/27` passed
+  - API integration: `38/38` passed
   - Playwright smoke: `4/4` passed
-  - Backend coverage: `75.87%` statements, `75.35%` lines
-- Configuration note:
-  - Playwright now supports environment overrides for DB settings while keeping the same defaults, so teammate/local password differences do not break smoke runs.
+  - Backend coverage: `83.73%` statements, `83.33%` lines
+  - Quality gates: all passed
+  - Dependency audit: `0` vulnerabilities
 
-## Screenshot checklist for final submission evidence
+## Screenshot checklist for evidence packaging
 
 - Passing GitHub Actions run summary
-- Backend coverage report from successful run
+- Backend coverage report
+- QA summary JSON artifact
 - Playwright HTML report
 - Backend Docker image build output
 - Swagger UI (`/docs`) page

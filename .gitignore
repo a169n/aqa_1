@@ -12,6 +12,7 @@ coverage
 playwright-report
 test-results
 .tmp
+tmp
 bun.lock
 
 server/uploads/*

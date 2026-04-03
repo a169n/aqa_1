@@ -52,6 +52,7 @@ export const openApiDocument = {
   components: {
     securitySchemes: {
       bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      refreshCookie: { type: 'apiKey', in: 'cookie', name: 'inkwell_refresh_token' },
     },
     schemas: {
       ErrorResponse: {
@@ -92,7 +93,6 @@ export const openApiDocument = {
         type: 'object',
         properties: {
           accessToken: { type: 'string' },
-          refreshToken: { type: 'string' },
           user: schemaRef('User'),
         },
       },
@@ -112,16 +112,6 @@ export const openApiDocument = {
           email: { type: 'string', format: 'email' },
           password: { type: 'string', format: 'password' },
         },
-      },
-      RefreshTokenRequest: {
-        type: 'object',
-        required: ['refreshToken'],
-        properties: { refreshToken: { type: 'string' } },
-      },
-      LogoutRequest: {
-        type: 'object',
-        required: ['refreshToken'],
-        properties: { refreshToken: { type: 'string' } },
       },
       CreatePostRequest: {
         type: 'object',
@@ -378,10 +368,11 @@ export const openApiDocument = {
       post: {
         tags: ['Auth'],
         summary: 'Refresh tokens',
-        requestBody: { required: true, content: json(schemaRef('RefreshTokenRequest')) },
+        description: 'Uses the HttpOnly refresh-token cookie to issue a new access token.',
+        security: [{ refreshCookie: [] }],
         responses: {
           '200': ok('Tokens refreshed', schemaRef('AuthSession')),
-          '400': error('Refresh token is required'),
+          '400': error('Refresh token cookie is required'),
           '401': error('Refresh token is invalid or expired'),
         },
       },
@@ -390,7 +381,8 @@ export const openApiDocument = {
       post: {
         tags: ['Auth'],
         summary: 'Log out',
-        requestBody: { required: true, content: json(schemaRef('LogoutRequest')) },
+        description: 'Revokes the refresh-token cookie and clears it from the client.',
+        security: [{ refreshCookie: [] }],
         responses: { '204': noContent('Logged out') },
       },
     },

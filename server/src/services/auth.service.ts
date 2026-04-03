@@ -13,6 +13,12 @@ import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../utils/
 const userRepository = () => AppDataSource.getRepository(User);
 const refreshTokenRepository = () => AppDataSource.getRepository(RefreshToken);
 
+export interface AuthSession {
+  accessToken: string;
+  refreshToken: string;
+  user: ReturnType<typeof serializeUser>;
+}
+
 const createSession = async (user: User) => {
   const tokenId = randomUUID();
   const accessToken = signAccessToken({
@@ -40,7 +46,7 @@ const createSession = async (user: User) => {
     accessToken,
     refreshToken,
     user: serializeUser(user),
-  };
+  } satisfies AuthSession;
 };
 
 const getUserById = (userId: number) =>

@@ -12,7 +12,6 @@ export interface User {
 
 export interface Session {
   accessToken: string;
-  refreshToken: string;
   user: User;
 }
 

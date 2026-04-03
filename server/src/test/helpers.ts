@@ -12,7 +12,7 @@ export interface TestUser {
 
 export interface TestSession {
   accessToken: string;
-  refreshToken: string;
+  refreshCookie: string;
   user: TestUser;
 }
 
@@ -54,10 +54,18 @@ export const registerUser = async (
   const response = await api().post('/api/auth/register').send(payload);
 
   expect(response.status).toBe(201);
+  const refreshCookie = response.headers['set-cookie']?.find((cookie: string) =>
+    cookie.startsWith('inkwell_refresh_token='),
+  );
+
+  expect(refreshCookie).toBeTruthy();
 
   return {
     payload,
-    session: response.body as TestSession,
+    session: {
+      ...(response.body as Omit<TestSession, 'refreshCookie'>),
+      refreshCookie: refreshCookie as string,
+    } satisfies TestSession,
   };
 };
 
@@ -65,8 +73,16 @@ export const loginUser = async (payload: { email: string; password: string }) =>
   const response = await api().post('/api/auth/login').send(payload);
 
   expect(response.status).toBe(200);
+  const refreshCookie = response.headers['set-cookie']?.find((cookie: string) =>
+    cookie.startsWith('inkwell_refresh_token='),
+  );
 
-  return response.body as TestSession;
+  expect(refreshCookie).toBeTruthy();
+
+  return {
+    ...(response.body as Omit<TestSession, 'refreshCookie'>),
+    refreshCookie: refreshCookie as string,
+  } satisfies TestSession;
 };
 
 export const createPost = async (

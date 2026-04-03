@@ -115,6 +115,38 @@ describe('Profile and admin API', () => {
     expect(existsSync(avatarFilePath)).toBe(true);
   });
 
+  it('rejects avatar uploads with unsupported mime types', async () => {
+    const { session } = await registerUser({
+      name: 'Unsupported Avatar User',
+      email: 'unsupported-avatar@example.com',
+    });
+
+    const response = await api()
+      .post('/api/user/profile/avatar')
+      .set(authHeader(session.accessToken))
+      .attach('avatar', Buffer.from('plain-text-avatar'), {
+        filename: 'avatar.txt',
+        contentType: 'text/plain',
+      });
+
+    expect(response.status).toBe(415);
+    expect(response.body.message).toBe('Avatar image must be a PNG, JPEG, GIF, or WebP file.');
+  });
+
+  it('rejects avatar uploads when no file is attached', async () => {
+    const { session } = await registerUser({
+      name: 'Missing Avatar User',
+      email: 'missing-avatar@example.com',
+    });
+
+    const response = await api()
+      .post('/api/user/profile/avatar')
+      .set(authHeader(session.accessToken));
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Avatar image is required.');
+  });
+
   it('rejects avatar uploads larger than 5MB', async () => {
     const { session } = await registerUser({
       name: 'Large Avatar User',

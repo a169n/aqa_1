@@ -4,10 +4,13 @@ import path from 'node:path';
 import { env } from './config/env';
 import { swaggerRouter } from './docs/swagger';
 import { errorHandler, notFoundHandler } from './middleware/error-handler';
+import { securityHeaders } from './middleware/security';
 import { apiRouter } from './routes';
 
 export const app = express();
 
+app.disable('x-powered-by');
+app.use(securityHeaders);
 app.use(
   cors({
     origin: env.CLIENT_URL,

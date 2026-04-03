@@ -26,6 +26,13 @@ const resetUploadsDirectory = () => {
   mkdirSync(path.join(uploadsRoot, 'avatars'), { recursive: true });
 };
 
+const resetPublicSchema = async (
+  dataSource: typeof import('../config/data-source').AppDataSource,
+) => {
+  await dataSource.query('DROP SCHEMA IF EXISTS public CASCADE');
+  await dataSource.query('CREATE SCHEMA public');
+};
+
 const main = async () => {
   ensureSafeDatabaseName();
   await ensureTestDatabaseExists(testEnvironment);
@@ -37,7 +44,7 @@ const main = async () => {
     await AppDataSource.initialize();
   }
 
-  await AppDataSource.dropDatabase();
+  await resetPublicSchema(AppDataSource);
   await AppDataSource.runMigrations();
   await AppDataSource.destroy();
 

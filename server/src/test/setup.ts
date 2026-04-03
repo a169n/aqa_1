@@ -2,6 +2,7 @@ import { mkdirSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import { afterAll, beforeAll, beforeEach } from 'vitest';
 import type { DataSource } from 'typeorm';
+import { resetAuthRateLimitState } from '../middleware/security';
 import { cleanDatabase } from '../scripts/db-utils';
 import { applyTestEnvironment, ensureTestDatabaseExists } from './test-env';
 
@@ -20,6 +21,11 @@ const resetUploadsDirectory = () => {
   mkdirSync(path.join(uploadsRoot, 'avatars'), { recursive: true });
 };
 
+const resetPublicSchema = async () => {
+  await dataSource.query('DROP SCHEMA IF EXISTS public CASCADE');
+  await dataSource.query('CREATE SCHEMA public');
+};
+
 beforeAll(async () => {
   await ensureTestDatabaseExists(testEnvironment);
 
@@ -31,12 +37,13 @@ beforeAll(async () => {
     await dataSource.initialize();
   }
 
-  await dataSource.dropDatabase();
+  await resetPublicSchema();
   await dataSource.runMigrations();
   resetUploadsDirectory();
 });
 
 beforeEach(async () => {
+  resetAuthRateLimitState();
   await cleanDatabase(dataSource);
   resetUploadsDirectory();
 });

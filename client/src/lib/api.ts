@@ -16,23 +16,19 @@ import type {
   User,
   UserRole,
 } from '@/types/api';
-import {
-  clearStoredSession,
-  getAccessToken,
-  getRefreshToken,
-  getStoredSession,
-  setStoredSession,
-} from './storage';
+import { clearStoredSession, getAccessToken, setStoredSession } from './storage';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api';
 const API_ORIGIN = new URL(API_BASE_URL).origin;
 
 const publicClient = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true,
 });
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {
@@ -48,15 +44,8 @@ api.interceptors.request.use((config) => {
 let refreshPromise: Promise<Session | null> | null = null;
 
 export const requestTokenRefresh = async () => {
-  const refreshToken = getRefreshToken();
-
-  if (!refreshToken) {
-    clearStoredSession();
-    return null;
-  }
-
   try {
-    const response = await publicClient.post<Session>('/auth/refresh', { refreshToken });
+    const response = await publicClient.post<Session>('/auth/refresh');
     setStoredSession(response.data);
     return response.data;
   } catch {
@@ -121,15 +110,8 @@ export const authApi = {
     return response.data;
   },
   logout: async () => {
-    const refreshToken = getStoredSession()?.refreshToken;
-
-    if (!refreshToken) {
-      clearStoredSession();
-      return;
-    }
-
     try {
-      await publicClient.post('/auth/logout', { refreshToken });
+      await publicClient.post('/auth/logout');
     } finally {
       clearStoredSession();
     }

@@ -43,7 +43,7 @@ Legend: each cell contains `C#` component IDs.
 
 ## Assumptions and reasoning
 
-- The repository in this workspace is the system under test for Assignment 1.
+- The repository in this workspace is the system under test.
 - Scope is QA planning/baselining, not production load/performance certification.
 - No payment, third-party messaging, or external notification services are implemented, so those areas are out of scope.
 

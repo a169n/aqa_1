@@ -22,10 +22,25 @@
     "test:coverage": "npm run test:coverage --workspace server",
     "test:e2e": "playwright test",
     "test": "npm run test:api && npm run test:e2e",
-    "ci": "npm run lint && npm run build && npm run test:coverage && npm run test:e2e",
+    "qa:summary": "npm run qa:summary --workspace server",
+    "qa:gates": "npm run qa:gates --workspace server",
+    "ci": "npm run lint && npm run build && npm run test:coverage && npm run test:e2e && npm run qa:gates",
     "docker:build:backend": "docker build -f server/Dockerfile .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
+  },
+  "overrides": {
+    "brace-expansion": "2.0.3",
+    "express": {
+      "path-to-regexp": "0.1.13"
+    },
+    "glob": {
+      "brace-expansion": "2.0.3"
+    },
+    "minimatch": {
+      "brace-expansion": "2.0.3"
+    },
+    "path-to-regexp": "0.1.13"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",

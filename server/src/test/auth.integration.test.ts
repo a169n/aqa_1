@@ -9,7 +9,7 @@ describe('Auth API', () => {
 
     expect(session.user.role).toBe('admin');
     expect(session.accessToken).toBeTruthy();
-    expect(session.refreshToken).toBeTruthy();
+    expect(session.refreshCookie).toContain('inkwell_refresh_token=');
 
     const meResponse = await api().get('/api/auth/me').set(authHeader(session.accessToken));
 
@@ -58,17 +58,23 @@ describe('Auth API', () => {
       email: 'refresh@example.com',
     });
 
-    const refreshResponse = await api().post('/api/auth/refresh').send({
-      refreshToken: session.refreshToken,
-    });
+    const refreshResponse = await api()
+      .post('/api/auth/refresh')
+      .set('Cookie', session.refreshCookie);
 
     expect(refreshResponse.status).toBe(200);
-    expect(refreshResponse.body.refreshToken).not.toBe(session.refreshToken);
     expect(refreshResponse.body.accessToken).toBeTruthy();
+    expect(refreshResponse.body.refreshToken).toBeUndefined();
+    const rotatedRefreshCookie = refreshResponse.headers['set-cookie']?.find((cookie: string) =>
+      cookie.startsWith('inkwell_refresh_token='),
+    );
 
-    const reusedTokenResponse = await api().post('/api/auth/refresh').send({
-      refreshToken: session.refreshToken,
-    });
+    expect(rotatedRefreshCookie).toBeTruthy();
+    expect(rotatedRefreshCookie).not.toBe(session.refreshCookie);
+
+    const reusedTokenResponse = await api()
+      .post('/api/auth/refresh')
+      .set('Cookie', session.refreshCookie);
 
     expect(reusedTokenResponse.status).toBe(401);
     expect(reusedTokenResponse.body.message).toContain('invalid or expired');
@@ -93,15 +99,16 @@ describe('Auth API', () => {
       email: 'logout@example.com',
     });
 
-    const logoutResponse = await api().post('/api/auth/logout').send({
-      refreshToken: session.refreshToken,
-    });
+    const logoutResponse = await api()
+      .post('/api/auth/logout')
+      .set('Cookie', session.refreshCookie);
 
     expect(logoutResponse.status).toBe(204);
+    expect(logoutResponse.headers['set-cookie']?.[0]).toContain('inkwell_refresh_token=;');
 
-    const refreshAfterLogoutResponse = await api().post('/api/auth/refresh').send({
-      refreshToken: session.refreshToken,
-    });
+    const refreshAfterLogoutResponse = await api()
+      .post('/api/auth/refresh')
+      .set('Cookie', session.refreshCookie);
 
     expect(refreshAfterLogoutResponse.status).toBe(401);
     expect(refreshAfterLogoutResponse.body.message).toContain('invalid or expired');

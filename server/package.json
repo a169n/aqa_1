@@ -9,10 +9,12 @@
     "lint": "eslint \"src/**/*.ts\"",
     "lint:fix": "eslint --fix \"src/**/*.ts\"",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "vitest run --coverage --reporter=default --reporter=json --outputFile.json=../.tmp/qa/vitest-report.json",
     "db:reset:test": "tsx src/test/reset-db.ts",
     "db:clean": "tsx src/scripts/clean-db.ts",
     "db:seed": "tsx src/scripts/seed-db.ts",
+    "qa:summary": "tsx src/qa/generate-qa-summary.ts",
+    "qa:gates": "npm run qa:summary && tsx src/qa/check-quality-gates.ts",
     "typeorm": "typeorm-ts-node-commonjs -d src/config/data-source.ts",
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert"
