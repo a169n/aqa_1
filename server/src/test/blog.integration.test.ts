@@ -82,9 +82,7 @@ describe('Blog API', () => {
       });
 
     expect(createMissingTagResponse.status).toBe(400);
-    expect(createMissingTagResponse.body.message).toBe(
-      'One or more selected tags do not exist.',
-    );
+    expect(createMissingTagResponse.body.message).toBe('One or more selected tags do not exist.');
 
     const post = await createPost(session.accessToken, {
       title: 'Valid post',

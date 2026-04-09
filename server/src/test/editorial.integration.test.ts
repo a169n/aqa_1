@@ -169,9 +169,7 @@ describe('Editorial workspace API', () => {
       });
 
     expect(noTargetResponse.status).toBe(400);
-    expect(noTargetResponse.body.message).toBe(
-      'Report must target exactly one post or comment.',
-    );
+    expect(noTargetResponse.body.message).toBe('Report must target exactly one post or comment.');
   });
 
   it('lets admins moderate reports and taxonomy records', async () => {

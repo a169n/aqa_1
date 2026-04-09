@@ -13,7 +13,7 @@ export interface CoverageSummary {
   statements: MetricValue;
 }
 
-export interface CoverageFileSummary extends CoverageSummary {}
+export type CoverageFileSummary = CoverageSummary;
 
 export interface RiskModuleCoverageSummary extends CoverageSummary {
   lowBranchCoverage: boolean;
@@ -234,7 +234,10 @@ const riskModuleDefinitions = [
     id: 'C5',
     name: 'Public browsing and discovery flows',
     priority: 'P2',
-    sourceFiles: ['server/src/controllers/post.controller.ts', 'server/src/services/blog.service.ts'],
+    sourceFiles: [
+      'server/src/controllers/post.controller.ts',
+      'server/src/services/blog.service.ts',
+    ],
   },
 ] as const;
 
@@ -244,7 +247,6 @@ const riskModuleCoverageThresholds = {
 } as const;
 
 const coverageMetricKeys = ['branches', 'functions', 'lines', 'statements'] as const;
-type CoverageMetricKey = (typeof coverageMetricKeys)[number];
 
 const toPosixPath = (value: string) => value.replaceAll('\\', '/');
 

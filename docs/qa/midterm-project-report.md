@@ -76,6 +76,52 @@ The implementation target remained unchanged:
 | custom QA scripts | artifact summarization and quality gates | converts raw execution outputs into measurable QA decisions |
 | `GitHub Actions` | CI/CD enforcement | keeps release checks version-controlled and repeatable |
 
+### 2.4 Comparative Tool and Technology Analysis
+
+The selected QA stack was chosen not only because the tools are popular, but because they fit the repository structure, the current CI/CD workflow, and the evidence requirements of the midterm. The most relevant alternatives are compared below at the API, browser, and delivery layers.
+
+#### 2.4.1 API Automation Tools
+
+| Comparison Dimension | Selected Tool | Alternative Tool | Relevance to Inkwell |
+| -------------------- | ------------- | ---------------- | -------------------- |
+| integration with current stack | `Vitest + Supertest` fits the TypeScript backend directly and already drives the current `server/package.json` scripts | `Jest + Supertest` would be viable, but would add migration and maintenance overhead without solving a current gap | the repo already runs backend tests through `vitest` and exports QA artifacts from that path |
+| execution speed / efficiency | lightweight and fast for integration-heavy backend validation | mature, but typically heavier for the same workflow in this repo | the April 9 run produced `46/46` passing API scenarios with coverage export in one flow |
+| maintainability | low-friction because it matches the current backend workspace and existing tests | would require replacing or dual-maintaining the test runner layer | the current suite is already stable and readable with the existing stack |
+| CI/CD suitability | works directly with `npm run test:coverage` and JSON artifact export | workable, but would require equivalent reporter and artifact reconfiguration | the QA pipeline already depends on the current `vitest-report.json` generation path |
+| evidence/reporting quality | currently produces coverage and machine-readable API results used by the report | could produce similar output, but that value is not unique enough to justify migration | the report already cites `.tmp/qa/vitest-report.json` and `server/coverage/coverage-summary.json` |
+| limitations | less widely standardized in legacy enterprise teams than Jest | more familiar in some teams, but not a better fit for this repo's actual setup | tool familiarity alone would not improve coverage depth or evidence quality here |
+| fit for current midterm scope | best fit because it preserves the working backend automation path with minimal friction | acceptable alternative, but unnecessary for the current scope | the midterm goal was stronger evidence, not runner replacement |
+
+`Vitest + Supertest` was the better fit because it is TypeScript-native, already aligned with the backend workspace scripts, introduces almost no migration friction, and supports direct API validation without browser noise. That choice is supported by the current repo evidence: `server/package.json` runs the backend suite through `vitest`, the April 9 baseline shows `46/46` passing API scenarios, and coverage artifacts are already generated in the format used by the QA report.
+
+#### 2.4.2 Browser Automation Tools
+
+| Comparison Dimension | Selected Tool | Alternative Tool | Relevance to Inkwell |
+| -------------------- | ------------- | ---------------- | -------------------- |
+| integration with current stack | `Playwright` already drives the root `test:e2e` workflow and artifact generation | `Cypress` could cover browser flows, but is not part of the current repo execution model | the current E2E evidence and screenshots already depend on Playwright outputs |
+| execution speed / efficiency | efficient for a small smoke suite and controlled browser orchestration | competitive for many UI workflows, but not clearly better for this repo's smoke-style suite | the project uses a focused `6/6` smoke baseline rather than broad UI regression coverage |
+| maintainability | strong fit for multi-step cross-layer smoke tests with minimal special casing | solid for interactive debugging, but not a better match for the current pipeline | the present browser suite is small, stable, and tied to artifact export rather than heavy UI authoring ergonomics |
+| CI/CD suitability | integrates cleanly with headless CI runs and report uploads | also CI-capable, but would require new workflow and artifact conventions | the current GitHub Actions job already uploads Playwright reports and failure output |
+| evidence/reporting quality | strong HTML reports, screenshot support, and structured outputs | capable, but the repo already has Playwright report evidence in use | the report cites `.tmp/qa/playwright-report.json`, `playwright-report/`, and screenshot assets |
+| limitations | frontend build warnings still surface during E2E setup, and browser tests are slower than API tests | alternative tooling would not remove the underlying app/runtime issues automatically | the main limitation is application/runtime cost, not the browser tool choice itself |
+| fit for current midterm scope | best fit for deterministic integrated smoke coverage with reusable evidence | viable, but unnecessary for the current project scale and report goals | the midterm required visible browser evidence more than a change in test authoring model |
+
+`Playwright` was the better fit because it provides stronger artifact output, deterministic browser orchestration, and a cleaner match for smoke-style integrated user flows. That choice is supported by the repo itself: the root `package.json` runs `playwright test`, the April 9 baseline shows `6/6` passing E2E scenarios, and the report already depends on existing Playwright report and screenshot evidence.
+
+#### 2.4.3 CI/CD Platform Choice
+
+| Comparison Dimension | Selected Tool | Alternative Tool | Relevance to Inkwell |
+| -------------------- | ------------- | ---------------- | -------------------- |
+| integration with current stack | `GitHub Actions` is already the repo's delivery platform and matches the hosted workflow model | `Jenkins` could run the same steps, but would add separate operational and maintenance overhead | the repository already stores the full QA pipeline as `.github/workflows/qa.yml` |
+| execution speed / efficiency | sufficient for the project size and simple staged pipeline | powerful, but heavier to operate for a small academic repo | the current job chain already supports lint, build, API, E2E, gates, and Docker verification |
+| maintainability | version-controlled YAML workflow with minimal infrastructure burden | would require separate server management, plugin maintenance, and job administration | project scale does not justify Jenkins operational complexity |
+| CI/CD suitability | native fit for PR/push validation and artifact passing between jobs | technically capable, but not a simpler option for this repository | the QA workflow already restores artifacts and evaluates gates in a dedicated job |
+| evidence/reporting quality | built-in artifact upload/restore flow supports reproducible QA evidence | could replicate the same flow, but not with less effort in this environment | the report already cites successful workflow evidence and uploaded artifact locations |
+| limitations | less customizable than a fully self-managed CI platform in some advanced scenarios | more flexible at enterprise scale, but with higher upkeep cost | the project does not require enterprise-grade CI customization |
+| fit for current midterm scope | best fit because it is already in place and produces the report's evidence chain | overpowered for the current scope and team size | the midterm benefits more from reproducibility than from CI platform breadth |
+
+`GitHub Actions` was the better fit because it is native to the repository, supports a simple artifact upload and restore flow, and is sufficient for this project's scale without Jenkins operational overhead. The current evidence chain depends on that choice: `.github/workflows/qa.yml` defines the staged QA flow, the `qa-gates` job restores artifacts before evaluating thresholds, and the report already references successful workflow execution and stored QA artifacts.
+
 ## 3. Automation Implementation
 
 ### 3.1 QA Evidence Layer Upgrade
@@ -423,6 +469,8 @@ The current quality-gate model works well as a release baseline, but it is not s
 | overall coverage gates | quickly reject broad drops in backend test reach | do not reveal module-level branch blind spots |
 | zero-failure execution gates | keep the baseline operationally stable | do not indicate whether coverage is concentrated too heavily in easy paths |
 | `P1` automation coverage gate | enforces the original risk-based priority model | does not guarantee equal depth across all `P1` modules |
+
+This limitation also reinforces the delivery-stack choice justified in `2.4`: the selected tools were intentionally chosen to support fast CI feedback, artifact preservation, and reproducible QA evidence, even though stronger depth controls are still needed at the module level.
 
 The practical implication is that the gate set should remain unchanged for this midterm, but future work should consider a module-level branch-coverage expectation once `C3` and `C5` are improved enough to make that threshold realistic.
 
