@@ -1,3 +1,6 @@
+import { AppDataSource } from '../config/data-source';
+import { Bookmark } from '../models/bookmark.entity';
+import { Like } from '../models/like.entity';
 import { api, authHeader, createPost, registerUser } from './helpers';
 
 describe('Blog API', () => {
@@ -49,6 +52,65 @@ describe('Blog API', () => {
 
     const getDeletedPostResponse = await api().get(`/api/posts/${post.id}`);
     expect(getDeletedPostResponse.status).toBe(404);
+  });
+
+  it('rejects create and update requests that reference missing categories or tags', async () => {
+    const { session } = await registerUser({
+      name: 'Edge Author',
+      email: 'edge-author@example.com',
+    });
+
+    const createMissingCategoryResponse = await api()
+      .post('/api/posts')
+      .set(authHeader(session.accessToken))
+      .send({
+        title: 'Missing category',
+        content: 'Should fail.',
+        categoryId: 9999,
+      });
+
+    expect(createMissingCategoryResponse.status).toBe(400);
+    expect(createMissingCategoryResponse.body.message).toBe('Selected category does not exist.');
+
+    const createMissingTagResponse = await api()
+      .post('/api/posts')
+      .set(authHeader(session.accessToken))
+      .send({
+        title: 'Missing tag',
+        content: 'Should also fail.',
+        tagIds: [9999],
+      });
+
+    expect(createMissingTagResponse.status).toBe(400);
+    expect(createMissingTagResponse.body.message).toBe(
+      'One or more selected tags do not exist.',
+    );
+
+    const post = await createPost(session.accessToken, {
+      title: 'Valid post',
+      content: 'Will be updated with invalid references.',
+      publish: false,
+    });
+
+    const updateMissingCategoryResponse = await api()
+      .put(`/api/posts/${post.id}`)
+      .set(authHeader(session.accessToken))
+      .send({
+        categoryId: 9999,
+      });
+
+    expect(updateMissingCategoryResponse.status).toBe(400);
+    expect(updateMissingCategoryResponse.body.message).toBe('Selected category does not exist.');
+
+    const updateMissingTagResponse = await api()
+      .put(`/api/posts/${post.id}`)
+      .set(authHeader(session.accessToken))
+      .send({
+        tagIds: [9999],
+      });
+
+    expect(updateMissingTagResponse.status).toBe(400);
+    expect(updateMissingTagResponse.body.message).toBe('One or more selected tags do not exist.');
   });
 
   it('prevents non-authors from managing posts while still allowing admins to moderate them', async () => {
@@ -164,5 +226,64 @@ describe('Blog API', () => {
 
     expect(missingLikeResponse.status).toBe(404);
     expect(missingLikeResponse.body.message).toBe('Like not found.');
+  });
+
+  it('serializes parallel like requests into one created like and one duplicate rejection', async () => {
+    const { session: authorSession } = await registerUser({
+      name: 'Parallel Author',
+      email: 'parallel-author@example.com',
+    });
+    const { session: likerSession } = await registerUser({
+      name: 'Parallel Liker',
+      email: 'parallel-liker@example.com',
+    });
+    const post = await createPost(authorSession.accessToken, {
+      title: 'Parallel like target',
+      content: 'Parallel likes should remain consistent.',
+    });
+
+    const [firstLikeResponse, secondLikeResponse] = await Promise.all([
+      api().post(`/api/posts/${post.id}/likes`).set(authHeader(likerSession.accessToken)),
+      api().post(`/api/posts/${post.id}/likes`).set(authHeader(likerSession.accessToken)),
+    ]);
+    const likeStatuses = [firstLikeResponse.status, secondLikeResponse.status].sort(
+      (left, right) => left - right,
+    );
+    const likeCount = await AppDataSource.getRepository(Like).countBy({
+      postId: post.id,
+      userId: likerSession.user.id,
+    });
+
+    expect(likeStatuses).toEqual([201, 409]);
+    expect(likeCount).toBe(1);
+  });
+
+  it('keeps parallel bookmark requests idempotent and persists a single bookmark record', async () => {
+    const { session: authorSession } = await registerUser({
+      name: 'Parallel Bookmark Author',
+      email: 'parallel-bookmark-author@example.com',
+    });
+    const { session: readerSession } = await registerUser({
+      name: 'Parallel Bookmark Reader',
+      email: 'parallel-bookmark-reader@example.com',
+    });
+    const post = await createPost(authorSession.accessToken, {
+      title: 'Parallel bookmark target',
+      content: 'Parallel bookmarks should reuse the same row.',
+    });
+
+    const [firstBookmarkResponse, secondBookmarkResponse] = await Promise.all([
+      api().post(`/api/posts/${post.id}/bookmarks`).set(authHeader(readerSession.accessToken)),
+      api().post(`/api/posts/${post.id}/bookmarks`).set(authHeader(readerSession.accessToken)),
+    ]);
+    const bookmarkCount = await AppDataSource.getRepository(Bookmark).countBy({
+      postId: post.id,
+      userId: readerSession.user.id,
+    });
+
+    expect(firstBookmarkResponse.status).toBe(201);
+    expect(secondBookmarkResponse.status).toBe(201);
+    expect(firstBookmarkResponse.body.id).toBe(secondBookmarkResponse.body.id);
+    expect(bookmarkCount).toBe(1);
   });
 });

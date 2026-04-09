@@ -127,6 +127,53 @@ describe('Editorial workspace API', () => {
     expect(reportCommentResponse.status).toBe(201);
   });
 
+  it('rejects reports that target both entities or neither entity', async () => {
+    const { session: authorSession } = await registerUser({
+      name: 'Report Author',
+      email: 'report-target-author@example.com',
+    });
+    const { session: readerSession } = await registerUser({
+      name: 'Report Reader',
+      email: 'report-target-reader@example.com',
+    });
+    const post = await createPost(authorSession.accessToken, {
+      title: 'Report validation target',
+      content: 'This post exists so the report IDs are valid.',
+    });
+    const commentResponse = await api()
+      .post(`/api/posts/${post.id}/comments`)
+      .set(authHeader(readerSession.accessToken))
+      .send({ content: 'Comment for report validation.' });
+
+    expect(commentResponse.status).toBe(201);
+
+    const bothTargetsResponse = await api()
+      .post('/api/reports')
+      .set(authHeader(readerSession.accessToken))
+      .send({
+        postId: post.id,
+        commentId: commentResponse.body.id,
+        reason: 'This should be rejected.',
+      });
+
+    expect(bothTargetsResponse.status).toBe(400);
+    expect(bothTargetsResponse.body.message).toBe(
+      'Report must target exactly one post or comment.',
+    );
+
+    const noTargetResponse = await api()
+      .post('/api/reports')
+      .set(authHeader(readerSession.accessToken))
+      .send({
+        reason: 'This should also be rejected.',
+      });
+
+    expect(noTargetResponse.status).toBe(400);
+    expect(noTargetResponse.body.message).toBe(
+      'Report must target exactly one post or comment.',
+    );
+  });
+
   it('lets admins moderate reports and taxonomy records', async () => {
     const { session: adminSession } = await registerUser({
       name: 'Admin',

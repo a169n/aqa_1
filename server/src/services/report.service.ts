@@ -22,21 +22,38 @@ const normalizeStatus = (value: string | undefined): ReportStatus | null => {
     : null;
 };
 
+export interface ParsedReportTarget {
+  commentId: number | null;
+  postId: number | null;
+}
+
+export const parseReportTarget = (input: {
+  commentId?: number;
+  postId?: number;
+}): ParsedReportTarget => {
+  const postId = input.postId ? Number(input.postId) : null;
+  const commentId = input.commentId ? Number(input.commentId) : null;
+
+  if ((postId ? 1 : 0) + (commentId ? 1 : 0) !== 1) {
+    throw new HttpError(400, 'Report must target exactly one post or comment.');
+  }
+
+  return {
+    commentId,
+    postId,
+  };
+};
+
 export const reportService = {
   async createReport(
     actor: AuthenticatedUser,
     input: { postId?: number; commentId?: number; reason: string },
   ) {
-    const postId = input.postId ? Number(input.postId) : null;
-    const commentId = input.commentId ? Number(input.commentId) : null;
+    const { postId, commentId } = parseReportTarget(input);
     const reason = input.reason?.trim();
 
     if (!reason) {
       throw new HttpError(400, 'Report reason is required.');
-    }
-
-    if ((postId ? 1 : 0) + (commentId ? 1 : 0) !== 1) {
-      throw new HttpError(400, 'Report must target exactly one post or comment.');
     }
 
     if (postId) {

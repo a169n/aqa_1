@@ -14,6 +14,16 @@ import { DEMO_USER_PASSWORD, baseSeedCounts } from '../scripts/seed-data';
 import { seedDatabase } from '../scripts/seed-db';
 import { comparePassword } from '../utils/password';
 
+const collectCountsSequentially = async (countReaders: Array<() => Promise<number>>) => {
+  const counts: number[] = [];
+
+  for (const readCount of countReaders) {
+    counts.push(await readCount());
+  }
+
+  return counts;
+};
+
 describe('Database seed scripts', () => {
   it('creates a deterministic demo dataset with valid relations', async () => {
     const result = await seedDatabase(AppDataSource);
@@ -86,15 +96,15 @@ describe('Database seed scripts', () => {
       }
     }
 
-    const tableCounts = await Promise.all([
-      AppDataSource.getRepository(Category).count(),
-      AppDataSource.getRepository(Tag).count(),
-      AppDataSource.getRepository(PostTag).count(),
-      AppDataSource.getRepository(Comment).count(),
-      AppDataSource.getRepository(Like).count(),
-      AppDataSource.getRepository(Bookmark).count(),
-      AppDataSource.getRepository(Report).count(),
-      AppDataSource.getRepository(RefreshToken).count(),
+    const tableCounts = await collectCountsSequentially([
+      () => AppDataSource.getRepository(Category).count(),
+      () => AppDataSource.getRepository(Tag).count(),
+      () => AppDataSource.getRepository(PostTag).count(),
+      () => AppDataSource.getRepository(Comment).count(),
+      () => AppDataSource.getRepository(Like).count(),
+      () => AppDataSource.getRepository(Bookmark).count(),
+      () => AppDataSource.getRepository(Report).count(),
+      () => AppDataSource.getRepository(RefreshToken).count(),
     ]);
 
     expect(tableCounts).toEqual([
@@ -113,17 +123,17 @@ describe('Database seed scripts', () => {
     await seedDatabase(AppDataSource);
     await cleanDatabase(AppDataSource);
 
-    const counts = await Promise.all([
-      AppDataSource.getRepository(User).count(),
-      AppDataSource.getRepository(Post).count(),
-      AppDataSource.getRepository(Comment).count(),
-      AppDataSource.getRepository(Like).count(),
-      AppDataSource.getRepository(Category).count(),
-      AppDataSource.getRepository(Tag).count(),
-      AppDataSource.getRepository(PostTag).count(),
-      AppDataSource.getRepository(Bookmark).count(),
-      AppDataSource.getRepository(Report).count(),
-      AppDataSource.getRepository(RefreshToken).count(),
+    const counts = await collectCountsSequentially([
+      () => AppDataSource.getRepository(User).count(),
+      () => AppDataSource.getRepository(Post).count(),
+      () => AppDataSource.getRepository(Comment).count(),
+      () => AppDataSource.getRepository(Like).count(),
+      () => AppDataSource.getRepository(Category).count(),
+      () => AppDataSource.getRepository(Tag).count(),
+      () => AppDataSource.getRepository(PostTag).count(),
+      () => AppDataSource.getRepository(Bookmark).count(),
+      () => AppDataSource.getRepository(Report).count(),
+      () => AppDataSource.getRepository(RefreshToken).count(),
     ]);
 
     expect(counts).toEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
@@ -145,15 +155,15 @@ describe('Database seed scripts', () => {
 
     expect(secondSeed).toEqual(firstSeed);
 
-    const counts = await Promise.all([
-      AppDataSource.getRepository(User).count(),
-      AppDataSource.getRepository(Post).count(),
-      AppDataSource.getRepository(PostTag).count(),
-      AppDataSource.getRepository(Comment).count(),
-      AppDataSource.getRepository(Like).count(),
-      AppDataSource.getRepository(Bookmark).count(),
-      AppDataSource.getRepository(Report).count(),
-      AppDataSource.getRepository(RefreshToken).count(),
+    const counts = await collectCountsSequentially([
+      () => AppDataSource.getRepository(User).count(),
+      () => AppDataSource.getRepository(Post).count(),
+      () => AppDataSource.getRepository(PostTag).count(),
+      () => AppDataSource.getRepository(Comment).count(),
+      () => AppDataSource.getRepository(Like).count(),
+      () => AppDataSource.getRepository(Bookmark).count(),
+      () => AppDataSource.getRepository(Report).count(),
+      () => AppDataSource.getRepository(RefreshToken).count(),
     ]);
 
     expect(counts).toEqual([

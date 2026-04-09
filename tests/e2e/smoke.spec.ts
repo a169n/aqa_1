@@ -55,6 +55,16 @@ const logout = async (page: Page) => {
 test.describe('Inkwell editorial smoke flows', () => {
   test.describe.configure({ mode: 'serial' });
 
+  test('shows a clear error for invalid login attempts', async ({ page }) => {
+    await page.goto('/login');
+    await page.locator('#login-email').fill('missing-user@example.com');
+    await page.locator('#login-password').fill('wrong-password');
+    await page.getByRole('button', { name: 'Login' }).click();
+
+    await expect(page.getByRole('main').getByText('Invalid credentials.').last()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Login' }).first()).toBeVisible();
+  });
+
   test('registers admin and creates category/tag in taxonomy', async ({ page }) => {
     await register(page, adminUser);
     await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible();
@@ -117,6 +127,14 @@ test.describe('Inkwell editorial smoke flows', () => {
 
     await page.goto('/bookmarks');
     await expect(page.getByText(smokePost.title)).toBeVisible();
+  });
+
+  test('blocks non-admin users from direct admin route access', async ({ page }) => {
+    await page.goto('/admin/reports');
+
+    await expect(page).toHaveURL(/\/(login)?$/);
+    await expect(page.getByText('Report queue')).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'Admin' })).toHaveCount(0);
   });
 
   test('admin can review reports queue', async ({ page }) => {

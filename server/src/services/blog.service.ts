@@ -153,34 +153,65 @@ interface PostListFilters {
   authorId?: string;
 }
 
+export interface PostVisibilityScope {
+  authorId: number | null;
+  status: PostStatus;
+}
+
+export const resolvePostVisibilityScope = (
+  filters: PostListFilters,
+  viewer?: AuthenticatedUser,
+): PostVisibilityScope => {
+  const requestedStatus = filters.status as PostStatus | undefined;
+  const authorId = toNullableNumber(filters.authorId);
+
+  if (!requestedStatus || requestedStatus === POST_STATUSES.PUBLISHED) {
+    return {
+      authorId,
+      status: POST_STATUSES.PUBLISHED,
+    };
+  }
+
+  if (viewer?.role === USER_ROLES.ADMIN) {
+    return {
+      authorId,
+      status: requestedStatus,
+    };
+  }
+
+  if (viewer) {
+    const scopedAuthorId = authorId ?? viewer.id;
+
+    if (scopedAuthorId !== viewer.id) {
+      return {
+        authorId,
+        status: POST_STATUSES.PUBLISHED,
+      };
+    }
+
+    return {
+      authorId: viewer.id,
+      status: requestedStatus,
+    };
+  }
+
+  return {
+    authorId,
+    status: POST_STATUSES.PUBLISHED,
+  };
+};
+
 const applyPostFilters = (
   query: ReturnType<typeof basePostQuery>,
   filters: PostListFilters,
   viewer?: AuthenticatedUser,
 ) => {
-  const requestedStatus = filters.status as PostStatus | undefined;
-  const authorId = toNullableNumber(filters.authorId);
+  const visibilityScope = resolvePostVisibilityScope(filters, viewer);
 
-  if (!requestedStatus || requestedStatus === POST_STATUSES.PUBLISHED) {
-    query.andWhere('post.status = :status', { status: POST_STATUSES.PUBLISHED });
-  } else if (viewer?.role === USER_ROLES.ADMIN) {
-    query.andWhere('post.status = :status', { status: requestedStatus });
-  } else if (viewer) {
-    const scopedAuthorId = authorId ?? viewer.id;
+  query.andWhere('post.status = :status', { status: visibilityScope.status });
 
-    if (scopedAuthorId !== viewer.id) {
-      query.andWhere('post.status = :status', { status: POST_STATUSES.PUBLISHED });
-    } else {
-      query
-        .andWhere('post.status = :status', { status: requestedStatus })
-        .andWhere('post.author_id = :actorId', { actorId: viewer.id });
-    }
-  } else {
-    query.andWhere('post.status = :status', { status: POST_STATUSES.PUBLISHED });
-  }
-
-  if (authorId) {
-    query.andWhere('post.author_id = :authorId', { authorId });
+  if (visibilityScope.authorId) {
+    query.andWhere('post.author_id = :authorId', { authorId: visibilityScope.authorId });
   }
 
   const categoryId = toNullableNumber(filters.categoryId);

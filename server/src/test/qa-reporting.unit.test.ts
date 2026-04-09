@@ -21,6 +21,84 @@ const coverageSummaryFixture: CoverageSummaryJson = {
     lines: { covered: 416, pct: 83.2, total: 500 },
     statements: { covered: 420, pct: 84, total: 500 },
   },
+  [path.join(repoRoot, 'server', 'src', 'controllers', 'auth.controller.ts')]: {
+    branches: { covered: 2, pct: 50, total: 4 },
+    functions: { covered: 6, pct: 100, total: 6 },
+    lines: { covered: 19, pct: 100, total: 19 },
+    statements: { covered: 20, pct: 100, total: 20 },
+  },
+  [path.join(repoRoot, 'server', 'src', 'middleware', 'authenticate.ts')]: {
+    branches: { covered: 13, pct: 92.85, total: 14 },
+    functions: { covered: 5, pct: 100, total: 5 },
+    lines: { covered: 31, pct: 93.93, total: 33 },
+    statements: { covered: 31, pct: 93.93, total: 33 },
+  },
+  [path.join(repoRoot, 'server', 'src', 'middleware', 'security.ts')]: {
+    branches: { covered: 13, pct: 68.42, total: 19 },
+    functions: { covered: 7, pct: 100, total: 7 },
+    lines: { covered: 40, pct: 95.23, total: 42 },
+    statements: { covered: 40, pct: 95.23, total: 42 },
+  },
+  [path.join(repoRoot, 'server', 'src', 'services', 'auth.service.ts')]: {
+    branches: { covered: 20, pct: 74.07, total: 27 },
+    functions: { covered: 9, pct: 100, total: 9 },
+    lines: { covered: 47, pct: 87.03, total: 54 },
+    statements: { covered: 49, pct: 87.5, total: 56 },
+  },
+  [path.join(repoRoot, 'server', 'src', 'controllers', 'post.controller.ts')]: {
+    branches: { covered: 9, pct: 75, total: 12 },
+    functions: { covered: 10, pct: 83.33, total: 12 },
+    lines: { covered: 23, pct: 88.46, total: 26 },
+    statements: { covered: 23, pct: 88.46, total: 26 },
+  },
+  [path.join(repoRoot, 'server', 'src', 'controllers', 'comment.controller.ts')]: {
+    branches: { covered: 0, pct: 100, total: 0 },
+    functions: { covered: 2, pct: 100, total: 2 },
+    lines: { covered: 4, pct: 80, total: 5 },
+    statements: { covered: 4, pct: 80, total: 5 },
+  },
+  [path.join(repoRoot, 'server', 'src', 'controllers', 'like.controller.ts')]: {
+    branches: { covered: 0, pct: 100, total: 0 },
+    functions: { covered: 2, pct: 100, total: 2 },
+    lines: { covered: 5, pct: 100, total: 5 },
+    statements: { covered: 5, pct: 100, total: 5 },
+  },
+  [path.join(repoRoot, 'server', 'src', 'controllers', 'report.controller.ts')]: {
+    branches: { covered: 1, pct: 50, total: 2 },
+    functions: { covered: 3, pct: 100, total: 3 },
+    lines: { covered: 6, pct: 100, total: 6 },
+    statements: { covered: 6, pct: 100, total: 6 },
+  },
+  [path.join(repoRoot, 'server', 'src', 'controllers', 'profile.controller.ts')]: {
+    branches: { covered: 2, pct: 100, total: 2 },
+    functions: { covered: 3, pct: 100, total: 3 },
+    lines: { covered: 9, pct: 100, total: 9 },
+    statements: { covered: 9, pct: 100, total: 9 },
+  },
+  [path.join(repoRoot, 'server', 'src', 'middleware', 'upload.ts')]: {
+    branches: { covered: 3, pct: 75, total: 4 },
+    functions: { covered: 3, pct: 100, total: 3 },
+    lines: { covered: 12, pct: 100, total: 12 },
+    statements: { covered: 12, pct: 100, total: 12 },
+  },
+  [path.join(repoRoot, 'server', 'src', 'services', 'blog.service.ts')]: {
+    branches: { covered: 83, pct: 55.7, total: 149 },
+    functions: { covered: 44, pct: 89.79, total: 49 },
+    lines: { covered: 184, pct: 74.19, total: 248 },
+    statements: { covered: 195, pct: 75, total: 260 },
+  },
+  [path.join(repoRoot, 'server', 'src', 'services', 'report.service.ts')]: {
+    branches: { covered: 33, pct: 68.75, total: 48 },
+    functions: { covered: 7, pct: 100, total: 7 },
+    lines: { covered: 40, pct: 75.47, total: 53 },
+    statements: { covered: 43, pct: 76.78, total: 56 },
+  },
+  [path.join(repoRoot, 'server', 'src', 'services', 'user.service.ts')]: {
+    branches: { covered: 21, pct: 70, total: 30 },
+    functions: { covered: 10, pct: 100, total: 10 },
+    lines: { covered: 43, pct: 86, total: 50 },
+    statements: { covered: 45, pct: 86.53, total: 52 },
+  },
 };
 
 const vitestReportFixture: VitestJsonReport = {
@@ -118,11 +196,29 @@ describe('qa reporting', () => {
     expect(summary.riskModules.find((moduleSummary) => moduleSummary.id === 'C4')).toMatchObject({
       apiCovered: false,
       automationCoveragePct: 0,
+      coverage: {
+        lowLineCoverage: false,
+      },
       e2eCovered: false,
     });
     expect(summary.riskModules.find((moduleSummary) => moduleSummary.id === 'C1')).toMatchObject({
       apiCovered: true,
+      coverage: {
+        lines: {
+          pct: 92.57,
+        },
+        lowBranchCoverage: false,
+      },
       e2eCovered: true,
+    });
+    expect(summary.riskModules.find((moduleSummary) => moduleSummary.id === 'C3')).toMatchObject({
+      coverage: {
+        branches: {
+          pct: 59.72,
+        },
+        lowBranchCoverage: true,
+        lowLineCoverage: false,
+      },
     });
   });
 

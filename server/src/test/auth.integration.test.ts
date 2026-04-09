@@ -1,3 +1,5 @@
+import { AppDataSource } from '../config/data-source';
+import { RefreshToken } from '../models/refresh-token.entity';
 import { api, authHeader, registerUser } from './helpers';
 
 describe('Auth API', () => {
@@ -78,6 +80,32 @@ describe('Auth API', () => {
 
     expect(reusedTokenResponse.status).toBe(401);
     expect(reusedTokenResponse.body.message).toContain('invalid or expired');
+  });
+
+  it('rejects refresh requests without a refresh cookie', async () => {
+    const response = await api().post('/api/auth/refresh');
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Refresh token is required.');
+  });
+
+  it('rejects expired refresh tokens with 401', async () => {
+    const { session } = await registerUser({
+      name: 'Expired Refresh User',
+      email: 'expired-refresh@example.com',
+    });
+    const refreshTokenRepository = AppDataSource.getRepository(RefreshToken);
+    const refreshToken = await refreshTokenRepository.findOneByOrFail({
+      userId: session.user.id,
+    });
+
+    refreshToken.expiresAt = new Date(Date.now() - 60_000);
+    await refreshTokenRepository.save(refreshToken);
+
+    const response = await api().post('/api/auth/refresh').set('Cookie', session.refreshCookie);
+
+    expect(response.status).toBe(401);
+    expect(response.body.message).toBe('Refresh token is invalid or expired.');
   });
 
   it('requires a valid access token for /auth/me', async () => {

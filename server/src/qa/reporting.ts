@@ -13,6 +13,14 @@ export interface CoverageSummary {
   statements: MetricValue;
 }
 
+export interface CoverageFileSummary extends CoverageSummary {}
+
+export interface RiskModuleCoverageSummary extends CoverageSummary {
+  lowBranchCoverage: boolean;
+  lowLineCoverage: boolean;
+  sourceFiles: string[];
+}
+
 export interface ScenarioSummary {
   durationMs: number;
   file: string;
@@ -44,6 +52,7 @@ export interface ExecutionSummary {
 export interface RiskModuleSummary {
   apiCovered: boolean;
   automationCoveragePct: number;
+  coverage: RiskModuleCoverageSummary;
   e2eCovered: boolean;
   evidence: string[];
   id: string;
@@ -82,9 +91,9 @@ export interface QaSummary {
   riskModules: RiskModuleSummary[];
 }
 
-export interface CoverageSummaryJson {
-  total: Record<'branches' | 'functions' | 'lines' | 'statements', MetricValue>;
-}
+export type CoverageSummaryJson = Record<string, CoverageFileSummary | undefined> & {
+  total: CoverageFileSummary;
+};
 
 export interface VitestJsonReport {
   numFailedTests: number;
@@ -160,6 +169,12 @@ const riskModuleDefinitions = [
     id: 'C1',
     name: 'Authentication and session lifecycle',
     priority: 'P1',
+    sourceFiles: [
+      'server/src/controllers/auth.controller.ts',
+      'server/src/middleware/authenticate.ts',
+      'server/src/middleware/security.ts',
+      'server/src/services/auth.service.ts',
+    ],
   },
   {
     apiFiles: [
@@ -170,6 +185,14 @@ const riskModuleDefinitions = [
     id: 'C2',
     name: 'Authorization and admin moderation',
     priority: 'P1',
+    sourceFiles: [
+      'server/src/controllers/admin.controller.ts',
+      'server/src/controllers/report.controller.ts',
+      'server/src/controllers/taxonomy.controller.ts',
+      'server/src/services/report.service.ts',
+      'server/src/services/taxonomy.service.ts',
+      'server/src/services/user.service.ts',
+    ],
   },
   {
     apiFiles: [
@@ -184,6 +207,14 @@ const riskModuleDefinitions = [
     id: 'C3',
     name: 'Content integrity and moderation workflow',
     priority: 'P1',
+    sourceFiles: [
+      'server/src/controllers/post.controller.ts',
+      'server/src/controllers/comment.controller.ts',
+      'server/src/controllers/like.controller.ts',
+      'server/src/controllers/report.controller.ts',
+      'server/src/services/blog.service.ts',
+      'server/src/services/report.service.ts',
+    ],
   },
   {
     apiFiles: ['server/src/test/profile-admin.integration.test.ts'],
@@ -191,6 +222,11 @@ const riskModuleDefinitions = [
     id: 'C4',
     name: 'Profile management and avatar uploads',
     priority: 'P2',
+    sourceFiles: [
+      'server/src/controllers/profile.controller.ts',
+      'server/src/middleware/upload.ts',
+      'server/src/services/user.service.ts',
+    ],
   },
   {
     apiFiles: ['server/src/test/editorial.integration.test.ts'],
@@ -198,8 +234,17 @@ const riskModuleDefinitions = [
     id: 'C5',
     name: 'Public browsing and discovery flows',
     priority: 'P2',
+    sourceFiles: ['server/src/controllers/post.controller.ts', 'server/src/services/blog.service.ts'],
   },
 ] as const;
+
+const riskModuleCoverageThresholds = {
+  branches: 70,
+  lines: 70,
+} as const;
+
+const coverageMetricKeys = ['branches', 'functions', 'lines', 'statements'] as const;
+type CoverageMetricKey = (typeof coverageMetricKeys)[number];
 
 const toPosixPath = (value: string) => value.replaceAll('\\', '/');
 
@@ -210,6 +255,67 @@ const normalizeFilePath = (repoRoot: string, filePath: string) => {
 
   const relativePath = path.isAbsolute(filePath) ? path.relative(repoRoot, filePath) : filePath;
   return toPosixPath(relativePath);
+};
+
+const roundPct = (covered: number, total: number) =>
+  total === 0 ? 0 : Number(((covered / total) * 100).toFixed(2));
+
+const buildMetricValue = (covered: number, total: number): MetricValue => ({
+  covered,
+  pct: roundPct(covered, total),
+  total,
+});
+
+const createZeroCoverageSummary = (): CoverageSummary => ({
+  branches: buildMetricValue(0, 0),
+  functions: buildMetricValue(0, 0),
+  lines: buildMetricValue(0, 0),
+  statements: buildMetricValue(0, 0),
+});
+
+const normalizeCoverageEntries = (report: CoverageSummaryJson, repoRoot: string) => {
+  const entries = new Map<string, CoverageFileSummary>();
+
+  for (const [filePath, fileSummary] of Object.entries(report)) {
+    if (filePath === 'total' || !fileSummary) {
+      continue;
+    }
+
+    entries.set(normalizeFilePath(repoRoot, filePath), fileSummary);
+  }
+
+  return entries;
+};
+
+const summarizeRiskModuleCoverage = (
+  definition: (typeof riskModuleDefinitions)[number],
+  report: CoverageSummaryJson,
+  repoRoot: string,
+): RiskModuleCoverageSummary => {
+  const coverageEntries = normalizeCoverageEntries(report, repoRoot);
+  const totals = createZeroCoverageSummary();
+
+  for (const sourceFile of definition.sourceFiles) {
+    const fileCoverage = coverageEntries.get(sourceFile);
+
+    if (!fileCoverage) {
+      continue;
+    }
+
+    for (const metricKey of coverageMetricKeys) {
+      totals[metricKey] = buildMetricValue(
+        totals[metricKey].covered + fileCoverage[metricKey].covered,
+        totals[metricKey].total + fileCoverage[metricKey].total,
+      );
+    }
+  }
+
+  return {
+    ...totals,
+    lowBranchCoverage: totals.branches.pct < riskModuleCoverageThresholds.branches,
+    lowLineCoverage: totals.lines.pct < riskModuleCoverageThresholds.lines,
+    sourceFiles: [...definition.sourceFiles],
+  };
 };
 
 const summarizeScenarioStatuses = (
@@ -274,6 +380,8 @@ const collectPlaywrightSpecs = (
 const summarizeRiskModules = (
   apiSummary: ExecutionSummary,
   e2eSummary: ExecutionSummary,
+  coverageReport: CoverageSummaryJson,
+  repoRoot: string,
 ): RiskModuleSummary[] => {
   const apiFiles = new Set(apiSummary.files.map((file) => file.file));
   const e2eScenarioNames = e2eSummary.scenarios.map((scenario) => scenario.name.toLowerCase());
@@ -293,6 +401,7 @@ const summarizeRiskModules = (
     return {
       apiCovered,
       automationCoveragePct: coveredLayers === 0 ? 0 : apiCovered && e2eCovered ? 100 : 50,
+      coverage: summarizeRiskModuleCoverage(definition, coverageReport, repoRoot),
       e2eCovered,
       evidence,
       id: definition.id,
@@ -466,7 +575,7 @@ export const buildQaSummary = (input: {
   const coverage = summarizeCoverageReport(input.coverageReport);
   const api = summarizeVitestReport(input.vitestReport, input.repoRoot);
   const e2e = summarizePlaywrightReport(input.playwrightReport);
-  const riskModules = summarizeRiskModules(api, e2e);
+  const riskModules = summarizeRiskModules(api, e2e, input.coverageReport, input.repoRoot);
   const automationCoverage = summarizeAutomationCoverage(riskModules);
 
   const artifacts = {
