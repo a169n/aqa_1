@@ -289,29 +289,23 @@ How to get the screenshot:
 - capture the terminal output showing `found 0 vulnerabilities`
 - save or reference it as `docs/qa/screenshots/npm-audit-clean.png`
 
-**Graph Placeholder 1: Coverage by metric**
+**Graph 1: Coverage by metric (generated)**
 
-How to prepare the graph:
-- use the totals from `server/coverage/coverage-summary.json`
-- build a simple bar chart for `statements`, `lines`, `branches`, and `functions`
-- use the April 9 values `85.81`, `85.48`, `70.53`, and `92.76`
-- place the final image in the report as the main coverage graph
+![Backend Coverage by Metric (2026-04-09)](graphs/coverage-by-metric.svg)
 
-**Graph Placeholder 2: Execution time comparison**
+The chart is generated directly from `server/coverage/coverage-summary.json` totals for April 9 and uses high-contrast colors for readability.
 
-How to prepare the graph:
-- compare Assignment 2 versus Midterm combined execution time
-- use `65.08s` for Assignment 2 and `186.76s` for Midterm
-- a two-bar chart is enough
-- label the graph clearly as `Execution Time Comparison`
+**Graph 2: Execution time comparison (generated)**
 
-**Graph Placeholder 3: Defect and instability summary**
+![Execution Time Comparison (API + E2E)](graphs/execution-time-comparison.svg)
 
-How to prepare the graph:
-- use counts for `failed tests`, `flaky tests`, and `excluded tooling-interference runs`
-- current values are `0`, `0`, and `1`
-- present it as a small bar chart or summary diagram
-- note in the caption that the excluded run was not treated as a product failure
+The midterm runtime increase reflects broader API and E2E scope, including added concurrency and invalid-path checks.
+
+**Graph 3: Defect and instability summary (generated)**
+
+![Defect and Instability Summary (April 9 verification)](graphs/defect-instability-summary.svg)
+
+Caption: the one excluded run was caused by tooling interference (parallel execution against one shared DB), not by a reproducible product failure.
 
 ### 4.2 Comparison with Assignment 2 Baseline
 

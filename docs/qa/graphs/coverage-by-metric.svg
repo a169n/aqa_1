@@ -1,0 +1,41 @@
+<svg xmlns='http://www.w3.org/2000/svg' width='960' height='560' viewBox='0 0 960 560'>
+<rect width='100%' height='100%' fill='#ffffff'/>
+<text x='480.0' y='38' text-anchor='middle' font-family='Arial, sans-serif' font-size='30' fill='#111827'>Backend Coverage by Metric (2026-04-09)</text>
+<line x1='90' y1='470.0' x2='920' y2='470.0' stroke='#e5e7eb' stroke-width='1'/>
+<text x='78' y='475.0' text-anchor='end' font-family='Arial, sans-serif' font-size='14' fill='#374151'>0</text>
+<line x1='90' y1='430.0' x2='920' y2='430.0' stroke='#e5e7eb' stroke-width='1'/>
+<text x='78' y='435.0' text-anchor='end' font-family='Arial, sans-serif' font-size='14' fill='#374151'>10</text>
+<line x1='90' y1='390.0' x2='920' y2='390.0' stroke='#e5e7eb' stroke-width='1'/>
+<text x='78' y='395.0' text-anchor='end' font-family='Arial, sans-serif' font-size='14' fill='#374151'>20</text>
+<line x1='90' y1='350.0' x2='920' y2='350.0' stroke='#e5e7eb' stroke-width='1'/>
+<text x='78' y='355.0' text-anchor='end' font-family='Arial, sans-serif' font-size='14' fill='#374151'>30</text>
+<line x1='90' y1='310.0' x2='920' y2='310.0' stroke='#e5e7eb' stroke-width='1'/>
+<text x='78' y='315.0' text-anchor='end' font-family='Arial, sans-serif' font-size='14' fill='#374151'>40</text>
+<line x1='90' y1='270.0' x2='920' y2='270.0' stroke='#e5e7eb' stroke-width='1'/>
+<text x='78' y='275.0' text-anchor='end' font-family='Arial, sans-serif' font-size='14' fill='#374151'>50</text>
+<line x1='90' y1='230.0' x2='920' y2='230.0' stroke='#e5e7eb' stroke-width='1'/>
+<text x='78' y='235.0' text-anchor='end' font-family='Arial, sans-serif' font-size='14' fill='#374151'>60</text>
+<line x1='90' y1='190.0' x2='920' y2='190.0' stroke='#e5e7eb' stroke-width='1'/>
+<text x='78' y='195.0' text-anchor='end' font-family='Arial, sans-serif' font-size='14' fill='#374151'>70</text>
+<line x1='90' y1='150.0' x2='920' y2='150.0' stroke='#e5e7eb' stroke-width='1'/>
+<text x='78' y='155.0' text-anchor='end' font-family='Arial, sans-serif' font-size='14' fill='#374151'>80</text>
+<line x1='90' y1='110.0' x2='920' y2='110.0' stroke='#e5e7eb' stroke-width='1'/>
+<text x='78' y='115.0' text-anchor='end' font-family='Arial, sans-serif' font-size='14' fill='#374151'>90</text>
+<line x1='90' y1='70.0' x2='920' y2='70.0' stroke='#e5e7eb' stroke-width='1'/>
+<text x='78' y='75.0' text-anchor='end' font-family='Arial, sans-serif' font-size='14' fill='#374151'>100</text>
+<line x1='90' y1='70' x2='90' y2='470' stroke='#111827' stroke-width='2'/>
+<line x1='90' y1='470' x2='920' y2='470' stroke='#111827' stroke-width='2'/>
+<text x='24' y='270.0' transform='rotate(-90 24 270.0)' text-anchor='middle' font-family='Arial, sans-serif' font-size='18' fill='#374151'>Coverage (%)</text>
+<rect x='120.0' y='126.8' width='170.0' height='343.2' fill='#2563eb' rx='5'/>
+<text x='205.0' y='116.8' text-anchor='middle' font-family='Arial, sans-serif' font-size='16' fill='#111827'>85.81%</text>
+<text x='205.0' y='498.0' text-anchor='middle' font-family='Arial, sans-serif' font-size='15' fill='#374151'>Statements</text>
+<rect x='320.0' y='128.1' width='170.0' height='341.9' fill='#16a34a' rx='5'/>
+<text x='405.0' y='118.1' text-anchor='middle' font-family='Arial, sans-serif' font-size='16' fill='#111827'>85.48%</text>
+<text x='405.0' y='498.0' text-anchor='middle' font-family='Arial, sans-serif' font-size='15' fill='#374151'>Lines</text>
+<rect x='520.0' y='187.9' width='170.0' height='282.1' fill='#f59e0b' rx='5'/>
+<text x='605.0' y='177.9' text-anchor='middle' font-family='Arial, sans-serif' font-size='16' fill='#111827'>70.53%</text>
+<text x='605.0' y='498.0' text-anchor='middle' font-family='Arial, sans-serif' font-size='15' fill='#374151'>Branches</text>
+<rect x='720.0' y='99.0' width='170.0' height='371.0' fill='#dc2626' rx='5'/>
+<text x='805.0' y='89.0' text-anchor='middle' font-family='Arial, sans-serif' font-size='16' fill='#111827'>92.76%</text>
+<text x='805.0' y='498.0' text-anchor='middle' font-family='Arial, sans-serif' font-size='15' fill='#374151'>Functions</text>
+</svg>
