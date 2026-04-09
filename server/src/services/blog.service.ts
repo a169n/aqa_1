@@ -1,5 +1,5 @@
 import { AppDataSource } from '../config/data-source';
-import { In } from 'typeorm';
+import { In, QueryFailedError } from 'typeorm';
 import { POST_STATUSES, type PostStatus } from '../constants/post-status';
 import { USER_ROLES } from '../constants/roles';
 import { Bookmark } from '../models/bookmark.entity';
@@ -20,6 +20,15 @@ const postTagRepository = () => AppDataSource.getRepository(PostTag);
 const bookmarkRepository = () => AppDataSource.getRepository(Bookmark);
 const commentRepository = () => AppDataSource.getRepository(Comment);
 const likeRepository = () => AppDataSource.getRepository(Like);
+
+const isUniqueViolation = (error: unknown, constraint: string) =>
+  error instanceof QueryFailedError &&
+  typeof (error as QueryFailedError & { driverError?: { code?: string; constraint?: string } })
+    .driverError?.code === 'string' &&
+  (error as QueryFailedError & { driverError?: { code?: string; constraint?: string } }).driverError
+    ?.code === '23505' &&
+  (error as QueryFailedError & { driverError?: { code?: string; constraint?: string } }).driverError
+    ?.constraint === constraint;
 
 const postRelations = {
   author: true,
@@ -647,14 +656,36 @@ export const blogService = {
       userId: actor.id,
     });
 
-    const savedBookmark = await bookmarkRepository().save(bookmark);
+    try {
+      const savedBookmark = await bookmarkRepository().save(bookmark);
 
-    return {
-      id: savedBookmark.id,
-      postId,
-      userId: actor.id,
-      createdAt: savedBookmark.createdAt,
-    };
+      return {
+        id: savedBookmark.id,
+        postId,
+        userId: actor.id,
+        createdAt: savedBookmark.createdAt,
+      };
+    } catch (error) {
+      if (!isUniqueViolation(error, 'UQ_bookmarks_post_user')) {
+        throw error;
+      }
+
+      const concurrentBookmark = await bookmarkRepository().findOneBy({
+        postId,
+        userId: actor.id,
+      });
+
+      if (!concurrentBookmark) {
+        throw error;
+      }
+
+      return {
+        id: concurrentBookmark.id,
+        postId,
+        userId: actor.id,
+        createdAt: concurrentBookmark.createdAt,
+      };
+    }
   },
 
   async removeBookmark(postId: number, actor: AuthenticatedUser) {
