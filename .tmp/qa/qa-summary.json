@@ -1,9 +1,9 @@
 {
   "api": {
-    "durationMs": 35612.606201171875,
+    "durationMs": 46740.33642578125,
     "files": [
       {
-        "durationMs": 4102.9638671875,
+        "durationMs": 6304.447998046875,
         "file": "server/src/test/auth.integration.test.ts",
         "failed": 0,
         "flaky": 0,
@@ -12,7 +12,7 @@
         "total": 8
       },
       {
-        "durationMs": 6859.111328125,
+        "durationMs": 9946.943603515625,
         "file": "server/src/test/blog.integration.test.ts",
         "failed": 0,
         "flaky": 0,
@@ -21,7 +21,7 @@
         "total": 8
       },
       {
-        "durationMs": 693.7353515625,
+        "durationMs": 467.490966796875,
         "file": "server/src/test/blog.service.unit.test.ts",
         "failed": 0,
         "flaky": 0,
@@ -30,7 +30,7 @@
         "total": 1
       },
       {
-        "durationMs": 6738.940673828125,
+        "durationMs": 8455.845947265625,
         "file": "server/src/test/db-scripts.integration.test.ts",
         "failed": 0,
         "flaky": 0,
@@ -39,7 +39,7 @@
         "total": 4
       },
       {
-        "durationMs": 4716.76171875,
+        "durationMs": 5932.416259765625,
         "file": "server/src/test/editorial.integration.test.ts",
         "failed": 0,
         "flaky": 0,
@@ -48,7 +48,7 @@
         "total": 5
       },
       {
-        "durationMs": 6723.738037109375,
+        "durationMs": 8015.35009765625,
         "file": "server/src/test/profile-admin.integration.test.ts",
         "failed": 0,
         "flaky": 0,
@@ -57,7 +57,7 @@
         "total": 10
       },
       {
-        "durationMs": 681.6455078125,
+        "durationMs": 964.669921875,
         "file": "server/src/test/qa-reporting.unit.test.ts",
         "failed": 0,
         "flaky": 0,
@@ -66,7 +66,7 @@
         "total": 2
       },
       {
-        "durationMs": 409.345703125,
+        "durationMs": 459.620361328125,
         "file": "server/src/test/report.service.unit.test.ts",
         "failed": 0,
         "flaky": 0,
@@ -75,7 +75,7 @@
         "total": 1
       },
       {
-        "durationMs": 1822.285888671875,
+        "durationMs": 2985.889404296875,
         "file": "server/src/test/security.integration.test.ts",
         "failed": 0,
         "flaky": 0,
@@ -84,7 +84,7 @@
         "total": 3
       },
       {
-        "durationMs": 2864.078125,
+        "durationMs": 3207.661865234375,
         "file": "server/src/test/taxonomy.integration.test.ts",
         "failed": 0,
         "flaky": 0,
@@ -95,277 +95,277 @@
     ],
     "scenarios": [
       {
-        "durationMs": 552.8145999999997,
+        "durationMs": 730.8834999999999,
         "file": "server/src/test/auth.integration.test.ts",
         "name": "Auth API promotes the first registered user to admin and returns a valid session",
         "status": "passed"
       },
       {
-        "durationMs": 638.3896999999997,
+        "durationMs": 676.5424000000003,
         "file": "server/src/test/auth.integration.test.ts",
         "name": "Auth API rejects duplicate registration attempts with 409",
         "status": "passed"
       },
       {
-        "durationMs": 473.70889999999963,
+        "durationMs": 849.4497999999994,
         "file": "server/src/test/auth.integration.test.ts",
         "name": "Auth API rejects invalid login credentials with 401",
         "status": "passed"
       },
       {
-        "durationMs": 451.3204999999998,
+        "durationMs": 844.8918000000003,
         "file": "server/src/test/auth.integration.test.ts",
         "name": "Auth API rotates refresh tokens and rejects reuse of a revoked token",
         "status": "passed"
       },
       {
-        "durationMs": 324.33330000000024,
+        "durationMs": 767.6724999999997,
         "file": "server/src/test/auth.integration.test.ts",
         "name": "Auth API rejects refresh requests without a refresh cookie",
         "status": "passed"
       },
       {
-        "durationMs": 536.9227000000001,
+        "durationMs": 793.5703999999987,
         "file": "server/src/test/auth.integration.test.ts",
         "name": "Auth API rejects expired refresh tokens with 401",
         "status": "passed"
       },
       {
-        "durationMs": 429.08670000000075,
+        "durationMs": 789.4099999999999,
         "file": "server/src/test/auth.integration.test.ts",
         "name": "Auth API requires a valid access token for /auth/me",
         "status": "passed"
       },
       {
-        "durationMs": 694.9639000000006,
+        "durationMs": 850.4478999999992,
         "file": "server/src/test/auth.integration.test.ts",
         "name": "Auth API revokes refresh tokens during logout",
         "status": "passed"
       },
       {
-        "durationMs": 362.9888000000001,
+        "durationMs": 925.7035999999998,
         "file": "server/src/test/blog.integration.test.ts",
         "name": "Blog API blocks unauthenticated post, comment, and like mutations",
         "status": "passed"
       },
       {
-        "durationMs": 829.8119999999999,
+        "durationMs": 878.8607999999986,
         "file": "server/src/test/blog.integration.test.ts",
         "name": "Blog API allows an author to create, update, and delete their own post",
         "status": "passed"
       },
       {
-        "durationMs": 611.4700000000003,
+        "durationMs": 993.7109,
         "file": "server/src/test/blog.integration.test.ts",
         "name": "Blog API rejects create and update requests that reference missing categories or tags",
         "status": "passed"
       },
       {
-        "durationMs": 1046.8005000000003,
+        "durationMs": 1420.0346999999983,
         "file": "server/src/test/blog.integration.test.ts",
         "name": "Blog API prevents non-authors from managing posts while still allowing admins to moderate them",
         "status": "passed"
       },
       {
-        "durationMs": 770.1257000000005,
+        "durationMs": 1212.2091,
         "file": "server/src/test/blog.integration.test.ts",
         "name": "Blog API validates comment content and returns 404 for missing comments",
         "status": "passed"
       },
       {
-        "durationMs": 720.1059000000005,
+        "durationMs": 1292.6808,
         "file": "server/src/test/blog.integration.test.ts",
         "name": "Blog API prevents duplicate likes and returns 404 when removing a missing like",
         "status": "passed"
       },
       {
-        "durationMs": 1299.9183000000012,
+        "durationMs": 1962.061099999999,
         "file": "server/src/test/blog.integration.test.ts",
         "name": "Blog API serializes parallel like requests into one created like and one duplicate rejection",
         "status": "passed"
       },
       {
-        "durationMs": 1217.1113000000005,
+        "durationMs": 1258.9435999999987,
         "file": "server/src/test/blog.integration.test.ts",
         "name": "Blog API keeps parallel bookmark requests idempotent and persists a single bookmark record",
         "status": "passed"
       },
       {
-        "durationMs": 693.7353000000003,
+        "durationMs": 467.491,
         "file": "server/src/test/blog.service.unit.test.ts",
         "name": "blog.service unit logic falls back to published-only scope when a non-admin requests draft posts for another author",
         "status": "passed"
       },
       {
-        "durationMs": 1496.0509000000002,
+        "durationMs": 2376.6637,
         "file": "server/src/test/db-scripts.integration.test.ts",
         "name": "Database seed scripts creates a deterministic demo dataset with valid relations",
         "status": "passed"
       },
       {
-        "durationMs": 2394.6429,
+        "durationMs": 2586.3153999999995,
         "file": "server/src/test/db-scripts.integration.test.ts",
         "name": "Database seed scripts cleans all application tables without dropping the schema",
         "status": "passed"
       },
       {
-        "durationMs": 490.27170000000024,
+        "durationMs": 515.498599999999,
         "file": "server/src/test/db-scripts.integration.test.ts",
         "name": "Database seed scripts rejects destructive actions for production-like database names",
         "status": "passed"
       },
       {
-        "durationMs": 2356.9406,
+        "durationMs": 2975.8459000000003,
         "file": "server/src/test/db-scripts.integration.test.ts",
         "name": "Database seed scripts reseeds deterministically when run more than once",
         "status": "passed"
       },
       {
-        "durationMs": 898.1219000000001,
+        "durationMs": 1058.9400999999998,
         "file": "server/src/test/editorial.integration.test.ts",
         "name": "Editorial workspace API supports draft -> publish -> archive -> restore workflow",
         "status": "passed"
       },
       {
-        "durationMs": 1348.8918999999996,
+        "durationMs": 803.2493999999997,
         "file": "server/src/test/editorial.integration.test.ts",
         "name": "Editorial workspace API returns only published posts in the public feed and supports filters",
         "status": "passed"
       },
       {
-        "durationMs": 798.1246999999994,
+        "durationMs": 1540.5265,
         "file": "server/src/test/editorial.integration.test.ts",
         "name": "Editorial workspace API allows authenticated users to bookmark and report published content",
         "status": "passed"
       },
       {
-        "durationMs": 858.5307000000003,
+        "durationMs": 1235.9923,
         "file": "server/src/test/editorial.integration.test.ts",
         "name": "Editorial workspace API rejects reports that target both entities or neither entity",
         "status": "passed"
       },
       {
-        "durationMs": 811.7618000000002,
+        "durationMs": 1292.4161999999997,
         "file": "server/src/test/editorial.integration.test.ts",
         "name": "Editorial workspace API lets admins moderate reports and taxonomy records",
         "status": "passed"
       },
       {
-        "durationMs": 1059.8829999999998,
+        "durationMs": 736.6060000000007,
         "file": "server/src/test/profile-admin.integration.test.ts",
         "name": "Profile and admin API requires authentication and admin privileges for admin routes",
         "status": "passed"
       },
       {
-        "durationMs": 563.0760999999984,
+        "durationMs": 638.9696999999996,
         "file": "server/src/test/profile-admin.integration.test.ts",
         "name": "Profile and admin API rejects duplicate emails during profile updates",
         "status": "passed"
       },
       {
-        "durationMs": 673.6169000000009,
+        "durationMs": 811.8541999999998,
         "file": "server/src/test/profile-admin.integration.test.ts",
         "name": "Profile and admin API returns a profile summary and accepts a unique profile update",
         "status": "passed"
       },
       {
-        "durationMs": 563.4814000000006,
+        "durationMs": 716.5081000000009,
         "file": "server/src/test/profile-admin.integration.test.ts",
         "name": "Profile and admin API uploads a valid avatar and persists the returned file path",
         "status": "passed"
       },
       {
-        "durationMs": 496.1175000000003,
+        "durationMs": 637.0442999999996,
         "file": "server/src/test/profile-admin.integration.test.ts",
         "name": "Profile and admin API rejects avatar uploads with unsupported mime types",
         "status": "passed"
       },
       {
-        "durationMs": 478.08380000000034,
+        "durationMs": 725.4750000000004,
         "file": "server/src/test/profile-admin.integration.test.ts",
         "name": "Profile and admin API rejects avatar uploads when no file is attached",
         "status": "passed"
       },
       {
-        "durationMs": 527.7698999999993,
+        "durationMs": 607.2161999999989,
         "file": "server/src/test/profile-admin.integration.test.ts",
         "name": "Profile and admin API rejects avatar uploads larger than 5MB",
         "status": "passed"
       },
       {
-        "durationMs": 830.2379000000001,
+        "durationMs": 944.7479999999996,
         "file": "server/src/test/profile-admin.integration.test.ts",
         "name": "Profile and admin API lets admins inspect moderation data, update roles, and delete like records",
         "status": "passed"
       },
       {
-        "durationMs": 664.3174999999992,
+        "durationMs": 744.100199999999,
         "file": "server/src/test/profile-admin.integration.test.ts",
         "name": "Profile and admin API prevents deleting or demoting the last admin account",
         "status": "passed"
       },
       {
-        "durationMs": 865.7380000000012,
+        "durationMs": 1451.3500000000004,
         "file": "server/src/test/profile-admin.integration.test.ts",
         "name": "Profile and admin API allows admins to delete a non-admin user account",
         "status": "passed"
       },
       {
-        "durationMs": 329.23189999999977,
+        "durationMs": 543.5576999999994,
         "file": "server/src/test/qa-reporting.unit.test.ts",
         "name": "qa reporting summarizes vitest, playwright, and coverage inputs into a single QA summary",
         "status": "passed"
       },
       {
-        "durationMs": 352.64560000000074,
+        "durationMs": 420.6700000000001,
         "file": "server/src/test/qa-reporting.unit.test.ts",
         "name": "qa reporting fails quality gates when coverage or execution outcomes fall below thresholds",
         "status": "passed"
       },
       {
-        "durationMs": 409.34580000000005,
+        "durationMs": 459.6202999999996,
         "file": "server/src/test/report.service.unit.test.ts",
         "name": "report.service unit logic rejects report inputs that target both entities or neither entity",
         "status": "passed"
       },
       {
-        "durationMs": 315.3020000000006,
+        "durationMs": 705.4654999999993,
         "file": "server/src/test/security.integration.test.ts",
         "name": "Security middleware adds hardened response headers and omits x-powered-by",
         "status": "passed"
       },
       {
-        "durationMs": 541.2318999999998,
+        "durationMs": 870.9371000000001,
         "file": "server/src/test/security.integration.test.ts",
         "name": "Security middleware marks auth responses as non-cacheable",
         "status": "passed"
       },
       {
-        "durationMs": 965.2858999999999,
+        "durationMs": 1409.8894999999993,
         "file": "server/src/test/security.integration.test.ts",
         "name": "Security middleware throttles repeated auth attempts per client while keeping other clients unaffected",
         "status": "passed"
       },
       {
-        "durationMs": 702.8035,
+        "durationMs": 764.1067000000003,
         "file": "server/src/test/taxonomy.integration.test.ts",
         "name": "Taxonomy API lists, creates, updates, and deletes categories through the admin API",
         "status": "passed"
       },
       {
-        "durationMs": 705.5432000000001,
+        "durationMs": 642.6138000000001,
         "file": "server/src/test/taxonomy.integration.test.ts",
         "name": "Taxonomy API rejects invalid category names, duplicate categories, and missing category records",
         "status": "passed"
       },
       {
-        "durationMs": 811.9852000000001,
+        "durationMs": 875.3317999999999,
         "file": "server/src/test/taxonomy.integration.test.ts",
         "name": "Taxonomy API lists, creates, updates, and deletes tags through the admin API",
         "status": "passed"
       },
       {
-        "durationMs": 642.0781000000006,
+        "durationMs": 925.6617999999999,
         "file": "server/src/test/taxonomy.integration.test.ts",
         "name": "Taxonomy API rejects invalid tag names, duplicate tags, and missing tag records",
         "status": "passed"
@@ -509,7 +509,7 @@
       "threshold": 100
     }
   ],
-  "generatedAt": "2026-04-09T06:19:32.442Z",
+  "generatedAt": "2026-04-09T12:03:39.747Z",
   "riskModules": [
     {
       "apiCovered": true,
@@ -680,9 +680,7 @@
         ]
       },
       "e2eCovered": false,
-      "evidence": [
-        "server/src/test/profile-admin.integration.test.ts"
-      ],
+      "evidence": ["server/src/test/profile-admin.integration.test.ts"],
       "id": "C4",
       "name": "Profile management and avatar uploads",
       "priority": "P2"
