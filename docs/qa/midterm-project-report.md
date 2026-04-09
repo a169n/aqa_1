@@ -122,6 +122,16 @@ The selected QA stack was chosen not only because the tools are popular, but bec
 
 `GitHub Actions` was the better fit because it is native to the repository, supports a simple artifact upload and restore flow, and is sufficient for this project's scale without Jenkins operational overhead. The current evidence chain depends on that choice: `.github/workflows/qa.yml` defines the staged QA flow, the `qa-gates` job restores artifacts before evaluating thresholds, and the report already references successful workflow execution and stored QA artifacts.
 
+### 2.5 Literature Review Context
+
+The implemented QA approach also aligns with several established ideas in software testing literature and practice. First, `risk-based testing` argues that test effort should be concentrated where failure probability and failure impact intersect most strongly. That principle directly matches the Inkwell prioritization model, where `C1-C3` were treated as the most important modules because authentication, authorization, and content integrity failures would be more damaging than lower-risk regressions.
+
+Second, `layered automation` models such as the test pyramid recommend concentrating most automated checks below the UI layer because lower-level tests are cheaper, faster, and easier to stabilize. The current implementation reflects that guidance: the API and unit layers provide most of the coverage and branch-depth evidence, while the browser layer remains intentionally small and focused on high-value smoke flows rather than broad but fragile UI automation.
+
+Third, `shift-left` and `CI-oriented` quality practices emphasize early, repeatable validation instead of relying on late manual inspection. That idea is reflected in the repository workflow, where linting, build verification, API execution, E2E execution, and quality-gate evaluation are all part of the same automated delivery chain. Finally, `secure-by-default` guidance remains relevant because the system under test includes account access, role-based moderation, and token lifecycle management. As a result, the QA strategy does not evaluate only functional correctness, but also validation around session handling, protected routes, and misuse scenarios.
+
+These literature-based ideas are complementary rather than competing. Risk analysis determines what should be automated first, layered automation determines where that automation should live, CI/CD determines when results become enforceable release evidence, and secure-by-default thinking ensures that the validated baseline is not only functional but also defensible from a quality and security perspective.
+
 ## 3. Automation Implementation
 
 ### 3.1 QA Evidence Layer Upgrade
