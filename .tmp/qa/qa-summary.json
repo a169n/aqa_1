@@ -1,0 +1,731 @@
+{
+  "api": {
+    "durationMs": 35612.606201171875,
+    "files": [
+      {
+        "durationMs": 4102.9638671875,
+        "file": "server/src/test/auth.integration.test.ts",
+        "failed": 0,
+        "flaky": 0,
+        "passed": 8,
+        "skipped": 0,
+        "total": 8
+      },
+      {
+        "durationMs": 6859.111328125,
+        "file": "server/src/test/blog.integration.test.ts",
+        "failed": 0,
+        "flaky": 0,
+        "passed": 8,
+        "skipped": 0,
+        "total": 8
+      },
+      {
+        "durationMs": 693.7353515625,
+        "file": "server/src/test/blog.service.unit.test.ts",
+        "failed": 0,
+        "flaky": 0,
+        "passed": 1,
+        "skipped": 0,
+        "total": 1
+      },
+      {
+        "durationMs": 6738.940673828125,
+        "file": "server/src/test/db-scripts.integration.test.ts",
+        "failed": 0,
+        "flaky": 0,
+        "passed": 4,
+        "skipped": 0,
+        "total": 4
+      },
+      {
+        "durationMs": 4716.76171875,
+        "file": "server/src/test/editorial.integration.test.ts",
+        "failed": 0,
+        "flaky": 0,
+        "passed": 5,
+        "skipped": 0,
+        "total": 5
+      },
+      {
+        "durationMs": 6723.738037109375,
+        "file": "server/src/test/profile-admin.integration.test.ts",
+        "failed": 0,
+        "flaky": 0,
+        "passed": 10,
+        "skipped": 0,
+        "total": 10
+      },
+      {
+        "durationMs": 681.6455078125,
+        "file": "server/src/test/qa-reporting.unit.test.ts",
+        "failed": 0,
+        "flaky": 0,
+        "passed": 2,
+        "skipped": 0,
+        "total": 2
+      },
+      {
+        "durationMs": 409.345703125,
+        "file": "server/src/test/report.service.unit.test.ts",
+        "failed": 0,
+        "flaky": 0,
+        "passed": 1,
+        "skipped": 0,
+        "total": 1
+      },
+      {
+        "durationMs": 1822.285888671875,
+        "file": "server/src/test/security.integration.test.ts",
+        "failed": 0,
+        "flaky": 0,
+        "passed": 3,
+        "skipped": 0,
+        "total": 3
+      },
+      {
+        "durationMs": 2864.078125,
+        "file": "server/src/test/taxonomy.integration.test.ts",
+        "failed": 0,
+        "flaky": 0,
+        "passed": 4,
+        "skipped": 0,
+        "total": 4
+      }
+    ],
+    "scenarios": [
+      {
+        "durationMs": 552.8145999999997,
+        "file": "server/src/test/auth.integration.test.ts",
+        "name": "Auth API promotes the first registered user to admin and returns a valid session",
+        "status": "passed"
+      },
+      {
+        "durationMs": 638.3896999999997,
+        "file": "server/src/test/auth.integration.test.ts",
+        "name": "Auth API rejects duplicate registration attempts with 409",
+        "status": "passed"
+      },
+      {
+        "durationMs": 473.70889999999963,
+        "file": "server/src/test/auth.integration.test.ts",
+        "name": "Auth API rejects invalid login credentials with 401",
+        "status": "passed"
+      },
+      {
+        "durationMs": 451.3204999999998,
+        "file": "server/src/test/auth.integration.test.ts",
+        "name": "Auth API rotates refresh tokens and rejects reuse of a revoked token",
+        "status": "passed"
+      },
+      {
+        "durationMs": 324.33330000000024,
+        "file": "server/src/test/auth.integration.test.ts",
+        "name": "Auth API rejects refresh requests without a refresh cookie",
+        "status": "passed"
+      },
+      {
+        "durationMs": 536.9227000000001,
+        "file": "server/src/test/auth.integration.test.ts",
+        "name": "Auth API rejects expired refresh tokens with 401",
+        "status": "passed"
+      },
+      {
+        "durationMs": 429.08670000000075,
+        "file": "server/src/test/auth.integration.test.ts",
+        "name": "Auth API requires a valid access token for /auth/me",
+        "status": "passed"
+      },
+      {
+        "durationMs": 694.9639000000006,
+        "file": "server/src/test/auth.integration.test.ts",
+        "name": "Auth API revokes refresh tokens during logout",
+        "status": "passed"
+      },
+      {
+        "durationMs": 362.9888000000001,
+        "file": "server/src/test/blog.integration.test.ts",
+        "name": "Blog API blocks unauthenticated post, comment, and like mutations",
+        "status": "passed"
+      },
+      {
+        "durationMs": 829.8119999999999,
+        "file": "server/src/test/blog.integration.test.ts",
+        "name": "Blog API allows an author to create, update, and delete their own post",
+        "status": "passed"
+      },
+      {
+        "durationMs": 611.4700000000003,
+        "file": "server/src/test/blog.integration.test.ts",
+        "name": "Blog API rejects create and update requests that reference missing categories or tags",
+        "status": "passed"
+      },
+      {
+        "durationMs": 1046.8005000000003,
+        "file": "server/src/test/blog.integration.test.ts",
+        "name": "Blog API prevents non-authors from managing posts while still allowing admins to moderate them",
+        "status": "passed"
+      },
+      {
+        "durationMs": 770.1257000000005,
+        "file": "server/src/test/blog.integration.test.ts",
+        "name": "Blog API validates comment content and returns 404 for missing comments",
+        "status": "passed"
+      },
+      {
+        "durationMs": 720.1059000000005,
+        "file": "server/src/test/blog.integration.test.ts",
+        "name": "Blog API prevents duplicate likes and returns 404 when removing a missing like",
+        "status": "passed"
+      },
+      {
+        "durationMs": 1299.9183000000012,
+        "file": "server/src/test/blog.integration.test.ts",
+        "name": "Blog API serializes parallel like requests into one created like and one duplicate rejection",
+        "status": "passed"
+      },
+      {
+        "durationMs": 1217.1113000000005,
+        "file": "server/src/test/blog.integration.test.ts",
+        "name": "Blog API keeps parallel bookmark requests idempotent and persists a single bookmark record",
+        "status": "passed"
+      },
+      {
+        "durationMs": 693.7353000000003,
+        "file": "server/src/test/blog.service.unit.test.ts",
+        "name": "blog.service unit logic falls back to published-only scope when a non-admin requests draft posts for another author",
+        "status": "passed"
+      },
+      {
+        "durationMs": 1496.0509000000002,
+        "file": "server/src/test/db-scripts.integration.test.ts",
+        "name": "Database seed scripts creates a deterministic demo dataset with valid relations",
+        "status": "passed"
+      },
+      {
+        "durationMs": 2394.6429,
+        "file": "server/src/test/db-scripts.integration.test.ts",
+        "name": "Database seed scripts cleans all application tables without dropping the schema",
+        "status": "passed"
+      },
+      {
+        "durationMs": 490.27170000000024,
+        "file": "server/src/test/db-scripts.integration.test.ts",
+        "name": "Database seed scripts rejects destructive actions for production-like database names",
+        "status": "passed"
+      },
+      {
+        "durationMs": 2356.9406,
+        "file": "server/src/test/db-scripts.integration.test.ts",
+        "name": "Database seed scripts reseeds deterministically when run more than once",
+        "status": "passed"
+      },
+      {
+        "durationMs": 898.1219000000001,
+        "file": "server/src/test/editorial.integration.test.ts",
+        "name": "Editorial workspace API supports draft -> publish -> archive -> restore workflow",
+        "status": "passed"
+      },
+      {
+        "durationMs": 1348.8918999999996,
+        "file": "server/src/test/editorial.integration.test.ts",
+        "name": "Editorial workspace API returns only published posts in the public feed and supports filters",
+        "status": "passed"
+      },
+      {
+        "durationMs": 798.1246999999994,
+        "file": "server/src/test/editorial.integration.test.ts",
+        "name": "Editorial workspace API allows authenticated users to bookmark and report published content",
+        "status": "passed"
+      },
+      {
+        "durationMs": 858.5307000000003,
+        "file": "server/src/test/editorial.integration.test.ts",
+        "name": "Editorial workspace API rejects reports that target both entities or neither entity",
+        "status": "passed"
+      },
+      {
+        "durationMs": 811.7618000000002,
+        "file": "server/src/test/editorial.integration.test.ts",
+        "name": "Editorial workspace API lets admins moderate reports and taxonomy records",
+        "status": "passed"
+      },
+      {
+        "durationMs": 1059.8829999999998,
+        "file": "server/src/test/profile-admin.integration.test.ts",
+        "name": "Profile and admin API requires authentication and admin privileges for admin routes",
+        "status": "passed"
+      },
+      {
+        "durationMs": 563.0760999999984,
+        "file": "server/src/test/profile-admin.integration.test.ts",
+        "name": "Profile and admin API rejects duplicate emails during profile updates",
+        "status": "passed"
+      },
+      {
+        "durationMs": 673.6169000000009,
+        "file": "server/src/test/profile-admin.integration.test.ts",
+        "name": "Profile and admin API returns a profile summary and accepts a unique profile update",
+        "status": "passed"
+      },
+      {
+        "durationMs": 563.4814000000006,
+        "file": "server/src/test/profile-admin.integration.test.ts",
+        "name": "Profile and admin API uploads a valid avatar and persists the returned file path",
+        "status": "passed"
+      },
+      {
+        "durationMs": 496.1175000000003,
+        "file": "server/src/test/profile-admin.integration.test.ts",
+        "name": "Profile and admin API rejects avatar uploads with unsupported mime types",
+        "status": "passed"
+      },
+      {
+        "durationMs": 478.08380000000034,
+        "file": "server/src/test/profile-admin.integration.test.ts",
+        "name": "Profile and admin API rejects avatar uploads when no file is attached",
+        "status": "passed"
+      },
+      {
+        "durationMs": 527.7698999999993,
+        "file": "server/src/test/profile-admin.integration.test.ts",
+        "name": "Profile and admin API rejects avatar uploads larger than 5MB",
+        "status": "passed"
+      },
+      {
+        "durationMs": 830.2379000000001,
+        "file": "server/src/test/profile-admin.integration.test.ts",
+        "name": "Profile and admin API lets admins inspect moderation data, update roles, and delete like records",
+        "status": "passed"
+      },
+      {
+        "durationMs": 664.3174999999992,
+        "file": "server/src/test/profile-admin.integration.test.ts",
+        "name": "Profile and admin API prevents deleting or demoting the last admin account",
+        "status": "passed"
+      },
+      {
+        "durationMs": 865.7380000000012,
+        "file": "server/src/test/profile-admin.integration.test.ts",
+        "name": "Profile and admin API allows admins to delete a non-admin user account",
+        "status": "passed"
+      },
+      {
+        "durationMs": 329.23189999999977,
+        "file": "server/src/test/qa-reporting.unit.test.ts",
+        "name": "qa reporting summarizes vitest, playwright, and coverage inputs into a single QA summary",
+        "status": "passed"
+      },
+      {
+        "durationMs": 352.64560000000074,
+        "file": "server/src/test/qa-reporting.unit.test.ts",
+        "name": "qa reporting fails quality gates when coverage or execution outcomes fall below thresholds",
+        "status": "passed"
+      },
+      {
+        "durationMs": 409.34580000000005,
+        "file": "server/src/test/report.service.unit.test.ts",
+        "name": "report.service unit logic rejects report inputs that target both entities or neither entity",
+        "status": "passed"
+      },
+      {
+        "durationMs": 315.3020000000006,
+        "file": "server/src/test/security.integration.test.ts",
+        "name": "Security middleware adds hardened response headers and omits x-powered-by",
+        "status": "passed"
+      },
+      {
+        "durationMs": 541.2318999999998,
+        "file": "server/src/test/security.integration.test.ts",
+        "name": "Security middleware marks auth responses as non-cacheable",
+        "status": "passed"
+      },
+      {
+        "durationMs": 965.2858999999999,
+        "file": "server/src/test/security.integration.test.ts",
+        "name": "Security middleware throttles repeated auth attempts per client while keeping other clients unaffected",
+        "status": "passed"
+      },
+      {
+        "durationMs": 702.8035,
+        "file": "server/src/test/taxonomy.integration.test.ts",
+        "name": "Taxonomy API lists, creates, updates, and deletes categories through the admin API",
+        "status": "passed"
+      },
+      {
+        "durationMs": 705.5432000000001,
+        "file": "server/src/test/taxonomy.integration.test.ts",
+        "name": "Taxonomy API rejects invalid category names, duplicate categories, and missing category records",
+        "status": "passed"
+      },
+      {
+        "durationMs": 811.9852000000001,
+        "file": "server/src/test/taxonomy.integration.test.ts",
+        "name": "Taxonomy API lists, creates, updates, and deletes tags through the admin API",
+        "status": "passed"
+      },
+      {
+        "durationMs": 642.0781000000006,
+        "file": "server/src/test/taxonomy.integration.test.ts",
+        "name": "Taxonomy API rejects invalid tag names, duplicate tags, and missing tag records",
+        "status": "passed"
+      }
+    ],
+    "failed": 0,
+    "flaky": 0,
+    "passed": 46,
+    "skipped": 0,
+    "total": 46
+  },
+  "artifacts": {
+    "coverageSummary": "server/coverage/coverage-summary.json",
+    "playwrightReport": ".tmp/qa/playwright-report.json",
+    "qaSummary": ".tmp/qa/qa-summary.json",
+    "vitestReport": ".tmp/qa/vitest-report.json"
+  },
+  "automationCoverage": {
+    "automatedModules": 5,
+    "p1CoveragePct": 100,
+    "totalModules": 5,
+    "totalPct": 100
+  },
+  "coverage": {
+    "branches": {
+      "total": 353,
+      "covered": 249,
+      "skipped": 0,
+      "pct": 70.53
+    },
+    "functions": {
+      "total": 152,
+      "covered": 141,
+      "skipped": 0,
+      "pct": 92.76
+    },
+    "lines": {
+      "total": 696,
+      "covered": 595,
+      "skipped": 0,
+      "pct": 85.48
+    },
+    "statements": {
+      "total": 719,
+      "covered": 617,
+      "skipped": 0,
+      "pct": 85.81
+    }
+  },
+  "e2e": {
+    "durationMs": 151146.937,
+    "files": [
+      {
+        "durationMs": 40736,
+        "file": "smoke.spec.ts",
+        "failed": 0,
+        "flaky": 0,
+        "passed": 6,
+        "skipped": 0,
+        "total": 6
+      }
+    ],
+    "scenarios": [
+      {
+        "durationMs": 11612,
+        "file": "smoke.spec.ts",
+        "name": "smoke.spec.ts > Inkwell editorial smoke flows > shows a clear error for invalid login attempts",
+        "status": "passed"
+      },
+      {
+        "durationMs": 7350,
+        "file": "smoke.spec.ts",
+        "name": "smoke.spec.ts > Inkwell editorial smoke flows > registers admin and creates category/tag in taxonomy",
+        "status": "passed"
+      },
+      {
+        "durationMs": 8824,
+        "file": "smoke.spec.ts",
+        "name": "smoke.spec.ts > Inkwell editorial smoke flows > creates draft then publish/archive/restore from workspace",
+        "status": "passed"
+      },
+      {
+        "durationMs": 5513,
+        "file": "smoke.spec.ts",
+        "name": "smoke.spec.ts > Inkwell editorial smoke flows > reader can bookmark and report post/comment",
+        "status": "passed"
+      },
+      {
+        "durationMs": 2888,
+        "file": "smoke.spec.ts",
+        "name": "smoke.spec.ts > Inkwell editorial smoke flows > blocks non-admin users from direct admin route access",
+        "status": "passed"
+      },
+      {
+        "durationMs": 4549,
+        "file": "smoke.spec.ts",
+        "name": "smoke.spec.ts > Inkwell editorial smoke flows > admin can review reports queue",
+        "status": "passed"
+      }
+    ],
+    "failed": 0,
+    "flaky": 0,
+    "passed": 6,
+    "skipped": 0,
+    "total": 6
+  },
+  "gates": [
+    {
+      "actual": 85.81,
+      "id": "QG01",
+      "metric": "backend statement coverage",
+      "passed": true,
+      "threshold": 80
+    },
+    {
+      "actual": 85.48,
+      "id": "QG02",
+      "metric": "backend line coverage",
+      "passed": true,
+      "threshold": 80
+    },
+    {
+      "actual": 0,
+      "id": "QG03",
+      "metric": "api failed tests",
+      "passed": true,
+      "threshold": 0
+    },
+    {
+      "actual": 0,
+      "id": "QG04",
+      "metric": "e2e failed or flaky tests",
+      "passed": true,
+      "threshold": 0
+    },
+    {
+      "actual": 100,
+      "id": "QG05",
+      "metric": "p1 automation coverage",
+      "passed": true,
+      "threshold": 100
+    }
+  ],
+  "generatedAt": "2026-04-09T06:19:32.442Z",
+  "riskModules": [
+    {
+      "apiCovered": true,
+      "automationCoveragePct": 100,
+      "coverage": {
+        "branches": {
+          "covered": 50,
+          "pct": 78.13,
+          "total": 64
+        },
+        "functions": {
+          "covered": 27,
+          "pct": 100,
+          "total": 27
+        },
+        "lines": {
+          "covered": 138,
+          "pct": 93.24,
+          "total": 148
+        },
+        "statements": {
+          "covered": 141,
+          "pct": 93.38,
+          "total": 151
+        },
+        "lowBranchCoverage": false,
+        "lowLineCoverage": false,
+        "sourceFiles": [
+          "server/src/controllers/auth.controller.ts",
+          "server/src/middleware/authenticate.ts",
+          "server/src/middleware/security.ts",
+          "server/src/services/auth.service.ts"
+        ]
+      },
+      "e2eCovered": true,
+      "evidence": [
+        "server/src/test/auth.integration.test.ts",
+        "e2e:registers admin",
+        "e2e:creates draft then publish"
+      ],
+      "id": "C1",
+      "name": "Authentication and session lifecycle",
+      "priority": "P1"
+    },
+    {
+      "apiCovered": true,
+      "automationCoveragePct": 100,
+      "coverage": {
+        "branches": {
+          "covered": 84,
+          "pct": 72.41,
+          "total": 116
+        },
+        "functions": {
+          "covered": 48,
+          "pct": 94.12,
+          "total": 51
+        },
+        "lines": {
+          "covered": 195,
+          "pct": 86.67,
+          "total": 225
+        },
+        "statements": {
+          "covered": 203,
+          "pct": 87.12,
+          "total": 233
+        },
+        "lowBranchCoverage": false,
+        "lowLineCoverage": false,
+        "sourceFiles": [
+          "server/src/controllers/admin.controller.ts",
+          "server/src/controllers/report.controller.ts",
+          "server/src/controllers/taxonomy.controller.ts",
+          "server/src/services/report.service.ts",
+          "server/src/services/taxonomy.service.ts",
+          "server/src/services/user.service.ts"
+        ]
+      },
+      "e2eCovered": true,
+      "evidence": [
+        "server/src/test/profile-admin.integration.test.ts",
+        "server/src/test/editorial.integration.test.ts",
+        "e2e:taxonomy",
+        "e2e:review reports queue"
+      ],
+      "id": "C2",
+      "name": "Authorization and admin moderation",
+      "priority": "P1"
+    },
+    {
+      "apiCovered": true,
+      "automationCoveragePct": 100,
+      "coverage": {
+        "branches": {
+          "covered": 141,
+          "pct": 66.82,
+          "total": 211
+        },
+        "functions": {
+          "covered": 70,
+          "pct": 90.91,
+          "total": 77
+        },
+        "lines": {
+          "covered": 281,
+          "pct": 80.52,
+          "total": 349
+        },
+        "statements": {
+          "covered": 295,
+          "pct": 81.04,
+          "total": 364
+        },
+        "lowBranchCoverage": true,
+        "lowLineCoverage": false,
+        "sourceFiles": [
+          "server/src/controllers/post.controller.ts",
+          "server/src/controllers/comment.controller.ts",
+          "server/src/controllers/like.controller.ts",
+          "server/src/controllers/report.controller.ts",
+          "server/src/services/blog.service.ts",
+          "server/src/services/report.service.ts"
+        ]
+      },
+      "e2eCovered": true,
+      "evidence": [
+        "server/src/test/blog.integration.test.ts",
+        "server/src/test/editorial.integration.test.ts",
+        "e2e:creates draft then publish",
+        "e2e:bookmark and report post/comment",
+        "e2e:review reports queue"
+      ],
+      "id": "C3",
+      "name": "Content integrity and moderation workflow",
+      "priority": "P1"
+    },
+    {
+      "apiCovered": true,
+      "automationCoveragePct": 50,
+      "coverage": {
+        "branches": {
+          "covered": 26,
+          "pct": 72.22,
+          "total": 36
+        },
+        "functions": {
+          "covered": 16,
+          "pct": 100,
+          "total": 16
+        },
+        "lines": {
+          "covered": 64,
+          "pct": 90.14,
+          "total": 71
+        },
+        "statements": {
+          "covered": 66,
+          "pct": 90.41,
+          "total": 73
+        },
+        "lowBranchCoverage": false,
+        "lowLineCoverage": false,
+        "sourceFiles": [
+          "server/src/controllers/profile.controller.ts",
+          "server/src/middleware/upload.ts",
+          "server/src/services/user.service.ts"
+        ]
+      },
+      "e2eCovered": false,
+      "evidence": [
+        "server/src/test/profile-admin.integration.test.ts"
+      ],
+      "id": "C4",
+      "name": "Profile management and avatar uploads",
+      "priority": "P2"
+    },
+    {
+      "apiCovered": true,
+      "automationCoveragePct": 100,
+      "coverage": {
+        "branches": {
+          "covered": 106,
+          "pct": 65.84,
+          "total": 161
+        },
+        "functions": {
+          "covered": 55,
+          "pct": 88.71,
+          "total": 62
+        },
+        "lines": {
+          "covered": 222,
+          "pct": 80.14,
+          "total": 277
+        },
+        "statements": {
+          "covered": 233,
+          "pct": 80.62,
+          "total": 289
+        },
+        "lowBranchCoverage": true,
+        "lowLineCoverage": false,
+        "sourceFiles": [
+          "server/src/controllers/post.controller.ts",
+          "server/src/services/blog.service.ts"
+        ]
+      },
+      "e2eCovered": true,
+      "evidence": [
+        "server/src/test/editorial.integration.test.ts",
+        "e2e:bookmark and report post/comment"
+      ],
+      "id": "C5",
+      "name": "Public browsing and discovery flows",
+      "priority": "P2"
+    }
+  ]
+}
