@@ -1,0 +1,832 @@
+{
+  "meta": {
+    "runId": "2026-04-23T15-03-26-839Z",
+    "scenarioProfile": "smoke",
+    "baseUrl": "http://127.0.0.1:4000",
+    "thresholds": {
+      "baseline": {
+        "errorRatePercentMax": 2,
+        "p95MsMax": 800
+      },
+      "endpointOverrides": {
+        "auth_login": {
+          "p95MsMax": 3500
+        }
+      }
+    },
+    "generatedAt": "2026-04-23T15:04:42.271Z"
+  },
+  "parameters": {
+    "scenarios": [
+      {
+        "name": "normal",
+        "concurrency": 6,
+        "durationSeconds": 15,
+        "rampUpSeconds": 4
+      }
+    ],
+    "endpoints": [
+      {
+        "module": "auth",
+        "name": "auth_login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "body": {
+          "email": "user@example.com",
+          "password": "Password123!"
+        }
+      },
+      {
+        "module": "auth",
+        "name": "auth_me",
+        "method": "GET",
+        "path": "/api/auth/me",
+        "requiresUserToken": true
+      },
+      {
+        "module": "authorization",
+        "name": "admin_reports_list",
+        "method": "GET",
+        "path": "/api/admin/reports",
+        "requiresAdminToken": true
+      },
+      {
+        "module": "content",
+        "name": "posts_list",
+        "method": "GET",
+        "path": "/api/posts"
+      },
+      {
+        "module": "content",
+        "name": "workspace_posts",
+        "method": "GET",
+        "path": "/api/workspace/posts",
+        "requiresUserToken": true
+      }
+    ]
+  },
+  "results": [
+    {
+      "module": "auth",
+      "endpoint": "auth_login",
+      "path": "/api/auth/login",
+      "scenario": "normal",
+      "method": "POST",
+      "startedAt": "2026-04-23T15:03:26.977Z",
+      "endedAt": "2026-04-23T15:03:42.236Z",
+      "executionParameters": {
+        "name": "normal",
+        "concurrency": 6,
+        "durationSeconds": 15,
+        "rampUpSeconds": 4
+      },
+      "metrics": {
+        "averageLatencyMs": 281.2,
+        "medianLatencyMs": 298,
+        "p95LatencyMs": 446,
+        "throughputRps": 19.01,
+        "totalRequests": 290,
+        "totalErrors": 0,
+        "errorRatePercent": 0
+      },
+      "thresholds": {
+        "errorRatePercentMax": 2,
+        "p95MsMax": 3500
+      },
+      "thresholdPass": {
+        "errorRate": true,
+        "p95": true
+      },
+      "systemUsageSamples": [
+        {
+          "cpuLoad1m": 9.865234375,
+          "cpuLoad5m": 5.7666015625,
+          "freeMemoryBytes": 113491968,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 105037824,
+          "timestamp": "2026-04-23T15:03:27.977Z"
+        },
+        {
+          "cpuLoad1m": 9.865234375,
+          "cpuLoad5m": 5.7666015625,
+          "freeMemoryBytes": 108462080,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 105906176,
+          "timestamp": "2026-04-23T15:03:28.978Z"
+        },
+        {
+          "cpuLoad1m": 9.865234375,
+          "cpuLoad5m": 5.7666015625,
+          "freeMemoryBytes": 125337600,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 107200512,
+          "timestamp": "2026-04-23T15:03:29.980Z"
+        },
+        {
+          "cpuLoad1m": 9.865234375,
+          "cpuLoad5m": 5.7666015625,
+          "freeMemoryBytes": 100499456,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 108445696,
+          "timestamp": "2026-04-23T15:03:30.980Z"
+        },
+        {
+          "cpuLoad1m": 9.3955078125,
+          "cpuLoad5m": 5.73681640625,
+          "freeMemoryBytes": 102334464,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 109838336,
+          "timestamp": "2026-04-23T15:03:31.982Z"
+        },
+        {
+          "cpuLoad1m": 9.3955078125,
+          "cpuLoad5m": 5.73681640625,
+          "freeMemoryBytes": 206979072,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 109854720,
+          "timestamp": "2026-04-23T15:03:32.982Z"
+        },
+        {
+          "cpuLoad1m": 9.3955078125,
+          "cpuLoad5m": 5.73681640625,
+          "freeMemoryBytes": 125992960,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 110100480,
+          "timestamp": "2026-04-23T15:03:33.983Z"
+        },
+        {
+          "cpuLoad1m": 9.3955078125,
+          "cpuLoad5m": 5.73681640625,
+          "freeMemoryBytes": 147734528,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 107692032,
+          "timestamp": "2026-04-23T15:03:34.984Z"
+        },
+        {
+          "cpuLoad1m": 9.3955078125,
+          "cpuLoad5m": 5.73681640625,
+          "freeMemoryBytes": 160579584,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 106201088,
+          "timestamp": "2026-04-23T15:03:35.985Z"
+        },
+        {
+          "cpuLoad1m": 8.80322265625,
+          "cpuLoad5m": 5.67431640625,
+          "freeMemoryBytes": 194527232,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 106905600,
+          "timestamp": "2026-04-23T15:03:36.986Z"
+        },
+        {
+          "cpuLoad1m": 8.80322265625,
+          "cpuLoad5m": 5.67431640625,
+          "freeMemoryBytes": 124354560,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 105005056,
+          "timestamp": "2026-04-23T15:03:37.987Z"
+        },
+        {
+          "cpuLoad1m": 8.80322265625,
+          "cpuLoad5m": 5.67431640625,
+          "freeMemoryBytes": 134987776,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 94486528,
+          "timestamp": "2026-04-23T15:03:38.988Z"
+        },
+        {
+          "cpuLoad1m": 8.80322265625,
+          "cpuLoad5m": 5.67431640625,
+          "freeMemoryBytes": 130400256,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 83968000,
+          "timestamp": "2026-04-23T15:03:39.990Z"
+        },
+        {
+          "cpuLoad1m": 8.80322265625,
+          "cpuLoad5m": 5.67431640625,
+          "freeMemoryBytes": 122191872,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 85688320,
+          "timestamp": "2026-04-23T15:03:40.990Z"
+        },
+        {
+          "cpuLoad1m": 8.97900390625,
+          "cpuLoad5m": 5.7626953125,
+          "freeMemoryBytes": 143802368,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 87048192,
+          "timestamp": "2026-04-23T15:03:41.991Z"
+        }
+      ]
+    },
+    {
+      "module": "auth",
+      "endpoint": "auth_me",
+      "path": "/api/auth/me",
+      "scenario": "normal",
+      "method": "GET",
+      "startedAt": "2026-04-23T15:03:42.236Z",
+      "endedAt": "2026-04-23T15:03:57.249Z",
+      "executionParameters": {
+        "name": "normal",
+        "concurrency": 6,
+        "durationSeconds": 15,
+        "rampUpSeconds": 4
+      },
+      "metrics": {
+        "averageLatencyMs": 0.82,
+        "medianLatencyMs": 1,
+        "p95LatencyMs": 2,
+        "throughputRps": 6474.73,
+        "totalRequests": 97121,
+        "totalErrors": 0,
+        "errorRatePercent": 0
+      },
+      "thresholds": {
+        "errorRatePercentMax": 2,
+        "p95MsMax": 800
+      },
+      "thresholdPass": {
+        "errorRate": true,
+        "p95": true
+      },
+      "systemUsageSamples": [
+        {
+          "cpuLoad1m": 8.97900390625,
+          "cpuLoad5m": 5.7626953125,
+          "freeMemoryBytes": 108265472,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 120209408,
+          "timestamp": "2026-04-23T15:03:43.236Z"
+        },
+        {
+          "cpuLoad1m": 8.97900390625,
+          "cpuLoad5m": 5.7626953125,
+          "freeMemoryBytes": 164036608,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 124551168,
+          "timestamp": "2026-04-23T15:03:44.236Z"
+        },
+        {
+          "cpuLoad1m": 8.97900390625,
+          "cpuLoad5m": 5.7626953125,
+          "freeMemoryBytes": 183042048,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 126255104,
+          "timestamp": "2026-04-23T15:03:45.236Z"
+        },
+        {
+          "cpuLoad1m": 8.97900390625,
+          "cpuLoad5m": 5.7626953125,
+          "freeMemoryBytes": 179765248,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 128368640,
+          "timestamp": "2026-04-23T15:03:46.235Z"
+        },
+        {
+          "cpuLoad1m": 8.580078125,
+          "cpuLoad5m": 5.7333984375,
+          "freeMemoryBytes": 164823040,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 149913600,
+          "timestamp": "2026-04-23T15:03:47.236Z"
+        },
+        {
+          "cpuLoad1m": 8.580078125,
+          "cpuLoad5m": 5.7333984375,
+          "freeMemoryBytes": 156827648,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 154894336,
+          "timestamp": "2026-04-23T15:03:48.235Z"
+        },
+        {
+          "cpuLoad1m": 8.580078125,
+          "cpuLoad5m": 5.7333984375,
+          "freeMemoryBytes": 155058176,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156532736,
+          "timestamp": "2026-04-23T15:03:49.235Z"
+        },
+        {
+          "cpuLoad1m": 8.580078125,
+          "cpuLoad5m": 5.7333984375,
+          "freeMemoryBytes": 139722752,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156925952,
+          "timestamp": "2026-04-23T15:03:50.235Z"
+        },
+        {
+          "cpuLoad1m": 8.580078125,
+          "cpuLoad5m": 5.7333984375,
+          "freeMemoryBytes": 100728832,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157450240,
+          "timestamp": "2026-04-23T15:03:51.235Z"
+        },
+        {
+          "cpuLoad1m": 8.7734375,
+          "cpuLoad5m": 5.82080078125,
+          "freeMemoryBytes": 98664448,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157696000,
+          "timestamp": "2026-04-23T15:03:52.235Z"
+        },
+        {
+          "cpuLoad1m": 8.7734375,
+          "cpuLoad5m": 5.82080078125,
+          "freeMemoryBytes": 106299392,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157843456,
+          "timestamp": "2026-04-23T15:03:53.235Z"
+        },
+        {
+          "cpuLoad1m": 8.7734375,
+          "cpuLoad5m": 5.82080078125,
+          "freeMemoryBytes": 110198784,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 159236096,
+          "timestamp": "2026-04-23T15:03:54.235Z"
+        },
+        {
+          "cpuLoad1m": 8.7734375,
+          "cpuLoad5m": 5.82080078125,
+          "freeMemoryBytes": 156893184,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 158646272,
+          "timestamp": "2026-04-23T15:03:55.235Z"
+        },
+        {
+          "cpuLoad1m": 8.7734375,
+          "cpuLoad5m": 5.82080078125,
+          "freeMemoryBytes": 102580224,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 158957568,
+          "timestamp": "2026-04-23T15:03:56.235Z"
+        },
+        {
+          "cpuLoad1m": 8.31103515625,
+          "cpuLoad5m": 5.77392578125,
+          "freeMemoryBytes": 88375296,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 159301632,
+          "timestamp": "2026-04-23T15:03:57.235Z"
+        }
+      ]
+    },
+    {
+      "module": "authorization",
+      "endpoint": "admin_reports_list",
+      "path": "/api/admin/reports",
+      "scenario": "normal",
+      "method": "GET",
+      "startedAt": "2026-04-23T15:03:57.249Z",
+      "endedAt": "2026-04-23T15:04:12.258Z",
+      "executionParameters": {
+        "name": "normal",
+        "concurrency": 6,
+        "durationSeconds": 15,
+        "rampUpSeconds": 4
+      },
+      "metrics": {
+        "averageLatencyMs": 1.1,
+        "medianLatencyMs": 1,
+        "p95LatencyMs": 2,
+        "throughputRps": 4832.33,
+        "totalRequests": 72485,
+        "totalErrors": 0,
+        "errorRatePercent": 0
+      },
+      "thresholds": {
+        "errorRatePercentMax": 2,
+        "p95MsMax": 800
+      },
+      "thresholdPass": {
+        "errorRate": true,
+        "p95": true
+      },
+      "systemUsageSamples": [
+        {
+          "cpuLoad1m": 8.31103515625,
+          "cpuLoad5m": 5.77392578125,
+          "freeMemoryBytes": 81903616,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156860416,
+          "timestamp": "2026-04-23T15:03:58.248Z"
+        },
+        {
+          "cpuLoad1m": 8.31103515625,
+          "cpuLoad5m": 5.77392578125,
+          "freeMemoryBytes": 80019456,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157138944,
+          "timestamp": "2026-04-23T15:03:59.248Z"
+        },
+        {
+          "cpuLoad1m": 8.31103515625,
+          "cpuLoad5m": 5.77392578125,
+          "freeMemoryBytes": 100057088,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157237248,
+          "timestamp": "2026-04-23T15:04:00.249Z"
+        },
+        {
+          "cpuLoad1m": 8.31103515625,
+          "cpuLoad5m": 5.77392578125,
+          "freeMemoryBytes": 90144768,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 158367744,
+          "timestamp": "2026-04-23T15:04:01.248Z"
+        },
+        {
+          "cpuLoad1m": 8.12548828125,
+          "cpuLoad5m": 5.77734375,
+          "freeMemoryBytes": 79020032,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 158466048,
+          "timestamp": "2026-04-23T15:04:02.248Z"
+        },
+        {
+          "cpuLoad1m": 8.12548828125,
+          "cpuLoad5m": 5.77734375,
+          "freeMemoryBytes": 171491328,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 158547968,
+          "timestamp": "2026-04-23T15:04:03.248Z"
+        },
+        {
+          "cpuLoad1m": 8.12548828125,
+          "cpuLoad5m": 5.77734375,
+          "freeMemoryBytes": 85049344,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 158547968,
+          "timestamp": "2026-04-23T15:04:04.248Z"
+        },
+        {
+          "cpuLoad1m": 8.12548828125,
+          "cpuLoad5m": 5.77734375,
+          "freeMemoryBytes": 105349120,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 158711808,
+          "timestamp": "2026-04-23T15:04:05.248Z"
+        },
+        {
+          "cpuLoad1m": 8.12548828125,
+          "cpuLoad5m": 5.77734375,
+          "freeMemoryBytes": 107626496,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 158810112,
+          "timestamp": "2026-04-23T15:04:06.248Z"
+        },
+        {
+          "cpuLoad1m": 7.71484375,
+          "cpuLoad5m": 5.73095703125,
+          "freeMemoryBytes": 104153088,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 159039488,
+          "timestamp": "2026-04-23T15:04:07.248Z"
+        },
+        {
+          "cpuLoad1m": 7.71484375,
+          "cpuLoad5m": 5.73095703125,
+          "freeMemoryBytes": 107610112,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 159744000,
+          "timestamp": "2026-04-23T15:04:08.248Z"
+        },
+        {
+          "cpuLoad1m": 7.71484375,
+          "cpuLoad5m": 5.73095703125,
+          "freeMemoryBytes": 99696640,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 159449088,
+          "timestamp": "2026-04-23T15:04:09.248Z"
+        },
+        {
+          "cpuLoad1m": 7.71484375,
+          "cpuLoad5m": 5.73095703125,
+          "freeMemoryBytes": 98189312,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 159498240,
+          "timestamp": "2026-04-23T15:04:10.250Z"
+        },
+        {
+          "cpuLoad1m": 7.71484375,
+          "cpuLoad5m": 5.73095703125,
+          "freeMemoryBytes": 98942976,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 159498240,
+          "timestamp": "2026-04-23T15:04:11.250Z"
+        }
+      ]
+    },
+    {
+      "module": "content",
+      "endpoint": "posts_list",
+      "path": "/api/posts",
+      "scenario": "normal",
+      "method": "GET",
+      "startedAt": "2026-04-23T15:04:12.258Z",
+      "endedAt": "2026-04-23T15:04:27.265Z",
+      "executionParameters": {
+        "name": "normal",
+        "concurrency": 6,
+        "durationSeconds": 15,
+        "rampUpSeconds": 4
+      },
+      "metrics": {
+        "averageLatencyMs": 3.92,
+        "medianLatencyMs": 4,
+        "p95LatencyMs": 5,
+        "throughputRps": 1360.26,
+        "totalRequests": 20408,
+        "totalErrors": 0,
+        "errorRatePercent": 0
+      },
+      "thresholds": {
+        "errorRatePercentMax": 2,
+        "p95MsMax": 800
+      },
+      "thresholdPass": {
+        "errorRate": true,
+        "p95": true
+      },
+      "systemUsageSamples": [
+        {
+          "cpuLoad1m": 7.4970703125,
+          "cpuLoad5m": 5.71875,
+          "freeMemoryBytes": 77824000,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156778496,
+          "timestamp": "2026-04-23T15:04:13.259Z"
+        },
+        {
+          "cpuLoad1m": 7.4970703125,
+          "cpuLoad5m": 5.71875,
+          "freeMemoryBytes": 78217216,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 154714112,
+          "timestamp": "2026-04-23T15:04:14.259Z"
+        },
+        {
+          "cpuLoad1m": 7.4970703125,
+          "cpuLoad5m": 5.71875,
+          "freeMemoryBytes": 90718208,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 153829376,
+          "timestamp": "2026-04-23T15:04:15.260Z"
+        },
+        {
+          "cpuLoad1m": 7.4970703125,
+          "cpuLoad5m": 5.71875,
+          "freeMemoryBytes": 78577664,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 153796608,
+          "timestamp": "2026-04-23T15:04:16.259Z"
+        },
+        {
+          "cpuLoad1m": 7.296875,
+          "cpuLoad5m": 5.70654296875,
+          "freeMemoryBytes": 89948160,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 154583040,
+          "timestamp": "2026-04-23T15:04:17.259Z"
+        },
+        {
+          "cpuLoad1m": 7.296875,
+          "cpuLoad5m": 5.70654296875,
+          "freeMemoryBytes": 88702976,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 155140096,
+          "timestamp": "2026-04-23T15:04:18.259Z"
+        },
+        {
+          "cpuLoad1m": 7.296875,
+          "cpuLoad5m": 5.70654296875,
+          "freeMemoryBytes": 87638016,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 155140096,
+          "timestamp": "2026-04-23T15:04:19.260Z"
+        },
+        {
+          "cpuLoad1m": 7.296875,
+          "cpuLoad5m": 5.70654296875,
+          "freeMemoryBytes": 85557248,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 155566080,
+          "timestamp": "2026-04-23T15:04:20.260Z"
+        },
+        {
+          "cpuLoad1m": 7.296875,
+          "cpuLoad5m": 5.70654296875,
+          "freeMemoryBytes": 78086144,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 155566080,
+          "timestamp": "2026-04-23T15:04:21.260Z"
+        },
+        {
+          "cpuLoad1m": 7.19287109375,
+          "cpuLoad5m": 5.7109375,
+          "freeMemoryBytes": 87375872,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 155615232,
+          "timestamp": "2026-04-23T15:04:22.260Z"
+        },
+        {
+          "cpuLoad1m": 7.19287109375,
+          "cpuLoad5m": 5.7109375,
+          "freeMemoryBytes": 77840384,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 155762688,
+          "timestamp": "2026-04-23T15:04:23.260Z"
+        },
+        {
+          "cpuLoad1m": 7.19287109375,
+          "cpuLoad5m": 5.7109375,
+          "freeMemoryBytes": 82100224,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156155904,
+          "timestamp": "2026-04-23T15:04:24.260Z"
+        },
+        {
+          "cpuLoad1m": 7.19287109375,
+          "cpuLoad5m": 5.7109375,
+          "freeMemoryBytes": 80625664,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156155904,
+          "timestamp": "2026-04-23T15:04:25.260Z"
+        },
+        {
+          "cpuLoad1m": 7.19287109375,
+          "cpuLoad5m": 5.7109375,
+          "freeMemoryBytes": 93437952,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156155904,
+          "timestamp": "2026-04-23T15:04:26.260Z"
+        },
+        {
+          "cpuLoad1m": 6.93701171875,
+          "cpuLoad5m": 5.68212890625,
+          "freeMemoryBytes": 89276416,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156712960,
+          "timestamp": "2026-04-23T15:04:27.261Z"
+        }
+      ]
+    },
+    {
+      "module": "content",
+      "endpoint": "workspace_posts",
+      "path": "/api/workspace/posts",
+      "scenario": "normal",
+      "method": "GET",
+      "startedAt": "2026-04-23T15:04:27.265Z",
+      "endedAt": "2026-04-23T15:04:42.271Z",
+      "executionParameters": {
+        "name": "normal",
+        "concurrency": 6,
+        "durationSeconds": 15,
+        "rampUpSeconds": 4
+      },
+      "metrics": {
+        "averageLatencyMs": 2.25,
+        "medianLatencyMs": 2,
+        "p95LatencyMs": 3,
+        "throughputRps": 2368.75,
+        "totalRequests": 35536,
+        "totalErrors": 0,
+        "errorRatePercent": 0
+      },
+      "thresholds": {
+        "errorRatePercentMax": 2,
+        "p95MsMax": 800
+      },
+      "thresholdPass": {
+        "errorRate": true,
+        "p95": true
+      },
+      "systemUsageSamples": [
+        {
+          "cpuLoad1m": 6.93701171875,
+          "cpuLoad5m": 5.68212890625,
+          "freeMemoryBytes": 93077504,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156516352,
+          "timestamp": "2026-04-23T15:04:28.264Z"
+        },
+        {
+          "cpuLoad1m": 6.93701171875,
+          "cpuLoad5m": 5.68212890625,
+          "freeMemoryBytes": 79855616,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156516352,
+          "timestamp": "2026-04-23T15:04:29.264Z"
+        },
+        {
+          "cpuLoad1m": 6.93701171875,
+          "cpuLoad5m": 5.68212890625,
+          "freeMemoryBytes": 77414400,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156516352,
+          "timestamp": "2026-04-23T15:04:30.264Z"
+        },
+        {
+          "cpuLoad1m": 6.93701171875,
+          "cpuLoad5m": 5.68212890625,
+          "freeMemoryBytes": 80330752,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156581888,
+          "timestamp": "2026-04-23T15:04:31.264Z"
+        },
+        {
+          "cpuLoad1m": 6.94189453125,
+          "cpuLoad5m": 5.70361328125,
+          "freeMemoryBytes": 75448320,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156631040,
+          "timestamp": "2026-04-23T15:04:32.264Z"
+        },
+        {
+          "cpuLoad1m": 6.94189453125,
+          "cpuLoad5m": 5.70361328125,
+          "freeMemoryBytes": 73924608,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 156631040,
+          "timestamp": "2026-04-23T15:04:33.264Z"
+        },
+        {
+          "cpuLoad1m": 6.94189453125,
+          "cpuLoad5m": 5.70361328125,
+          "freeMemoryBytes": 93437952,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157171712,
+          "timestamp": "2026-04-23T15:04:34.264Z"
+        },
+        {
+          "cpuLoad1m": 6.94189453125,
+          "cpuLoad5m": 5.70361328125,
+          "freeMemoryBytes": 89407488,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157368320,
+          "timestamp": "2026-04-23T15:04:35.264Z"
+        },
+        {
+          "cpuLoad1m": 6.94189453125,
+          "cpuLoad5m": 5.70361328125,
+          "freeMemoryBytes": 87818240,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157466624,
+          "timestamp": "2026-04-23T15:04:36.264Z"
+        },
+        {
+          "cpuLoad1m": 6.8662109375,
+          "cpuLoad5m": 5.70849609375,
+          "freeMemoryBytes": 78675968,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157466624,
+          "timestamp": "2026-04-23T15:04:37.264Z"
+        },
+        {
+          "cpuLoad1m": 6.8662109375,
+          "cpuLoad5m": 5.70849609375,
+          "freeMemoryBytes": 220971008,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157564928,
+          "timestamp": "2026-04-23T15:04:38.265Z"
+        },
+        {
+          "cpuLoad1m": 6.8662109375,
+          "cpuLoad5m": 5.70849609375,
+          "freeMemoryBytes": 232341504,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157564928,
+          "timestamp": "2026-04-23T15:04:39.264Z"
+        },
+        {
+          "cpuLoad1m": 6.8662109375,
+          "cpuLoad5m": 5.70849609375,
+          "freeMemoryBytes": 240451584,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157564928,
+          "timestamp": "2026-04-23T15:04:40.264Z"
+        },
+        {
+          "cpuLoad1m": 6.8662109375,
+          "cpuLoad5m": 5.70849609375,
+          "freeMemoryBytes": 234618880,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157564928,
+          "timestamp": "2026-04-23T15:04:41.264Z"
+        },
+        {
+          "cpuLoad1m": 7.35693359375,
+          "cpuLoad5m": 5.8291015625,
+          "freeMemoryBytes": 238485504,
+          "totalMemoryBytes": 17179869184,
+          "rssBytes": 157712384,
+          "timestamp": "2026-04-23T15:04:42.264Z"
+        }
+      ]
+    }
+  ]
+}

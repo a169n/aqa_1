@@ -435,7 +435,7 @@ npm run experimental:run
 
 The all-in-one runner starts a performance-mode API server with auth rate limiting disabled, runs the selected
 performance profile, runs mutation testing, runs Docker Compose chaos scenarios, and then writes
-`.tmp/qa/experimental/experimental-summary.json`. Use `EXPERIMENTAL_PERFORMANCE_PROFILE=full` for the full
+`.tmp/qa/experimental/experimental-summary.json` and `.tmp/qa/experimental/experimental-summary.md`. Use `EXPERIMENTAL_PERFORMANCE_PROFILE=full` for the full
 performance profile or `EXPERIMENTAL_RUN_CHAOS=false` to skip Docker-based chaos scenarios.
 By default, the runner refuses to continue if another API server is already responding on `PERF_BASE_URL`; set
 `EXPERIMENTAL_USE_EXISTING_SERVER=true` only when that is intentional.
@@ -457,7 +457,12 @@ Reads the three "latest run" pointer files and aggregates everything into one JS
   → loads the chaos-summary.json it points to
 ```
 
-Outputs `.tmp/qa/experimental/experimental-summary.json`:
+Outputs:
+
+- `.tmp/qa/experimental/experimental-summary.json`
+- `.tmp/qa/experimental/experimental-summary.md`
+
+JSON shape:
 
 ```json
 {
@@ -525,7 +530,7 @@ experimental-summary  (runs even if earlier jobs fail — if: always())
 | `experimental-performance` | `.tmp/qa/experimental/performance/**` |
 | `experimental-mutation` | `server/reports/mutation/**` and `.tmp/qa/experimental/mutation/**` |
 | `experimental-chaos` | `.tmp/qa/experimental/chaos/**` |
-| `experimental-summary` | `.tmp/qa/experimental/experimental-summary.json` |
+| `experimental-summary` | `.tmp/qa/experimental/experimental-summary.json`, `.tmp/qa/experimental/experimental-summary.md` |
 
 ---
 
@@ -549,7 +554,8 @@ experimental-summary  (runs even if earlier jobs fail — if: always())
 │   └── <runId>/
 │       └── chaos-summary.json              ← per-scenario metrics and probe samples
 │
-└── experimental-summary.json               ← unified summary across all three areas
+├── experimental-summary.json               ← unified summary across all three areas
+└── experimental-summary.md                 ← human-readable markdown summary
 
 server/reports/mutation/
 └── mutation-report.json                    ← full mutant list with status and logPaths

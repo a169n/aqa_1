@@ -17,6 +17,7 @@ All generated artifacts are stored under:
 - `.tmp/qa/experimental/mutation`
 - `.tmp/qa/experimental/chaos`
 - `.tmp/qa/experimental/experimental-summary.json`
+- `.tmp/qa/experimental/experimental-summary.md`
 
 ## Performance Testing
 
@@ -118,7 +119,12 @@ After running one or more areas:
 
 - `npm run experimental:summary`
 
-This generates `.tmp/qa/experimental/experimental-summary.json` with aggregated artifacts and environment metadata.
+This generates:
+
+- `.tmp/qa/experimental/experimental-summary.json`
+- `.tmp/qa/experimental/experimental-summary.md`
+
+The markdown file is a human-readable report with compact tables for performance, mutation, and chaos results.
 
 ## CI/CD
 
