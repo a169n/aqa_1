@@ -8,6 +8,7 @@ const probePath = process.env.CHAOS_HEALTH_PATH ?? '/api/health';
 const scenarioArg = (process.env.CHAOS_SCENARIO ?? 'all') as ChaosScenario | 'all';
 const durationSeconds = Number(process.env.CHAOS_FAULT_DURATION_SECONDS ?? 20);
 const probeIntervalMs = Number(process.env.CHAOS_PROBE_INTERVAL_MS ?? 1000);
+const probeTimeoutMs = Number(process.env.CHAOS_PROBE_TIMEOUT_MS ?? 2000);
 
 const scenarios: ChaosScenario[] =
   scenarioArg === 'all' ? ['api-downtime', 'db-unavailable', 'network-latency'] : [scenarioArg];
@@ -22,8 +23,13 @@ interface ProbeSample {
 
 const probeOnce = async (): Promise<ProbeSample> => {
   const started = Date.now();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), probeTimeoutMs);
+
   try {
-    const response = await fetch(`${baseUrl}${probePath}`);
+    const response = await fetch(`${baseUrl}${probePath}`, {
+      signal: controller.signal,
+    });
     return {
       timestamp: new Date().toISOString(),
       ok: response.ok,
@@ -37,8 +43,15 @@ const probeOnce = async (): Promise<ProbeSample> => {
       ok: false,
       status: null,
       latencyMs: Date.now() - started,
-      error: error instanceof Error ? error.message : 'unknown',
+      error:
+        error instanceof Error
+          ? error.name === 'AbortError'
+            ? `Probe timed out after ${probeTimeoutMs}ms`
+            : error.message
+          : 'unknown',
     };
+  } finally {
+    clearTimeout(timeout);
   }
 };
 
@@ -80,6 +93,7 @@ const scenarioRun = async (scenario: ChaosScenario) => {
     probePath,
     durationSeconds,
     probeIntervalMs,
+    probeTimeoutMs,
     executedAt: new Date().toISOString(),
     faultInjected: injectResult,
     restoreResult,

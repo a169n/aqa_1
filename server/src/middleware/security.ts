@@ -14,9 +14,18 @@ const parsePositiveInteger = (value: string | undefined, fallback: number) => {
   return parsed;
 };
 
-const AUTH_RATE_LIMIT_ENABLED = process.env.AUTH_RATE_LIMIT_ENABLED !== 'false';
-const AUTH_RATE_LIMIT_WINDOW_MS = parsePositiveInteger(process.env.AUTH_RATE_LIMIT_WINDOW_MS, 60_000);
-const AUTH_RATE_LIMIT_MAX_REQUESTS = parsePositiveInteger(process.env.AUTH_RATE_LIMIT_MAX_REQUESTS, 5);
+const AUTH_RATE_LIMIT_ENABLED =
+  process.env.AUTH_RATE_LIMIT_ENABLED !== undefined
+    ? process.env.AUTH_RATE_LIMIT_ENABLED !== 'false'
+    : process.env.NODE_ENV !== 'performance';
+const AUTH_RATE_LIMIT_WINDOW_MS = parsePositiveInteger(
+  process.env.AUTH_RATE_LIMIT_WINDOW_MS,
+  60_000,
+);
+const AUTH_RATE_LIMIT_MAX_REQUESTS = parsePositiveInteger(
+  process.env.AUTH_RATE_LIMIT_MAX_REQUESTS,
+  5,
+);
 
 const SECURITY_HEADERS = {
   'Permissions-Policy': 'camera=(), geolocation=(), microphone=()',

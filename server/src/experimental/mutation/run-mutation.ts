@@ -98,12 +98,16 @@ const npmCommand = 'npm';
 const useShellForNpm = process.platform === 'win32';
 
 const runTests = (tests: string[]) => {
-  const result = spawnSync(npmCommand, ['run', 'test', '--workspace', 'server', '--', '--run', ...tests], {
-    cwd: repoRoot,
-    env: process.env,
-    encoding: 'utf-8',
-    shell: useShellForNpm,
-  });
+  const result = spawnSync(
+    npmCommand,
+    ['run', 'test', '--workspace', 'server', '--', '--run', ...tests],
+    {
+      cwd: repoRoot,
+      env: process.env,
+      encoding: 'utf-8',
+      shell: useShellForNpm,
+    },
+  );
 
   return {
     exitCode: result.status ?? 1,

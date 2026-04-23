@@ -1,0 +1,684 @@
+{
+  "runId": "2026-04-23T14-48-26-374Z",
+  "generatedAt": "2026-04-23T14:49:51.092Z",
+  "scenarios": ["api-downtime", "db-unavailable", "network-latency"],
+  "results": [
+    {
+      "scenario": "api-downtime",
+      "baseUrl": "http://127.0.0.1:4000",
+      "probePath": "/api/health",
+      "durationSeconds": 20,
+      "probeIntervalMs": 1000,
+      "executedAt": "2026-04-23T14:48:54.614Z",
+      "faultInjected": {
+        "injected": true
+      },
+      "restoreResult": {
+        "restored": true
+      },
+      "metrics": {
+        "availabilityPercent": 0,
+        "totalProbeSamples": 28,
+        "failedProbeSamples": 28,
+        "recoveryMs": null,
+        "degradationMode": "user-visible-errors"
+      },
+      "probes": {
+        "pre": [
+          {
+            "timestamp": "2026-04-23T14:48:26.384Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 9,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:27.386Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:28.389Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          }
+        ],
+        "during": [
+          {
+            "timestamp": "2026-04-23T14:48:29.472Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:30.475Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:31.477Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:32.480Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:33.482Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:34.486Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 4,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:35.489Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:36.492Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:37.494Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:38.497Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:39.499Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:40.502Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:41.506Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:42.508Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:43.509Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:44.512Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:45.515Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:46.517Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:47.519Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:48.522Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          }
+        ],
+        "post": [
+          {
+            "timestamp": "2026-04-23T14:48:49.606Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:50.607Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:51.610Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:52.611Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 0,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:53.612Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 0,
+            "error": "fetch failed"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "db-unavailable",
+      "baseUrl": "http://127.0.0.1:4000",
+      "probePath": "/api/health",
+      "durationSeconds": 20,
+      "probeIntervalMs": 1000,
+      "executedAt": "2026-04-23T14:49:22.844Z",
+      "faultInjected": {
+        "injected": true
+      },
+      "restoreResult": {
+        "restored": true
+      },
+      "metrics": {
+        "availabilityPercent": 0,
+        "totalProbeSamples": 28,
+        "failedProbeSamples": 28,
+        "recoveryMs": null,
+        "degradationMode": "user-visible-errors"
+      },
+      "probes": {
+        "pre": [
+          {
+            "timestamp": "2026-04-23T14:48:54.615Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:55.618Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:56.620Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          }
+        ],
+        "during": [
+          {
+            "timestamp": "2026-04-23T14:48:57.696Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:58.698Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:48:59.700Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:00.702Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:01.703Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 0,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:02.705Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:03.707Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:04.708Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 0,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:05.711Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:06.714Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:07.717Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:08.720Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:09.722Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:10.723Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 0,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:11.725Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:12.728Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:13.731Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:14.734Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:15.736Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:16.739Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          }
+        ],
+        "post": [
+          {
+            "timestamp": "2026-04-23T14:49:17.834Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:18.835Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:19.837Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:20.840Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:21.843Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "network-latency",
+      "baseUrl": "http://127.0.0.1:4000",
+      "probePath": "/api/health",
+      "durationSeconds": 20,
+      "probeIntervalMs": 1000,
+      "executedAt": "2026-04-23T14:49:51.092Z",
+      "faultInjected": {
+        "injected": true,
+        "note": "Applied tc netem delay=400ms"
+      },
+      "restoreResult": {
+        "restored": true,
+        "note": "Removed tc netem rules from backend container"
+      },
+      "metrics": {
+        "availabilityPercent": 0,
+        "totalProbeSamples": 28,
+        "failedProbeSamples": 28,
+        "recoveryMs": null,
+        "degradationMode": "user-visible-errors"
+      },
+      "probes": {
+        "pre": [
+          {
+            "timestamp": "2026-04-23T14:49:22.845Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:23.847Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:24.849Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 0,
+            "error": "fetch failed"
+          }
+        ],
+        "during": [
+          {
+            "timestamp": "2026-04-23T14:49:25.947Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:26.949Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:27.951Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:28.952Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 0,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:29.954Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:30.956Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:31.956Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 0,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:32.957Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:33.958Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:34.960Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:35.962Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:36.964Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:37.967Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:38.969Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:39.972Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:40.975Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:41.977Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:42.978Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 0,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:43.980Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:44.981Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          }
+        ],
+        "post": [
+          {
+            "timestamp": "2026-04-23T14:49:46.084Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:47.085Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:48.088Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:49.090Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:50.092Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 2,
+            "error": "fetch failed"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_MULTIPLE_DATABASES: inkwell,inkwell_test
     ports:
-      - '5432:5432'
+      - '${CHAOS_DB_HOST_PORT:-15432}:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -42,7 +42,7 @@ services:
       DATABASE_PASSWORD: postgres
       UPLOAD_DIR: uploads
     ports:
-      - '4000:4000'
+      - '${CHAOS_BACKEND_HOST_PORT:-14000}:4000'
     volumes:
       - backend_uploads:/app/server/uploads
 

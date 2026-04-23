@@ -28,6 +28,8 @@ High-risk module coverage:
 
 ### Commands
 
+- `npm run dev:perf:server` → local API server for controlled performance runs, with auth rate limiting disabled
+- `npm run start:perf:server` → reset/build/start API server for controlled performance runs, with auth rate limiting disabled
 - `npm run perf:smoke` → single normal-load profile
 - `npm run perf:full` → normal, peak, spike, endurance scenarios
 - `npm run perf:summary` → markdown summary from latest run
@@ -39,8 +41,9 @@ High-risk module coverage:
 
 ### Auth Rate-Limit Note For Load Tests
 
-The authentication endpoints are protected by rate limiting in normal operation. For controlled performance runs,
-disable or raise this limiter to avoid skewed 429-heavy results on `/api/auth/login`.
+The authentication endpoints are protected by rate limiting in normal operation. Controlled performance server scripts
+start with `NODE_ENV=performance` and `AUTH_RATE_LIMIT_ENABLED=false`, so `/api/auth/login` measurements are not
+skewed by local brute-force protection.
 
 Useful overrides:
 
@@ -87,16 +90,29 @@ Implemented scenarios:
 ### Commands
 
 - `npm run chaos:run` (runs all scenarios by default)
-- `CHAOS_SCENARIO=api-downtime CHAOS_ACTION=inject npm run chaos:inject`
-- `CHAOS_SCENARIO=api-downtime CHAOS_ACTION=restore npm run chaos:restore`
+- `npm run chaos:inject` / `npm run chaos:restore` → pause/unpause the backend (`api-downtime`)
+- `npm run chaos:inject:db` / `npm run chaos:restore:db` → stop/start the database
+- `npm run chaos:inject:latency` / `npm run chaos:restore:latency` → add/remove backend network latency
 
 ### Important Safety Notes
 
 - Chaos scripts operate on `docker-compose.backend.yml` services only.
+- The all-in-one runner searches for free host ports for the chaos backend and Postgres containers, starting from `14000` and `15432`.
 - Faults are short-lived and reversible.
 - Always run restore if interrupted.
 
 ## Unified Experimental Summary
+
+Run the full local experimental suite and generate the unified summary:
+
+- `npm run experimental:run`
+
+Useful overrides:
+
+- `EXPERIMENTAL_PERFORMANCE_PROFILE=full` → run the full performance profile instead of the default smoke profile
+- `EXPERIMENTAL_RUN_CHAOS=false` → skip Docker-based chaos scenarios
+- `EXPERIMENTAL_USE_EXISTING_SERVER=true` → run performance tests against an already-running API server
+- `CHAOS_BACKEND_HOST_PORT=14000` / `CHAOS_DB_HOST_PORT=15432` → preferred starting ports for the chaos stack port search
 
 After running one or more areas:
 

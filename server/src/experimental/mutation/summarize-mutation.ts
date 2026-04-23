@@ -1,14 +1,8 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { ensureDir, experimentalRoot, writeJson } from '../common/artifacts';
+import { ensureDir, experimentalRoot, repoRoot, writeJson } from '../common/artifacts';
 
-const reportPath = path.join(
-  process.cwd(),
-  'server',
-  'reports',
-  'mutation',
-  'mutation-report.json',
-);
+const reportPath = path.join(repoRoot, 'server', 'reports', 'mutation', 'mutation-report.json');
 const outputRoot = ensureDir(path.join(experimentalRoot, 'mutation'));
 const outputPath = path.join(outputRoot, 'mutation-summary.json');
 

@@ -1,0 +1,100 @@
+{
+  "runId": "2026-04-23T14-49-23-572Z",
+  "generatedAt": "2026-04-23T14:49:37.477Z",
+  "scenarios": ["api-downtime"],
+  "results": [
+    {
+      "scenario": "api-downtime",
+      "baseUrl": "http://127.0.0.1:14000",
+      "probePath": "/api/health",
+      "durationSeconds": 5,
+      "probeIntervalMs": 1000,
+      "probeTimeoutMs": 1500,
+      "executedAt": "2026-04-23T14:49:37.477Z",
+      "faultInjected": {
+        "injected": true
+      },
+      "restoreResult": {
+        "restored": true
+      },
+      "metrics": {
+        "availabilityPercent": 77.78,
+        "totalProbeSamples": 9,
+        "failedProbeSamples": 2,
+        "recoveryMs": 505,
+        "degradationMode": "user-visible-errors"
+      },
+      "probes": {
+        "pre": [
+          {
+            "timestamp": "2026-04-23T14:49:23.594Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 22,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T14:49:24.603Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 7,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T14:49:25.612Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 7,
+            "error": null
+          }
+        ],
+        "during": [
+          {
+            "timestamp": "2026-04-23T14:49:28.240Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1503,
+            "error": "Probe timed out after 1500ms"
+          },
+          {
+            "timestamp": "2026-04-23T14:49:30.742Z",
+            "ok": false,
+            "status": null,
+            "latencyMs": 1502,
+            "error": "Probe timed out after 1500ms"
+          }
+        ],
+        "post": [
+          {
+            "timestamp": "2026-04-23T14:49:32.248Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 404,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T14:49:33.658Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 410,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T14:49:35.067Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 409,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T14:49:36.475Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 406,
+            "error": null
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -45,6 +45,8 @@ server/src/experimental/performance/run-performance.ts
 
 Run via:
 ```
+npm run dev:perf:server      # local API server with auth rate limiting disabled
+npm run start:perf:server    # reset/build/start API server with auth rate limiting disabled
 npm run perf:smoke   # normal scenario only (fast, ~35 s total)
 npm run perf:full    # all four scenarios (~2.5 min total)
 ```
@@ -287,11 +289,13 @@ server/src/experimental/chaos/chaos-control.ts   ← actual fault injection/rest
 Run via:
 ```
 npm run chaos:run                              # all three scenarios sequentially
-cross-env CHAOS_SCENARIO=api-downtime CHAOS_ACTION=inject npm run chaos:inject   # inject manually
-cross-env CHAOS_SCENARIO=api-downtime CHAOS_ACTION=restore npm run chaos:restore  # restore manually
+npm run chaos:inject                           # inject api-downtime manually
+npm run chaos:restore                          # restore api-downtime manually
+npm run chaos:inject:db                        # inject db-unavailable manually
+npm run chaos:restore:db                       # restore db-unavailable manually
+npm run chaos:inject:latency                   # inject network-latency manually
+npm run chaos:restore:latency                  # restore network-latency manually
 ```
-
-> **Windows note:** use `cross-env` for any env-var prefix on Windows cmd. See the [README](README.md).
 
 ### Core concept
 
@@ -396,13 +400,14 @@ and records:
 `chaos-action.ts` lets you inject or restore a single scenario manually — useful for local debugging or testing your monitoring setup:
 
 ```bash
-# Windows
-cross-env CHAOS_SCENARIO=api-downtime CHAOS_ACTION=inject npm run chaos:inject
-cross-env CHAOS_SCENARIO=api-downtime CHAOS_ACTION=restore npm run chaos:restore
+npm run chaos:inject
+npm run chaos:restore
 
-# Unix/CI
-CHAOS_SCENARIO=db-unavailable CHAOS_ACTION=inject npm run chaos:inject
-CHAOS_SCENARIO=db-unavailable CHAOS_ACTION=restore npm run chaos:restore
+npm run chaos:inject:db
+npm run chaos:restore:db
+
+npm run chaos:inject:latency
+npm run chaos:restore:latency
 ```
 
 > **Safety:** always run restore after inject. The run-chaos.ts orchestrator does this automatically, but manual injection leaves the fault active until you restore it.
@@ -421,6 +426,21 @@ Run via:
 ```
 npm run experimental:summary
 ```
+
+To run all experimental areas locally and then generate the same unified summary:
+
+```
+npm run experimental:run
+```
+
+The all-in-one runner starts a performance-mode API server with auth rate limiting disabled, runs the selected
+performance profile, runs mutation testing, runs Docker Compose chaos scenarios, and then writes
+`.tmp/qa/experimental/experimental-summary.json`. Use `EXPERIMENTAL_PERFORMANCE_PROFILE=full` for the full
+performance profile or `EXPERIMENTAL_RUN_CHAOS=false` to skip Docker-based chaos scenarios.
+By default, the runner refuses to continue if another API server is already responding on `PERF_BASE_URL`; set
+`EXPERIMENTAL_USE_EXISTING_SERVER=true` only when that is intentional.
+For chaos, the runner searches for free host ports starting from `14000` for the backend and `15432` for Postgres;
+override those starting points with `CHAOS_BACKEND_HOST_PORT` and `CHAOS_DB_HOST_PORT` if needed.
 
 ### What it does
 

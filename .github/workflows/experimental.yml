@@ -67,7 +67,7 @@ jobs:
           DATABASE_PASSWORD: postgres
           JWT_ACCESS_SECRET: experimental-access-secret
           JWT_REFRESH_SECRET: experimental-refresh-secret
-          AUTH_RATE_LIMIT_ENABLED: "false"
+          AUTH_RATE_LIMIT_ENABLED: 'false'
           UPLOAD_DIR: .tmp/uploads-test
 
       - name: Run performance tests

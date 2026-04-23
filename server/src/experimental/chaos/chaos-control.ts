@@ -1,8 +1,12 @@
 import { execSync } from 'node:child_process';
+import path from 'node:path';
+import { repoRoot } from '../common/artifacts';
 
 export type ChaosScenario = 'api-downtime' | 'db-unavailable' | 'network-latency';
 
-const composeFile = process.env.CHAOS_COMPOSE_FILE ?? 'docker-compose.backend.yml';
+const composeFile = process.env.CHAOS_COMPOSE_FILE
+  ? path.resolve(process.env.CHAOS_COMPOSE_FILE)
+  : path.join(repoRoot, 'docker-compose.backend.yml');
 const backendService = process.env.CHAOS_BACKEND_SERVICE ?? 'backend';
 const databaseService = process.env.CHAOS_DB_SERVICE ?? 'db';
 

@@ -9,11 +9,13 @@
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace server\" \"npm run dev --workspace client\"",
     "dev:server": "npm run dev --workspace server",
+    "dev:perf:server": "npm run dev:performance --workspace server",
     "dev:client": "npm run dev --workspace client",
     "db:clean": "npm run db:clean --workspace server",
     "db:seed": "npm run db:seed --workspace server",
     "db:reset:test": "npm run db:reset:test --workspace server",
     "start:test:server": "npm run db:reset:test && npm run build --workspace server && npm run start --workspace server",
+    "start:perf:server": "cross-env NODE_ENV=performance AUTH_RATE_LIMIT_ENABLED=false npm run start:test:server",
     "start:test:client": "npm run build --workspace client && npm run preview --workspace client -- --host 127.0.0.1 --strictPort --port 4173",
     "build": "npm run build --workspace server && npm run build --workspace client",
     "lint": "npm run lint --workspace server && npm run lint --workspace client",
@@ -28,14 +30,21 @@
     "docker:build:backend": "docker build -f server/Dockerfile .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "perf:smoke": "npm run perf:smoke --workspace server",
-    "perf:full": "npm run perf:full --workspace server",
+    "perf:smoke": "cross-env NODE_ENV=performance npm run perf:smoke --workspace server",
+    "perf:full": "cross-env NODE_ENV=performance npm run perf:full --workspace server",
     "perf:summary": "npm run perf:summary --workspace server",
     "mutation:test": "npm run mutation:test --workspace server",
     "mutation:summary": "npm run mutation:summary --workspace server",
     "chaos:run": "npm run chaos:run --workspace server",
     "chaos:inject": "npm run chaos:inject --workspace server",
     "chaos:restore": "npm run chaos:restore --workspace server",
+    "chaos:inject:api": "npm run chaos:inject:api --workspace server",
+    "chaos:restore:api": "npm run chaos:restore:api --workspace server",
+    "chaos:inject:db": "npm run chaos:inject:db --workspace server",
+    "chaos:restore:db": "npm run chaos:restore:db --workspace server",
+    "chaos:inject:latency": "npm run chaos:inject:latency --workspace server",
+    "chaos:restore:latency": "npm run chaos:restore:latency --workspace server",
+    "experimental:run": "npm run experimental:run --workspace server",
     "experimental:summary": "npm run experimental:summary --workspace server"
   },
   "overrides": {
@@ -65,5 +74,8 @@
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.2.0",
     "prettier": "^3.5.3"
+  },
+  "dependencies": {
+    "cross-env": "^10.1.0"
   }
 }

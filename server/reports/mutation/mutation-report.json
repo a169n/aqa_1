@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-04-23T09:50:40.509Z",
+  "generatedAt": "2026-04-23T14:55:44.687Z",
   "strategy": "controlled-mutants-script",
   "totals": {
     "created": 8,
-    "killed": 8,
-    "survived": 0,
+    "killed": 7,
+    "survived": 1,
     "errors": 0,
-    "mutationScore": 100
+    "mutationScore": 87.5
   },
   "modules": {
     "auth": {
@@ -23,9 +23,9 @@
     },
     "content": {
       "created": 4,
-      "killed": 4,
-      "survived": 0,
-      "mutationScore": 100
+      "killed": 3,
+      "survived": 1,
+      "mutationScore": 75
     }
   },
   "mutants": [
@@ -37,7 +37,7 @@
       "status": "Killed",
       "exitCode": 1,
       "tests": ["src/test/auth.integration.test.ts"],
-      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\auth-login-negation.log"
+      "logPath": "/Users/a1byn/Desktop/AQA1/.tmp/qa/experimental/mutation/auth-login-negation.log"
     },
     {
       "id": "auth-refresh-expiry-check",
@@ -47,7 +47,7 @@
       "status": "Killed",
       "exitCode": 1,
       "tests": ["src/test/auth.integration.test.ts"],
-      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\auth-refresh-expiry-check.log"
+      "logPath": "/Users/a1byn/Desktop/AQA1/.tmp/qa/experimental/mutation/auth-refresh-expiry-check.log"
     },
     {
       "id": "authorization-admin-guard",
@@ -57,17 +57,17 @@
       "status": "Killed",
       "exitCode": 1,
       "tests": ["src/test/profile-admin.integration.test.ts"],
-      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\authorization-admin-guard.log"
+      "logPath": "/Users/a1byn/Desktop/AQA1/.tmp/qa/experimental/mutation/authorization-admin-guard.log"
     },
     {
       "id": "content-visibility-status",
       "module": "content",
       "filePath": "server/src/services/blog.service.ts",
       "description": "Treat non-published status as published in visibility guard",
-      "status": "Killed",
-      "exitCode": 1,
+      "status": "Survived",
+      "exitCode": 0,
       "tests": ["src/test/blog.service.unit.test.ts", "src/test/editorial.integration.test.ts"],
-      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\content-visibility-status.log"
+      "logPath": "/Users/a1byn/Desktop/AQA1/.tmp/qa/experimental/mutation/content-visibility-status.log"
     },
     {
       "id": "content-report-target-validation",
@@ -77,7 +77,7 @@
       "status": "Killed",
       "exitCode": 1,
       "tests": ["src/test/report.service.unit.test.ts", "src/test/editorial.integration.test.ts"],
-      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\content-report-target-validation.log"
+      "logPath": "/Users/a1byn/Desktop/AQA1/.tmp/qa/experimental/mutation/content-report-target-validation.log"
     },
     {
       "id": "blog-like-duplicate-check",
@@ -87,7 +87,7 @@
       "status": "Killed",
       "exitCode": 1,
       "tests": ["src/test/blog.integration.test.ts"],
-      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\blog-like-duplicate-check.log"
+      "logPath": "/Users/a1byn/Desktop/AQA1/.tmp/qa/experimental/mutation/blog-like-duplicate-check.log"
     },
     {
       "id": "blog-tag-count-validation",
@@ -97,7 +97,7 @@
       "status": "Killed",
       "exitCode": 1,
       "tests": ["src/test/blog.integration.test.ts"],
-      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\blog-tag-count-validation.log"
+      "logPath": "/Users/a1byn/Desktop/AQA1/.tmp/qa/experimental/mutation/blog-tag-count-validation.log"
     },
     {
       "id": "taxonomy-duplicate-category-guard",
@@ -107,7 +107,7 @@
       "status": "Killed",
       "exitCode": 1,
       "tests": ["src/test/taxonomy.integration.test.ts"],
-      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\taxonomy-duplicate-category-guard.log"
+      "logPath": "/Users/a1byn/Desktop/AQA1/.tmp/qa/experimental/mutation/taxonomy-duplicate-category-guard.log"
     }
   ]
 }
