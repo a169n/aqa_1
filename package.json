@@ -27,7 +27,16 @@
     "ci": "npm run lint && npm run build && npm run test:coverage && npm run test:e2e && npm run qa:gates",
     "docker:build:backend": "docker build -f server/Dockerfile .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "perf:smoke": "npm run perf:smoke --workspace server",
+    "perf:full": "npm run perf:full --workspace server",
+    "perf:summary": "npm run perf:summary --workspace server",
+    "mutation:test": "npm run mutation:test --workspace server",
+    "mutation:summary": "npm run mutation:summary --workspace server",
+    "chaos:run": "npm run chaos:run --workspace server",
+    "chaos:inject": "npm run chaos:inject --workspace server",
+    "chaos:restore": "npm run chaos:restore --workspace server",
+    "experimental:summary": "npm run experimental:summary --workspace server"
   },
   "overrides": {
     "brace-expansion": "2.0.3",

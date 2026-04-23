@@ -17,7 +17,16 @@
     "qa:gates": "npm run qa:summary && tsx src/qa/check-quality-gates.ts",
     "typeorm": "typeorm-ts-node-commonjs -d src/config/data-source.ts",
     "migration:run": "npm run typeorm -- migration:run",
-    "migration:revert": "npm run typeorm -- migration:revert"
+    "migration:revert": "npm run typeorm -- migration:revert",
+    "perf:smoke": "PERF_PROFILE=smoke tsx src/experimental/performance/run-performance.ts",
+    "perf:full": "PERF_PROFILE=full tsx src/experimental/performance/run-performance.ts",
+    "perf:summary": "tsx src/experimental/performance/summarize-performance.ts",
+    "mutation:test": "tsx src/experimental/mutation/run-mutation.ts",
+    "mutation:summary": "tsx src/experimental/mutation/summarize-mutation.ts",
+    "chaos:run": "tsx src/experimental/chaos/run-chaos.ts",
+    "chaos:inject": "tsx src/experimental/chaos/chaos-action.ts",
+    "chaos:restore": "tsx src/experimental/chaos/chaos-action.ts",
+    "experimental:summary": "tsx src/experimental/generate-experimental-summary.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
