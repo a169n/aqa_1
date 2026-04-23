@@ -1,0 +1,115 @@
+{
+  "runId": "2026-04-23T15-33-20-644Z",
+  "generatedAt": "2026-04-23T15:33:34.667Z",
+  "scenarios": ["db-unavailable"],
+  "results": [
+    {
+      "scenario": "db-unavailable",
+      "baseUrl": "http://127.0.0.1:14000",
+      "probePath": "/api/posts",
+      "durationSeconds": 5,
+      "probeIntervalMs": 1000,
+      "probeTimeoutMs": 2000,
+      "probeLatencyFailureMs": null,
+      "executedAt": "2026-04-23T15:33:34.667Z",
+      "faultInjected": {
+        "injected": true
+      },
+      "restoreResult": {
+        "restored": true
+      },
+      "metrics": {
+        "availabilityPercent": 63.64,
+        "totalProbeSamples": 11,
+        "failedProbeSamples": 4,
+        "recoveryMs": 1300,
+        "degradationMode": "user-visible-errors"
+      },
+      "probes": {
+        "pre": [
+          {
+            "timestamp": "2026-04-23T15:33:20.681Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 36,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T15:33:21.691Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 9,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T15:33:22.701Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 9,
+            "error": null
+          }
+        ],
+        "during": [
+          {
+            "timestamp": "2026-04-23T15:33:24.101Z",
+            "ok": false,
+            "status": 500,
+            "latencyMs": 23,
+            "error": "HTTP 500"
+          },
+          {
+            "timestamp": "2026-04-23T15:33:25.514Z",
+            "ok": false,
+            "status": 500,
+            "latencyMs": 412,
+            "error": "HTTP 500"
+          },
+          {
+            "timestamp": "2026-04-23T15:33:26.927Z",
+            "ok": false,
+            "status": 500,
+            "latencyMs": 412,
+            "error": "HTTP 500"
+          },
+          {
+            "timestamp": "2026-04-23T15:33:28.339Z",
+            "ok": false,
+            "status": 500,
+            "latencyMs": 411,
+            "error": "HTTP 500"
+          }
+        ],
+        "post": [
+          {
+            "timestamp": "2026-04-23T15:33:30.640Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 1045,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T15:33:31.651Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 9,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T15:33:32.659Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 7,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T15:33:33.666Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 6,
+            "error": null
+          }
+        ]
+      }
+    }
+  ]
+}

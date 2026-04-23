@@ -9,6 +9,9 @@ const scenarioArg = (process.env.CHAOS_SCENARIO ?? 'all') as ChaosScenario | 'al
 const durationSeconds = Number(process.env.CHAOS_FAULT_DURATION_SECONDS ?? 20);
 const probeIntervalMs = Number(process.env.CHAOS_PROBE_INTERVAL_MS ?? 1000);
 const probeTimeoutMs = Number(process.env.CHAOS_PROBE_TIMEOUT_MS ?? 2000);
+const dbProbePath = process.env.CHAOS_DB_PROBE_PATH ?? '/api/posts';
+const networkProbePath = process.env.CHAOS_NETWORK_PROBE_PATH ?? '/api/posts';
+const networkLatencyFailureMs = Number(process.env.CHAOS_NETWORK_LATENCY_FAILURE_MS ?? 300);
 
 const scenarios: ChaosScenario[] =
   scenarioArg === 'all' ? ['api-downtime', 'db-unavailable', 'network-latency'] : [scenarioArg];
@@ -21,21 +24,50 @@ interface ProbeSample {
   error: string | null;
 }
 
-const probeOnce = async (): Promise<ProbeSample> => {
+interface ScenarioProbeConfig {
+  path: string;
+  maxLatencyMs?: number;
+}
+
+const getProbeConfig = (scenario: ChaosScenario): ScenarioProbeConfig => {
+  switch (scenario) {
+    case 'api-downtime':
+      return { path: probePath };
+    case 'db-unavailable':
+      return { path: dbProbePath };
+    case 'network-latency':
+      return {
+        path: networkProbePath,
+        maxLatencyMs: networkLatencyFailureMs,
+      };
+    default:
+      return { path: probePath };
+  }
+};
+
+const probeOnce = async (probeConfig: ScenarioProbeConfig): Promise<ProbeSample> => {
   const started = Date.now();
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), probeTimeoutMs);
 
   try {
-    const response = await fetch(`${baseUrl}${probePath}`, {
+    const response = await fetch(`${baseUrl}${probeConfig.path}`, {
       signal: controller.signal,
     });
+    const latencyMs = Date.now() - started;
+    const latencyExceeded =
+      typeof probeConfig.maxLatencyMs === 'number' && latencyMs > probeConfig.maxLatencyMs;
+
     return {
       timestamp: new Date().toISOString(),
-      ok: response.ok,
+      ok: response.ok && !latencyExceeded,
       status: response.status,
-      latencyMs: Date.now() - started,
-      error: null,
+      latencyMs,
+      error: latencyExceeded
+        ? `Probe exceeded latency threshold ${probeConfig.maxLatencyMs}ms`
+        : response.ok
+          ? null
+          : `HTTP ${response.status}`,
     };
   } catch (error) {
     return {
@@ -55,27 +87,28 @@ const probeOnce = async (): Promise<ProbeSample> => {
   }
 };
 
-const collectProbes = async (milliseconds: number) => {
+const collectProbes = async (milliseconds: number, probeConfig: ScenarioProbeConfig) => {
   const samples: ProbeSample[] = [];
   const endAt = Date.now() + milliseconds;
   while (Date.now() < endAt) {
-    samples.push(await probeOnce());
+    samples.push(await probeOnce(probeConfig));
     await sleep(probeIntervalMs);
   }
   return samples;
 };
 
 const scenarioRun = async (scenario: ChaosScenario) => {
-  const preSamples = await collectProbes(Math.max(3000, probeIntervalMs * 3));
+  const probeConfig = getProbeConfig(scenario);
+  const preSamples = await collectProbes(Math.max(3000, probeIntervalMs * 3), probeConfig);
   const injectResult = injectFault(scenario);
 
   const duringSamples = injectResult.injected
-    ? await collectProbes(durationSeconds * 1000)
-    : await collectProbes(Math.max(3000, probeIntervalMs * 3));
+    ? await collectProbes(durationSeconds * 1000, probeConfig)
+    : await collectProbes(Math.max(3000, probeIntervalMs * 3), probeConfig);
 
   const restoredAt = Date.now();
   const restoreResult = restoreFault(scenario);
-  const postSamples = await collectProbes(Math.max(5000, probeIntervalMs * 5));
+  const postSamples = await collectProbes(Math.max(5000, probeIntervalMs * 5), probeConfig);
 
   const combined = [...preSamples, ...duringSamples, ...postSamples];
   const failureSamples = combined.filter((sample) => !sample.ok);
@@ -90,10 +123,11 @@ const scenarioRun = async (scenario: ChaosScenario) => {
   return {
     scenario,
     baseUrl,
-    probePath,
+    probePath: probeConfig.path,
     durationSeconds,
     probeIntervalMs,
     probeTimeoutMs,
+    probeLatencyFailureMs: probeConfig.maxLatencyMs ?? null,
     executedAt: new Date().toISOString(),
     faultInjected: injectResult,
     restoreResult,

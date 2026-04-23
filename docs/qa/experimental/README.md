@@ -99,6 +99,7 @@ Implemented scenarios:
 
 - Chaos scripts operate on `docker-compose.backend.yml` services only.
 - The all-in-one runner searches for free host ports for the chaos backend and Postgres containers, starting from `14000` and `15432`.
+- `api-downtime` probes `/api/health`, while `db-unavailable` and `network-latency` probe `/api/posts` so DB and latency faults affect the measured path.
 - Faults are short-lived and reversible.
 - Always run restore if interrupted.
 

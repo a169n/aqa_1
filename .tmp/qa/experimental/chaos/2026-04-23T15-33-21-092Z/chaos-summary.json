@@ -1,0 +1,124 @@
+{
+  "runId": "2026-04-23T15-33-21-092Z",
+  "generatedAt": "2026-04-23T15:33:34.964Z",
+  "scenarios": ["network-latency"],
+  "results": [
+    {
+      "scenario": "network-latency",
+      "baseUrl": "http://127.0.0.1:14000",
+      "probePath": "/api/posts",
+      "durationSeconds": 5,
+      "probeIntervalMs": 1000,
+      "probeTimeoutMs": 2000,
+      "probeLatencyFailureMs": 300,
+      "executedAt": "2026-04-23T15:33:34.964Z",
+      "faultInjected": {
+        "injected": true,
+        "note": "Applied tc netem delay=400ms"
+      },
+      "restoreResult": {
+        "restored": true,
+        "note": "Removed tc netem rules from backend container"
+      },
+      "metrics": {
+        "availabilityPercent": 66.67,
+        "totalProbeSamples": 12,
+        "failedProbeSamples": 4,
+        "recoveryMs": 91,
+        "degradationMode": "user-visible-errors"
+      },
+      "probes": {
+        "pre": [
+          {
+            "timestamp": "2026-04-23T15:33:21.114Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 21,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T15:33:22.125Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 9,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T15:33:23.134Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 8,
+            "error": null
+          }
+        ],
+        "during": [
+          {
+            "timestamp": "2026-04-23T15:33:24.606Z",
+            "ok": false,
+            "status": 500,
+            "latencyMs": 407,
+            "error": "Probe exceeded latency threshold 300ms"
+          },
+          {
+            "timestamp": "2026-04-23T15:33:26.016Z",
+            "ok": false,
+            "status": 500,
+            "latencyMs": 409,
+            "error": "Probe exceeded latency threshold 300ms"
+          },
+          {
+            "timestamp": "2026-04-23T15:33:27.426Z",
+            "ok": false,
+            "status": 500,
+            "latencyMs": 409,
+            "error": "Probe exceeded latency threshold 300ms"
+          },
+          {
+            "timestamp": "2026-04-23T15:33:28.837Z",
+            "ok": false,
+            "status": 500,
+            "latencyMs": 409,
+            "error": "Probe exceeded latency threshold 300ms"
+          }
+        ],
+        "post": [
+          {
+            "timestamp": "2026-04-23T15:33:29.929Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 16,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T15:33:30.937Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 8,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T15:33:31.946Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 8,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T15:33:32.955Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 8,
+            "error": null
+          },
+          {
+            "timestamp": "2026-04-23T15:33:33.963Z",
+            "ok": true,
+            "status": 200,
+            "latencyMs": 8,
+            "error": null
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "runId": "2026-04-23T15-33-17-922Z",
+  "scenarioProfile": "smoke",
+  "generatedAt": "2026-04-23T15:34:33.289Z",
+  "summary": [
+    {
+      "endpoint": "auth_login",
+      "module": "auth",
+      "scenario": "normal",
+      "averageLatencyMs": 281.71,
+      "medianLatencyMs": 306,
+      "p95LatencyMs": 428,
+      "throughputRps": 18.96,
+      "errorRatePercent": 0,
+      "thresholdPass": {
+        "errorRate": true,
+        "p95": true
+      }
+    },
+    {
+      "endpoint": "auth_me",
+      "module": "auth",
+      "scenario": "normal",
+      "averageLatencyMs": 0.86,
+      "medianLatencyMs": 1,
+      "p95LatencyMs": 2,
+      "throughputRps": 6186.93,
+      "errorRatePercent": 0,
+      "thresholdPass": {
+        "errorRate": true,
+        "p95": true
+      }
+    },
+    {
+      "endpoint": "admin_reports_list",
+      "module": "authorization",
+      "scenario": "normal",
+      "averageLatencyMs": 1.23,
+      "medianLatencyMs": 1,
+      "p95LatencyMs": 2,
+      "throughputRps": 4326.31,
+      "errorRatePercent": 0,
+      "thresholdPass": {
+        "errorRate": true,
+        "p95": true
+      }
+    },
+    {
+      "endpoint": "posts_list",
+      "module": "content",
+      "scenario": "normal",
+      "averageLatencyMs": 3.95,
+      "medianLatencyMs": 4,
+      "p95LatencyMs": 6,
+      "throughputRps": 1348.82,
+      "errorRatePercent": 0,
+      "thresholdPass": {
+        "errorRate": true,
+        "p95": true
+      }
+    },
+    {
+      "endpoint": "workspace_posts",
+      "module": "content",
+      "scenario": "normal",
+      "averageLatencyMs": 2.4,
+      "medianLatencyMs": 2,
+      "p95LatencyMs": 4,
+      "throughputRps": 2217.45,
+      "errorRatePercent": 0,
+      "thresholdPass": {
+        "errorRate": true,
+        "p95": true
+      }
+    }
+  ]
+}

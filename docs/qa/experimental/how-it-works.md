@@ -301,7 +301,7 @@ npm run chaos:restore:latency                  # restore network-latency manuall
 
 Chaos testing asks: *"When something breaks in production, does the system fail safely and recover quickly?"*
 
-The script injects a controlled fault, probes the health endpoint continuously before, during, and after the fault, then measures:
+The script injects a controlled fault, probes a scenario-specific endpoint continuously before, during, and after the fault, then measures:
 - **Availability %** — how many probes returned `200 OK` out of the total
 - **Recovery time (MTTR)** — milliseconds from fault restoration to first successful probe
 - **Degradation mode** — `graceful` (no probe failures) or `user-visible-errors`
@@ -311,7 +311,7 @@ The script injects a controlled fault, probes the health endpoint continuously b
 ```
 For each scenario in [api-downtime, db-unavailable, network-latency]:
         ↓
-1. PRE-FAULT phase: probe /api/health every 1 s for 3 s
+1. PRE-FAULT phase: probe the scenario endpoint every 1 s for 3 s
    (confirms system is healthy before injecting)
         ↓
 2. INJECT fault:  call injectFault(scenario)
@@ -375,11 +375,25 @@ docker exec inkwell-backend sh -lc "tc qdisc del dev eth0 root"
 
 If `tc` is unavailable in the container (no `iproute2` installed or insufficient privileges), the script logs a warning and skips injection — it does **not** fail the run.
 
-### The health probe
+### Probe targets
 
-Every probe calls:
+Scenario probe paths:
+
+| Scenario | Probe path | Reason |
+|---|---|---|
+| `api-downtime` | `/api/health` | verifies the API process becomes unreachable during pause |
+| `db-unavailable` | `/api/posts` | exercises a DB-backed read path so DB outage produces failed probes |
+| `network-latency` | `/api/posts` | exercises a DB-backed read path and treats excessive response time as failure |
+
+For `network-latency`, a probe is marked failed if:
+
+- the request errors
+- the HTTP status is >= 400
+- or latency exceeds `CHAOS_NETWORK_LATENCY_FAILURE_MS` (default `300 ms`)
+
+Each probe calls:
 ```
-GET <baseUrl>/api/health
+GET <baseUrl><scenarioProbePath>
 ```
 
 and records:
