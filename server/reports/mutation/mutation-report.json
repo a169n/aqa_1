@@ -1,0 +1,113 @@
+{
+  "generatedAt": "2026-04-23T09:50:40.509Z",
+  "strategy": "controlled-mutants-script",
+  "totals": {
+    "created": 8,
+    "killed": 8,
+    "survived": 0,
+    "errors": 0,
+    "mutationScore": 100
+  },
+  "modules": {
+    "auth": {
+      "created": 2,
+      "killed": 2,
+      "survived": 0,
+      "mutationScore": 100
+    },
+    "authorization": {
+      "created": 2,
+      "killed": 2,
+      "survived": 0,
+      "mutationScore": 100
+    },
+    "content": {
+      "created": 4,
+      "killed": 4,
+      "survived": 0,
+      "mutationScore": 100
+    }
+  },
+  "mutants": [
+    {
+      "id": "auth-login-negation",
+      "module": "auth",
+      "filePath": "server/src/services/auth.service.ts",
+      "description": "Negate password match condition during login",
+      "status": "Killed",
+      "exitCode": 1,
+      "tests": ["src/test/auth.integration.test.ts"],
+      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\auth-login-negation.log"
+    },
+    {
+      "id": "auth-refresh-expiry-check",
+      "module": "auth",
+      "filePath": "server/src/services/auth.service.ts",
+      "description": "Invert refresh token expiry check",
+      "status": "Killed",
+      "exitCode": 1,
+      "tests": ["src/test/auth.integration.test.ts"],
+      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\auth-refresh-expiry-check.log"
+    },
+    {
+      "id": "authorization-admin-guard",
+      "module": "authorization",
+      "filePath": "server/src/middleware/authenticate.ts",
+      "description": "Bypass role check in admin guard",
+      "status": "Killed",
+      "exitCode": 1,
+      "tests": ["src/test/profile-admin.integration.test.ts"],
+      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\authorization-admin-guard.log"
+    },
+    {
+      "id": "content-visibility-status",
+      "module": "content",
+      "filePath": "server/src/services/blog.service.ts",
+      "description": "Treat non-published status as published in visibility guard",
+      "status": "Killed",
+      "exitCode": 1,
+      "tests": ["src/test/blog.service.unit.test.ts", "src/test/editorial.integration.test.ts"],
+      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\content-visibility-status.log"
+    },
+    {
+      "id": "content-report-target-validation",
+      "module": "content",
+      "filePath": "server/src/services/report.service.ts",
+      "description": "Allow invalid report target cardinality",
+      "status": "Killed",
+      "exitCode": 1,
+      "tests": ["src/test/report.service.unit.test.ts", "src/test/editorial.integration.test.ts"],
+      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\content-report-target-validation.log"
+    },
+    {
+      "id": "blog-like-duplicate-check",
+      "module": "content",
+      "filePath": "server/src/services/blog.service.ts",
+      "description": "Invert duplicate like guard so already-liked posts can be re-liked",
+      "status": "Killed",
+      "exitCode": 1,
+      "tests": ["src/test/blog.integration.test.ts"],
+      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\blog-like-duplicate-check.log"
+    },
+    {
+      "id": "blog-tag-count-validation",
+      "module": "content",
+      "filePath": "server/src/services/blog.service.ts",
+      "description": "Invert tag count validation so mismatched tag arrays are allowed instead of rejected",
+      "status": "Killed",
+      "exitCode": 1,
+      "tests": ["src/test/blog.integration.test.ts"],
+      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\blog-tag-count-validation.log"
+    },
+    {
+      "id": "taxonomy-duplicate-category-guard",
+      "module": "authorization",
+      "filePath": "server/src/services/taxonomy.service.ts",
+      "description": "Invert duplicate category uniqueness check to allow duplicates and reject unique names",
+      "status": "Killed",
+      "exitCode": 1,
+      "tests": ["src/test/taxonomy.integration.test.ts"],
+      "logPath": "C:\\Users\\talgatov_a\\Desktop\\aqa_1\\.tmp\\qa\\experimental\\mutation\\taxonomy-duplicate-category-guard.log"
+    }
+  ]
+}
