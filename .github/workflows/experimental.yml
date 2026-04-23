@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       performance_profile:
-        description: "Performance profile (smoke or full)"
+        description: 'Performance profile (smoke or full)'
         required: false
-        default: "smoke"
+        default: 'smoke'
       run_chaos:
-        description: "Run chaos scenarios"
+        description: 'Run chaos scenarios'
         required: false
-        default: "true"
+        default: 'true'
   schedule:
     - cron: '0 6 * * 1'
 

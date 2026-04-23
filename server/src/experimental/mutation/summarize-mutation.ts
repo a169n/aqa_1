@@ -2,7 +2,13 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { ensureDir, experimentalRoot, writeJson } from '../common/artifacts';
 
-const reportPath = path.join(process.cwd(), 'server', 'reports', 'mutation', 'mutation-report.json');
+const reportPath = path.join(
+  process.cwd(),
+  'server',
+  'reports',
+  'mutation',
+  'mutation-report.json',
+);
 const outputRoot = ensureDir(path.join(experimentalRoot, 'mutation'));
 const outputPath = path.join(outputRoot, 'mutation-summary.json');
 
@@ -14,7 +20,10 @@ const report = JSON.parse(readFileSync(reportPath, 'utf-8')) as {
     errors: number;
     mutationScore: number;
   };
-  modules?: Record<string, { created: number; killed: number; survived: number; mutationScore: number }>;
+  modules?: Record<
+    string,
+    { created: number; killed: number; survived: number; mutationScore: number }
+  >;
   mutants?: Array<{ id: string; module: string; status: string }>;
 };
 

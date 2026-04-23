@@ -42,4 +42,6 @@ const summary = {
 };
 
 writeJson(path.join(experimentalRoot, 'experimental-summary.json'), summary);
-console.log(`Experimental summary written to ${path.join(experimentalRoot, 'experimental-summary.json')}`);
+console.log(
+  `Experimental summary written to ${path.join(experimentalRoot, 'experimental-summary.json')}`,
+);

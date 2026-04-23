@@ -52,7 +52,8 @@ const lines = [
   '',
   ...Object.entries(grouped).map(([key, entries]) => {
     const avgP95 = entries.reduce((total, row) => total + row.p95LatencyMs, 0) / entries.length;
-    const avgError = entries.reduce((total, row) => total + row.errorRatePercent, 0) / entries.length;
+    const avgError =
+      entries.reduce((total, row) => total + row.errorRatePercent, 0) / entries.length;
     return `- ${key}: avg p95=${avgP95.toFixed(2)}ms, avg error=${avgError.toFixed(3)}%`;
   }),
   '',

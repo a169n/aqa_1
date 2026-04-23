@@ -217,7 +217,9 @@ const runScenario = async ({
   };
 
   const workers = Array.from({ length: scenario.concurrency }, async (_value, index) => {
-    const delayPerWorkerMs = Math.floor((scenario.rampUpSeconds * 1000 * index) / scenario.concurrency);
+    const delayPerWorkerMs = Math.floor(
+      (scenario.rampUpSeconds * 1000 * index) / scenario.concurrency,
+    );
     if (delayPerWorkerMs > 0) {
       await sleep(delayPerWorkerMs);
     }

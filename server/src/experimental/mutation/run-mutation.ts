@@ -61,17 +61,50 @@ const mutants: MutantDefinition[] = [
     replace: 'if ((postId ? 1 : 0) + (commentId ? 1 : 0) === 1) {',
     tests: ['src/test/report.service.unit.test.ts', 'src/test/editorial.integration.test.ts'],
   },
+  {
+    id: 'blog-like-duplicate-check',
+    module: 'content',
+    filePath: 'server/src/services/blog.service.ts',
+    description: 'Invert duplicate like guard so already-liked posts can be re-liked',
+    find: 'if (existingLike) {',
+    replace: 'if (!existingLike) {',
+    tests: ['src/test/blog.integration.test.ts'],
+  },
+  {
+    id: 'blog-tag-count-validation',
+    module: 'content',
+    filePath: 'server/src/services/blog.service.ts',
+    description:
+      'Invert tag count validation so mismatched tag arrays are allowed instead of rejected',
+    find: 'if (tags.length !== tagIds.length) {',
+    replace: 'if (tags.length === tagIds.length) {',
+    tests: ['src/test/blog.integration.test.ts'],
+  },
+  {
+    id: 'taxonomy-duplicate-category-guard',
+    module: 'authorization',
+    filePath: 'server/src/services/taxonomy.service.ts',
+    description:
+      'Invert duplicate category uniqueness check to allow duplicates and reject unique names',
+    find: 'if (existing && existing.id !== categoryId) {',
+    replace: 'if (!existing || existing.id !== categoryId) {',
+    tests: ['src/test/taxonomy.integration.test.ts'],
+  },
 ];
 
 const outputRoot = ensureDir(path.join(experimentalRoot, 'mutation'));
 const outputPath = path.join(outputRoot, 'mutation-summary.json');
 
 const runTests = (tests: string[]) => {
-  const result = spawnSync('npm', ['run', 'test', '--workspace', 'server', '--', '--run', ...tests], {
-    cwd: repoRoot,
-    env: process.env,
-    encoding: 'utf-8',
-  });
+  const result = spawnSync(
+    'npm',
+    ['run', 'test', '--workspace', 'server', '--', '--run', ...tests],
+    {
+      cwd: repoRoot,
+      env: process.env,
+      encoding: 'utf-8',
+    },
+  );
 
   return {
     exitCode: result.status ?? 1,
