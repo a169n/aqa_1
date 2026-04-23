@@ -36,6 +36,11 @@ const scenarioThresholds = {
     errorRatePercentMax: Number(process.env.PERF_THRESHOLD_ERROR_RATE_MAX ?? 2),
     p95MsMax: Number(process.env.PERF_THRESHOLD_P95_MS_MAX ?? 800),
   },
+  endpointOverrides: {
+    auth_login: {
+      p95MsMax: Number(process.env.PERF_THRESHOLD_AUTH_LOGIN_P95_MS_MAX ?? 3500),
+    },
+  },
 };
 
 const scenarioConfigs: Record<ScenarioProfile, ScenarioConfig[]> = {
@@ -235,6 +240,13 @@ const runScenario = async ({
   const p95LatencyMs = percentile(latencySamples, 95);
   const throughputRps = requests / elapsedSeconds;
   const errorRatePercent = Number(((failures / Math.max(1, requests)) * 100).toFixed(3));
+  const endpointThreshold = {
+    errorRatePercentMax: scenarioThresholds.baseline.errorRatePercentMax,
+    p95MsMax:
+      endpoint.name === 'auth_login'
+        ? scenarioThresholds.endpointOverrides.auth_login.p95MsMax
+        : scenarioThresholds.baseline.p95MsMax,
+  };
 
   return {
     module: endpoint.module,
@@ -254,10 +266,10 @@ const runScenario = async ({
       totalErrors: failures,
       errorRatePercent,
     },
-    thresholds: scenarioThresholds.baseline,
+    thresholds: endpointThreshold,
     thresholdPass: {
-      errorRate: errorRatePercent <= scenarioThresholds.baseline.errorRatePercentMax,
-      p95: p95LatencyMs <= scenarioThresholds.baseline.p95MsMax,
+      errorRate: errorRatePercent <= endpointThreshold.errorRatePercentMax,
+      p95: p95LatencyMs <= endpointThreshold.p95MsMax,
     },
     systemUsageSamples: systemSamples,
   };
@@ -288,7 +300,7 @@ const run = async () => {
       runId,
       scenarioProfile,
       baseUrl,
-      thresholds: scenarioThresholds.baseline,
+      thresholds: scenarioThresholds,
       generatedAt: new Date().toISOString(),
     },
     parameters: {

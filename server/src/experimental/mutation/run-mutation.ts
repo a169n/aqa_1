@@ -94,22 +94,21 @@ const mutants: MutantDefinition[] = [
 
 const outputRoot = ensureDir(path.join(experimentalRoot, 'mutation'));
 const outputPath = path.join(outputRoot, 'mutation-summary.json');
+const npmCommand = 'npm';
+const useShellForNpm = process.platform === 'win32';
 
 const runTests = (tests: string[]) => {
-  const result = spawnSync(
-    'npm',
-    ['run', 'test', '--workspace', 'server', '--', '--run', ...tests],
-    {
-      cwd: repoRoot,
-      env: process.env,
-      encoding: 'utf-8',
-    },
-  );
+  const result = spawnSync(npmCommand, ['run', 'test', '--workspace', 'server', '--', '--run', ...tests], {
+    cwd: repoRoot,
+    env: process.env,
+    encoding: 'utf-8',
+    shell: useShellForNpm,
+  });
 
   return {
     exitCode: result.status ?? 1,
-    stdout: result.stdout,
-    stderr: result.stderr,
+    stdout: result.stdout ?? '',
+    stderr: result.stderr ?? (result.error ? String(result.error.message) : ''),
   };
 };
 

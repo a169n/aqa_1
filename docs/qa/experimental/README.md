@@ -37,10 +37,22 @@ High-risk module coverage:
 - API server running and seeded with default users (`admin@example.com`, `user@example.com`, password `Password123!`)
 - `PERF_BASE_URL` (default: `http://127.0.0.1:4000`)
 
+### Auth Rate-Limit Note For Load Tests
+
+The authentication endpoints are protected by rate limiting in normal operation. For controlled performance runs,
+disable or raise this limiter to avoid skewed 429-heavy results on `/api/auth/login`.
+
+Useful overrides:
+
+- `AUTH_RATE_LIMIT_ENABLED=false`
+- `AUTH_RATE_LIMIT_MAX_REQUESTS=<large number>`
+- `AUTH_RATE_LIMIT_WINDOW_MS=<window size>`
+
 ### Optional Threshold Overrides
 
 - `PERF_THRESHOLD_P95_MS_MAX`
 - `PERF_THRESHOLD_ERROR_RATE_MAX`
+- `PERF_THRESHOLD_AUTH_LOGIN_P95_MS_MAX`
 
 These are experimental baselines, not business SLA values.
 

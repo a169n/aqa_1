@@ -6,6 +6,7 @@ COPY package.json package-lock.json ./
 COPY server/package.json server/package.json
 
 RUN npm ci
+RUN apk add --no-cache iproute2
 
 COPY server server
 

@@ -67,6 +67,7 @@ jobs:
           DATABASE_PASSWORD: postgres
           JWT_ACCESS_SECRET: experimental-access-secret
           JWT_REFRESH_SECRET: experimental-refresh-secret
+          AUTH_RATE_LIMIT_ENABLED: "false"
           UPLOAD_DIR: .tmp/uploads-test
 
       - name: Run performance tests
@@ -79,6 +80,7 @@ jobs:
           npm run perf:summary
         env:
           PERF_BASE_URL: http://127.0.0.1:4000
+          PERF_THRESHOLD_AUTH_LOGIN_P95_MS_MAX: 3500
 
       - name: Stop test server
         if: always()

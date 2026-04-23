@@ -25,6 +25,8 @@ services:
       context: .
       dockerfile: server/Dockerfile
     container_name: inkwell-backend
+    cap_add:
+      - NET_ADMIN
     restart: unless-stopped
     depends_on:
       db:

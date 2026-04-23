@@ -1,8 +1,22 @@
 import type { NextFunction, Request, Response } from 'express';
 import { HttpError } from '../utils/http-error';
 
-const AUTH_RATE_LIMIT_WINDOW_MS = 60_000;
-const AUTH_RATE_LIMIT_MAX_REQUESTS = 5;
+const parsePositiveInteger = (value: string | undefined, fallback: number) => {
+  if (!value) {
+    return fallback;
+  }
+
+  const parsed = Number.parseInt(value, 10);
+  if (Number.isNaN(parsed) || parsed <= 0) {
+    return fallback;
+  }
+
+  return parsed;
+};
+
+const AUTH_RATE_LIMIT_ENABLED = process.env.AUTH_RATE_LIMIT_ENABLED !== 'false';
+const AUTH_RATE_LIMIT_WINDOW_MS = parsePositiveInteger(process.env.AUTH_RATE_LIMIT_WINDOW_MS, 60_000);
+const AUTH_RATE_LIMIT_MAX_REQUESTS = parsePositiveInteger(process.env.AUTH_RATE_LIMIT_MAX_REQUESTS, 5);
 
 const SECURITY_HEADERS = {
   'Permissions-Policy': 'camera=(), geolocation=(), microphone=()',
@@ -56,6 +70,11 @@ export const noStoreResponses = (_request: Request, response: Response, next: Ne
 };
 
 export const authRateLimiter = (request: Request, response: Response, next: NextFunction) => {
+  if (!AUTH_RATE_LIMIT_ENABLED) {
+    next();
+    return;
+  }
+
   const now = Date.now();
   cleanupExpiredBuckets(now);
 
