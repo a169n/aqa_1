@@ -379,3 +379,21 @@ Check:
 - Backend routes: [server/src/routes/index.ts](server/src/routes/index.ts)
 - Frontend router: [client/src/router.tsx](client/src/router.tsx)
 - Profile page: [client/src/pages/profile-page.tsx](client/src/pages/profile-page.tsx)
+
+## Assignment 3 Experimental Engineering Automation
+
+Operational scripts and workflow for performance, mutation, and chaos testing are included.
+
+Commands:
+
+```bash
+npm run perf:smoke
+npm run perf:full
+npm run perf:summary
+npm run mutation:test
+npm run mutation:summary
+npm run chaos:run
+npm run experimental:summary
+```
+
+See `docs/qa/experimental/README.md` for setup details, environment variables, and artifact paths.
