@@ -11,9 +11,6 @@ on:
         description: 'Run chaos scenarios'
         required: false
         default: 'true'
-  schedule:
-    - cron: '0 6 * * 1'
-
 permissions:
   contents: read
 
